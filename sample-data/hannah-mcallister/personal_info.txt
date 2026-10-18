@@ -94,3 +94,14 @@ references:
   Dr. Ryan Holt, my old boss at Yellowstone Pet Clinic, 406-555-0155
 
 pets: my dog Juniper (border collie mix), registered with the city
+
+quick answers for forms
+  suffix: none
+  tax id type: social security number
+  address type: street address
+  residence: rent. years at this address: 0 (moved in sept 2026, less than a year)
+  id i use on forms: montana driver's license, issued by MT
+  employment: employed part-time
+  highest degree: bachelor's (b.s. wildlife biology), university of montana, 2021, gpa 3.3
+  years of work experience: 5 (vet tech since 2021)
+  why spacexai: a lot of our ranch clients out past belgrade got starlink this year and now they text us photos of sick calves instead of hauling them in. i'd want to work on ai that helps rural vets triage from those photos, since half our calls are "is this an emergency or can it wait"

@@ -73,3 +73,13 @@ References. Marcos Vigil, my produce supplier, 505-555-0149. Chef Elena Baca, my
 If something happens to me, call Rosa first, 505-555-0145. If you can't reach her, call my brother Javier, 915-555-0166.
 
 Pets: our dog Chile, a heeler mix.
+
+Quick answers, Rosa, for when a form asks the same things again.
+No suffix. The house has no apartment number, so for Apt/unit put N/A.
+Tax ID type is my Social Security number. Address type is a street address.
+We rent. Years at this address: 6, since October 2020.
+For ID on forms, use my New Mexico driver's license, issued by NM.
+Employment: self-employed, owner of La Ortega Cocina.
+Highest degree: high school diploma, Bowie High School, El Paso, 2005, GPA 3.1. Field of study: Culinary Arts (my certificate from Central New Mexico Community College, 2012, GPA 3.5).
+Years of work experience: 21, since 2005.
+Why SpaceXAI: Last year I started using Grok to cost out my menu and build the staff schedule, and it saved me about 4 hours a week. I'd want to help make AI tools like that work for small restaurant owners who don't have an office or a bookkeeper.

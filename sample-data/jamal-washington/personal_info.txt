@@ -84,3 +84,14 @@ references:
 
 no pets (lease says no)
 never been arrested
+
+quick answers for forms
+  suffix: none
+  tax id type: social security number
+  address type: street address
+  residence: rent. years at this address: 1 (since aug 2025)
+  id i use on forms: georgia state id, issued by GA
+  employment: student, also employed part-time at octane
+  highest degree: bachelor's in progress (b.s. computer science, georgia state, expected may 2028, gpa 3.52)
+  years of work experience: 3 (part-time since sept 2023)
+  why spacexai: me and marcus watch every starship launch on the dorm tv. after my recycling sorter project i got hooked on running ml on small hardware. i'd want to work on getting models running on starlink hardware or on the pipelines that move vehicle data into training
