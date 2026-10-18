@@ -196,18 +196,14 @@ export function FillFlow() {
           </div>
         ) : (
           <>
-            <p className="text-base text-muted">
+            <p className="flex items-end gap-2 text-base text-muted">
               {session.schema.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={session.schema.logo}
-                  alt={session.business}
-                  className="mr-1.5 inline-block h-6 w-auto align-[-5px]"
-                />
+                <img src={session.schema.logo} alt={session.business} className="h-6 w-auto" />
               ) : (
                 <strong className="text-navy">{session.business}</strong>
-              )}{" "}
-              wants to fill out
+              )}
+              <span className="leading-none">wants to fill out</span>
             </p>
             <h1 className="mt-0.5 text-[28px] leading-tight font-bold">{session.schema.title}</h1>
             <p className="mt-2 text-sm text-muted">
