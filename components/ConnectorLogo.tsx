@@ -20,14 +20,6 @@ const INLINE: Record<string, { viewBox: string; paths: [string, string][] }> = {
       ["#ffba00", "m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z"],
     ],
   },
-  // Not on Simple Icons: a magenta tile with the T.
-  tmobile: {
-    viewBox: "0 0 24 24",
-    paths: [
-      ["#E20074", "M5 0h14a5 5 0 0 1 5 5v14a5 5 0 0 1-5 5H5a5 5 0 0 1-5-5V5a5 5 0 0 1 5-5z"],
-      ["#FFFFFF", "M5.5 5.5h13v3.2h-4.9v9.8h-3.2V8.7H5.5z"],
-    ],
-  },
   gmail: {
     viewBox: "52 42 88 66",
     paths: [
@@ -39,6 +31,9 @@ const INLINE: Record<string, { viewBox: string; paths: [string, string][] }> = {
     ],
   },
 };
+
+/** Official marks for brands Simple Icons doesn't carry, served from public/. */
+const LOCAL: Record<string, string> = { tmobile: "/tmobile/t-mark.svg" };
 
 /** Brand logo by Simple Icons slug, served from cdn.simpleicons.org unless we inline a full-color one. */
 export function ConnectorLogo({ slug, className = "h-6 w-6" }: { slug: string; className?: string }) {
@@ -52,5 +47,5 @@ export function ConnectorLogo({ slug, className = "h-6 w-6" }: { slug: string; c
       </svg>
     );
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={`https://cdn.simpleicons.org/${slug}`} alt="" className={className} loading="lazy" />;
+  return <img src={LOCAL[slug] ?? `https://cdn.simpleicons.org/${slug}`} alt="" className={className} loading="lazy" />;
 }

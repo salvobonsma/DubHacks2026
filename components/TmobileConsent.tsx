@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ConnectorLogo } from "./ConnectorLogo";
 import { LockIcon } from "./Icons";
 
 export type TmobileScope = "account" | "devices" | "billing";
@@ -70,9 +69,9 @@ export function TmobileConsent({
     <div className="fixed inset-0 z-50 m-0 overflow-y-auto bg-black/40">
       <div className="flex min-h-full items-center justify-center p-4">
         <div className="w-full max-w-sm overflow-hidden rounded-2xl bg-white text-[#000] shadow-2xl" style={{ fontFamily: "Arial, Helvetica, sans-serif" }}>
-          <div className="flex items-center gap-2 bg-[#E20074] px-6 py-4 text-white">
-            <ConnectorLogo slug="tmobile" className="h-7 w-7 rounded-md ring-1 ring-white/40" />
-            <span className="text-lg font-bold tracking-tight">T-Mobile</span>
+          <div className="border-b-4 border-[#E20074] px-6 py-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/tmobile/logo.png" alt="T-Mobile" width={720} height={145} className="h-7 w-auto" />
           </div>
           <div className="p-6">
             <h2 className="text-xl leading-tight font-bold">Share your T-Mobile account with Formly</h2>
