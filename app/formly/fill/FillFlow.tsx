@@ -206,7 +206,7 @@ export function FillFlow() {
               <span className="leading-none">wants to fill out</span>
             </p>
             <h1 className="mt-0.5 text-[28px] leading-tight font-bold">{session.schema.title}</h1>
-            <p className="mt-2 text-sm text-muted">
+            <p className="mt-0.5 text-sm text-muted">
               {session.schema.fields.length} {session.schema.fields.length === 1 ? "field" : "fields"}. Your source data
               is never sent to {session.business}.
             </p>
