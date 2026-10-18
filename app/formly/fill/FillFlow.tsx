@@ -260,7 +260,7 @@ export function FillFlow() {
                             <span className="block text-sm font-semibold">
                               {m.label}
                               {m.id === "all" && (
-                                <WarningIcon className="ml-1.5 inline h-3.5 w-3.5 align-[-2px] text-amber-600" />
+                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" />
                               )}
                             </span>
                             <span className="block text-xs text-muted">{m.hint}</span>
