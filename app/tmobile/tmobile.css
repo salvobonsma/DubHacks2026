@@ -79,6 +79,7 @@
 
 .tm-divider { height: 1px; flex: 1; background: var(--tm-border); }
 
+.tm-required { color: #e8200d; }
 .tm-label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; color: var(--tm-text); }
 
 .tm-input {
@@ -114,6 +115,12 @@
 .tm-btn-primary { background: var(--tm-magenta-400); color: var(--tm-gray-100); }
 .tm-btn-primary:hover { background: var(--tm-magenta-500); }
 .tm-btn-primary:active { background: var(--tm-magenta-600); }
+.tm-btn:disabled,
+.tm-btn:disabled:hover {
+  background: var(--tm-gray-300);
+  color: var(--tm-gray-600);
+  cursor: not-allowed;
+}
 .tm-btn-secondary {
   background: var(--tm-gray-100);
   color: var(--tm-gray-1000);

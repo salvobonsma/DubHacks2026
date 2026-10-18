@@ -26,6 +26,7 @@ export default function TMobileSignup() {
   }
 
   const done = schema.fields.filter((f) => values[f.id]?.trim()).length;
+  const missing = schema.fields.filter((f) => f.required && !values[f.id]?.trim()).length;
 
   if (submitted) {
     return (
@@ -60,14 +61,16 @@ export default function TMobileSignup() {
         </div>
         <div className="tm-secondary my-6 flex items-center gap-3 text-sm">
           <div className="tm-divider" />
-          or fill in manually
+          <span>
+            or fill in manually · <span className="tm-required">*</span> required
+          </span>
           <div className="tm-divider" />
         </div>
 
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            setSubmitted(true);
+            if (!missing) setSubmitted(true);
           }}
           className="space-y-8"
         >
@@ -87,13 +90,27 @@ export default function TMobileSignup() {
               </div>
             </fieldset>
           ))}
-          <button type="submit" className="tm-btn tm-btn-primary tm-btn-hero w-full">
-            Continue to review
-          </button>
+          <div>
+            <button type="submit" disabled={missing > 0} className="tm-btn tm-btn-primary tm-btn-hero w-full">
+              Submit
+            </button>
+            {missing > 0 && (
+              <p className="tm-secondary mt-2 text-center text-sm">
+                Fill in {missing} more required field{missing === 1 ? "" : "s"} to submit · about{" "}
+                {timeLeft(missing)} left
+              </p>
+            )}
+          </div>
         </form>
       </div>
     </Shell>
   );
+}
+
+/** Rough manual-entry estimate: ~20 seconds per required field still empty. */
+function timeLeft(fields: number) {
+  const seconds = fields * 20;
+  return seconds < 60 ? "1 min" : `${Math.round(seconds / 60)} min`;
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
@@ -103,7 +120,6 @@ function Shell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-3xl items-center px-6 py-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tmobile/logo.png" alt="T-Mobile" className="h-7 w-auto" />
-          <span className="tm-caption ml-auto">Secure checkout</span>
         </div>
       </header>
       <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">{children}</main>
@@ -130,10 +146,10 @@ function Field({
     <label className="block">
       <span className="tm-label">
         {field.label}
-        {field.required && <span className="tm-secondary"> *</span>}
+        {field.required && <span className="tm-required"> *</span>}
       </span>
       {field.type === "select" ? (
-        <select className={cls} value={value} onChange={(e) => onChange(e.target.value)}>
+        <select className={cls} value={value} required={field.required} onChange={(e) => onChange(e.target.value)}>
           <option value="">Select…</option>
           {field.options?.map((o) => (
             <option key={o}>{o}</option>
@@ -144,6 +160,7 @@ function Field({
           className={cls}
           type={field.type}
           value={value}
+          required={field.required}
           placeholder={field.placeholder}
           onChange={(e) => onChange(e.target.value)}
         />

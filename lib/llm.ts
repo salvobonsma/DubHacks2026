@@ -54,8 +54,14 @@ export async function buildTwinMarkdown(sources: { name: string; text: string }[
   const res = await generate({
     model: MODEL,
     contents: `You maintain a user's "digital twin": a concise markdown profile of everything known about them.
-Merge the sources below into one profile with these sections (omit empty ones):
-## Identity, ## Contact, ## Addresses, ## IDs & Documents, ## Employment & Income, ## Financial, ## People, ## Preferences & Plans
+Merge the sources below into one profile using exactly these four headings, written as shown (omit empty ones):
+## Personal
+## IDs & Money
+## Work & Education
+## People & Plans
+Personal: name, birthday, sex, email, phone, home address. IDs & Money: SSN, driver's license, passport, payment
+cards, bank accounts. Work & Education: employer, role, income, schools. People & Plans: family, emergency
+contacts, current services and bills, preferences, plans. Use flat bullets only, one fact per bullet.
 Use bullet points "- **Label:** value _(source: filename)_". When sources conflict, prefer the most recent/official
 document and note the conflict. Never invent information. Output only markdown.
 

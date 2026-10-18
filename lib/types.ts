@@ -37,9 +37,19 @@ export interface CriticalFact {
   sensitivity: Sensitivity;
 }
 
+export type FactAction = "remove" | "edit" | "censor";
+
+export interface FactOverride {
+  label: string;
+  action: FactAction;
+  value: string | null;
+}
+
 export interface Twin {
   markdown: string;
   critical: CriticalFact[];
+  /** User edits applied on top of the generated twin, keyed by lowercased fact label. */
+  overrides: FactOverride[];
   version: number;
   updatedAt: number;
 }

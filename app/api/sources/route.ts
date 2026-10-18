@@ -44,9 +44,15 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  const id = new URL(req.url).searchParams.get("id");
+  const params = new URL(req.url).searchParams;
+  const id = params.get("id");
+  const connector = params.get("connector");
   if (id) db.prepare("DELETE FROM sources WHERE id = ?").run(id);
-  else db.prepare("DELETE FROM sources").run();
+  else if (connector) db.prepare("DELETE FROM sources WHERE connector = ?").run(connector);
+  else {
+    db.prepare("DELETE FROM sources").run();
+    db.prepare("DELETE FROM fact_overrides").run();
+  }
   try {
     return Response.json({ twin: await rebuildTwin() });
   } catch (e) {

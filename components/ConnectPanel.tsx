@@ -59,6 +59,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   const [uploadOpen, setUploadOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
+  const [disconnectOpen, setDisconnectOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
   const refresh = useCallback(async () => {
@@ -104,6 +105,25 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setBusy(null);
   }
 
+  const googleSynced = sources.some((s) => s.connector === "google");
+
+  async function disconnectGoogle() {
+    setDisconnectOpen(false);
+    setBusy(`Disconnecting ${GOOGLE.name} and updating your twin…`);
+    setError(null);
+    const res = await fetch("/api/sources?connector=google", { method: "DELETE" }).then((r) => r.json());
+    if (res.error) setError(res.error);
+    else onTwin?.(res.twin ?? null);
+    await refresh();
+    setBusy(null);
+  }
+
+  /** Google Drive tile/row: connect if not synced, otherwise offer to disconnect. */
+  function openGoogle() {
+    if (googleSynced) setDisconnectOpen(true);
+    else setConsent(true);
+  }
+
   async function remove(id: string) {
     setBusy("Removing source and updating your twin…");
     const res = await fetch(`/api/sources?id=${id}`, { method: "DELETE" }).then((r) => r.json());
@@ -113,7 +133,6 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setBusy(null);
   }
 
-  const googleSynced = sources.some((s) => s.connector === "google");
   const tile = "flex flex-col items-center justify-center gap-1.5 rounded-xl border px-1 py-3 transition";
 
   return (
@@ -160,6 +179,32 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
 
       {consent && <GoogleConsent onAllow={connectGoogle} onCancel={() => setConsent(false)} />}
 
+      {disconnectOpen && (
+        <Modal title={`Disconnect ${GOOGLE.name}?`} onClose={() => setDisconnectOpen(false)}>
+          <div className="flex items-start gap-3">
+            <ConnectorLogo slug={GOOGLE.slug} className="mt-0.5 h-8 w-8 shrink-0" />
+            <p className="text-sm text-muted">
+              Formly will remove the {sources.filter((s) => s.connector === "google").length} files it synced from{" "}
+              {GOOGLE.name} and rebuild your digital twin without them. You can reconnect any time.
+            </p>
+          </div>
+          <div className="mt-6 flex justify-end gap-2">
+            <button
+              onClick={() => setDisconnectOpen(false)}
+              className="rounded-full px-4 py-2 text-sm font-medium text-muted hover:bg-bg"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={disconnectGoogle}
+              className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700"
+            >
+              Disconnect
+            </button>
+          </div>
+        </Modal>
+      )}
+
       <div>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Add a source</p>
         <div className="grid grid-cols-4 gap-2">
@@ -174,12 +219,19 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
             <span className="w-full truncate text-[11px] font-medium">Upload</span>
           </button>
           <button
-            onClick={() => setConsent(true)}
+            onClick={openGoogle}
             disabled={!!busy}
             className={`${tile} ${googleSynced ? "border-brand bg-brand/5" : "border-line hover:border-navy/30 hover:shadow-sm"}`}
           >
-            <ConnectorLogo slug={GOOGLE.slug} />
-            <span className="w-full truncate text-[11px] font-medium">{googleSynced ? "Synced ✓" : GOOGLE.name}</span>
+            <span className="relative">
+              <ConnectorLogo slug={GOOGLE.slug} />
+              {googleSynced && (
+                <span className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-brand text-white ring-2 ring-white">
+                  <CheckIcon />
+                </span>
+              )}
+            </span>
+            <span className="w-full truncate text-[11px] font-medium">Drive</span>
           </button>
           {COMING_SOON.slice(0, FEATURED).map((c) => (
             <button key={c.name} type="button" className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}>
@@ -225,7 +277,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                           key={c.name}
                           onClick={() => {
                             setMoreOpen(false);
-                            setConsent(true);
+                            openGoogle();
                           }}
                           disabled={!!busy}
                           className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
@@ -341,6 +393,14 @@ function Modal({
         {children}
       </div>
     </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12.5l4.5 4.5L19 7.5" />
+    </svg>
   );
 }
 

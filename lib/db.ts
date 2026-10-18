@@ -33,6 +33,12 @@ db.exec(`
       version INTEGER NOT NULL,
       updated_at INTEGER NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS fact_overrides (
+      label TEXT PRIMARY KEY,
+      action TEXT NOT NULL,
+      value TEXT,
+      created_at INTEGER NOT NULL
+    );
     CREATE TABLE IF NOT EXISTS grants (
       business TEXT NOT NULL,
       key TEXT NOT NULL,
