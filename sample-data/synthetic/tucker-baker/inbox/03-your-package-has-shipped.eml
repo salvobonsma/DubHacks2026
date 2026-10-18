@@ -1,0 +1,29 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Tucker Baker <tucker.baker93@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <d2c66dc3-e403-46dd-a361-7e10b0a4a74c@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Tucker Baker,
+
+Good news! Your order has shipped and is on its way to you. You can track your package progress using the tracking details below.
+
+Shipping To:
+Tucker Baker
+994 Willow Way
+Coeur D Alene, ID 83814
+
+Order Details:
+Phone on the order: (208) 555-0136
+Item: Heavy-duty magnetic tool organizer for garage workshop (one household item)
+Tracking Number: 1Z9999999999999999
+Carrier: UPS
+
+Estimated Delivery: Friday by 7:00 PM.
+
+Thank you for shopping with Amazon.example.
+
+Amazon Shipping Team

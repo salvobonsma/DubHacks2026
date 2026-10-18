@@ -1,0 +1,23 @@
+From: Netflix <billing@example.com>
+To: Kai Moreno <kai.moreno17@example.com>
+Subject: Your Netflix receipt
+Date: Sat, 05 Sep 2026 15:30:00 +0000
+Message-ID: <0875c182-bcfb-48eb-9822-cf0b1e5e3e84@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Netflix Billing Department
+
+Hi member Kai Moreno,
+
+We successfully processed your recent payment for your Netflix monthly membership.
+
+Billing details:
+Plan: Standard HD
+Amount charged: $15.49
+Billing date: October 12, 2024
+
+You can stream your favorite shows anytime by logging into your account. Thanks for being a subscriber.
+
+Netflix

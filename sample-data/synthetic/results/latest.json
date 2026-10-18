@@ -1,0 +1,635 @@
+[
+  {
+    "slug": "mary-alberti",
+    "name": "Mary Alberti",
+    "uploadMs": 1999,
+    "fillMs": 4185,
+    "rows": [
+      {
+        "id": "first_name",
+        "kind": "fact",
+        "want": "Mary",
+        "got": "Mary",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "last_name",
+        "kind": "fact",
+        "want": "Alberti",
+        "got": "Alberti",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "line1_name",
+        "kind": "fact",
+        "want": "Mary",
+        "got": "Mary",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "dob",
+        "kind": "fact",
+        "want": "1998-03-10",
+        "got": "1998-03-10",
+        "verdict": "ok",
+        "source": "08-your-trip-confirmation.eml",
+        "reason": null
+      },
+      {
+        "id": "phone",
+        "kind": "fact",
+        "want": "(608) 555-0135",
+        "got": "(608) 555-0135",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "email",
+        "kind": "fact",
+        "want": "mary.alberti57@example.com",
+        "got": "mary.alberti57@example.com",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "street",
+        "kind": "fact",
+        "want": "7402 Elm St",
+        "got": "7402 Elm St",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "apt",
+        "kind": "blank-ok",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "city",
+        "kind": "fact",
+        "want": "Madison",
+        "got": "Madison",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "state",
+        "kind": "fact",
+        "want": "WI",
+        "got": "WI",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "zip",
+        "kind": "fact",
+        "want": "53717",
+        "got": "53717",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "current_carrier",
+        "kind": "fact",
+        "want": "Mint Mobile",
+        "got": "Mint Mobile",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "port_number",
+        "kind": "suggest",
+        "want": [
+          "Yes, keep my number"
+        ],
+        "got": "Yes, keep my number",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your number (608) 555-0135 can move to T-Mobile"
+      },
+      {
+        "id": "lines",
+        "kind": "suggest",
+        "want": [
+          "1"
+        ],
+        "got": "1",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your Mint Mobile bill lists 1 phone line"
+      },
+      {
+        "id": "device",
+        "kind": "suggest",
+        "want": [
+          "Bring your own phone"
+        ],
+        "got": "Bring your own phone",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your records show you have an iPhone 15"
+      },
+      {
+        "id": "plan",
+        "kind": "suggest",
+        "want": [
+          "Experience Beyond 2.0",
+          "Experience More 2.0",
+          "Essentials 2.0",
+          "Essentials Saver 2.0"
+        ],
+        "got": "Essentials 2.0",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your Mint Mobile bill and Hulu subscription point to Essentials 2.0"
+      },
+      {
+        "id": "delivery_same",
+        "kind": "suggest",
+        "want": [
+          "Yes"
+        ],
+        "got": "Yes",
+        "verdict": "ok",
+        "source": "03-your-package-has-shipped.eml",
+        "reason": "your packages ship to 7402 Elm St"
+      },
+      {
+        "id": "ssn4",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "account_pin",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "esign_consent",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "credit_consent",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      }
+    ],
+    "uploadErrors": []
+  },
+  {
+    "slug": "nicole-lewis",
+    "name": "Nicole Lewis",
+    "uploadMs": 1587,
+    "fillMs": 3833,
+    "rows": [
+      {
+        "id": "first_name",
+        "kind": "fact",
+        "want": "Nicole",
+        "got": "Nicole",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "last_name",
+        "kind": "fact",
+        "want": "Lewis",
+        "got": "Lewis",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "line1_name",
+        "kind": "fact",
+        "want": "Nicole",
+        "got": "Nicole",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "dob",
+        "kind": "fact",
+        "want": "1965-07-26",
+        "got": "1965-07-26",
+        "verdict": "ok",
+        "source": "07-your-prescription-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "phone",
+        "kind": "fact",
+        "want": "(847) 555-0166",
+        "got": "(847) 555-0166",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "email",
+        "kind": "fact",
+        "want": "nicole.lewis38@example.com",
+        "got": "nicole.lewis38@example.com",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "street",
+        "kind": "fact",
+        "want": "2225 Oak St",
+        "got": "2225 Oak St",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "apt",
+        "kind": "blank-ok",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "city",
+        "kind": "fact",
+        "want": "Morton Grove",
+        "got": "Morton Grove",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "state",
+        "kind": "fact",
+        "want": "IL",
+        "got": "IL",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "zip",
+        "kind": "fact",
+        "want": "60053",
+        "got": "60053",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "current_carrier",
+        "kind": "fact",
+        "want": "Mint Mobile",
+        "got": "Mint Mobile",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "port_number",
+        "kind": "suggest",
+        "want": [
+          "Yes, keep my number"
+        ],
+        "got": "Yes, keep my number",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your number (847) 555-0166 can move to T-Mobile"
+      },
+      {
+        "id": "lines",
+        "kind": "suggest",
+        "want": [
+          "2"
+        ],
+        "got": "2",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your Mint Mobile bill lists 2 phone lines"
+      },
+      {
+        "id": "device",
+        "kind": "suggest",
+        "want": [
+          "Bring your own phone"
+        ],
+        "got": "Bring your own phone",
+        "verdict": "ok",
+        "source": "01-your-mint-mobile-bill-is-ready.eml",
+        "reason": "your Mint Mobile bill shows your iPhone 15"
+      },
+      {
+        "id": "plan",
+        "kind": "suggest",
+        "want": [
+          "Experience Beyond 2.0",
+          "Experience More 2.0",
+          "Essentials 2.0",
+          "Essentials Saver 2.0"
+        ],
+        "got": "Experience More 2.0",
+        "verdict": "ok",
+        "source": null,
+        "reason": "it's the usual pick, and you can change it"
+      },
+      {
+        "id": "delivery_same",
+        "kind": "suggest",
+        "want": [
+          "Yes"
+        ],
+        "got": "Yes",
+        "verdict": "ok",
+        "source": "03-your-package-has-shipped.eml",
+        "reason": "your packages ship to 2225 Oak St"
+      },
+      {
+        "id": "ssn4",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "account_pin",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "esign_consent",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "credit_consent",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      }
+    ],
+    "uploadErrors": []
+  },
+  {
+    "slug": "tucker-baker",
+    "name": "Tucker Baker",
+    "uploadMs": 3362,
+    "fillMs": 3770,
+    "rows": [
+      {
+        "id": "first_name",
+        "kind": "fact",
+        "want": "Tucker",
+        "got": "Tucker",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "last_name",
+        "kind": "fact",
+        "want": "Baker",
+        "got": "Baker",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "line1_name",
+        "kind": "fact",
+        "want": "Tucker",
+        "got": "Tucker",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "dob",
+        "kind": "fact",
+        "want": "2004-05-27",
+        "got": "2004-05-27",
+        "verdict": "ok",
+        "source": "08-your-trip-confirmation.eml",
+        "reason": null
+      },
+      {
+        "id": "phone",
+        "kind": "fact",
+        "want": "(208) 555-0136",
+        "got": "(208) 555-0136",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "email",
+        "kind": "fact",
+        "want": "tucker.baker93@example.com",
+        "got": "tucker.baker93@example.com",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "street",
+        "kind": "fact",
+        "want": "994 Willow Way",
+        "got": "994 Willow Way",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "apt",
+        "kind": "blank-ok",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "city",
+        "kind": "fact",
+        "want": "Coeur D Alene",
+        "got": "Coeur D Alene",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "state",
+        "kind": "fact",
+        "want": "ID",
+        "got": "ID",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "zip",
+        "kind": "fact",
+        "want": "83814",
+        "got": "83814",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "current_carrier",
+        "kind": "fact",
+        "want": "Cricket Wireless",
+        "got": "Cricket Wireless",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": null
+      },
+      {
+        "id": "port_number",
+        "kind": "suggest",
+        "want": [
+          "Yes, keep my number"
+        ],
+        "got": "Yes, keep my number",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": "your Cricket wireless bill lists your number (208) 555-0136"
+      },
+      {
+        "id": "lines",
+        "kind": "suggest",
+        "want": [
+          "1"
+        ],
+        "got": "1",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": "your Cricket wireless bill lists 1 phone line"
+      },
+      {
+        "id": "device",
+        "kind": "suggest",
+        "want": [
+          "Bring your own phone"
+        ],
+        "got": "Bring your own phone",
+        "verdict": "ok",
+        "source": "01-your-cricket-wireless-bill-is-ready.eml",
+        "reason": "your Cricket wireless bill shows your Galaxy A54 is paid off"
+      },
+      {
+        "id": "plan",
+        "kind": "suggest",
+        "want": [
+          "Experience Beyond 2.0",
+          "Experience More 2.0",
+          "Essentials 2.0",
+          "Essentials Saver 2.0"
+        ],
+        "got": "Experience More 2.0",
+        "verdict": "ok",
+        "source": "07-your-netflix-receipt.eml",
+        "reason": "your Netflix receipt shows you subscribe to Netflix Standard"
+      },
+      {
+        "id": "delivery_same",
+        "kind": "suggest",
+        "want": [
+          "Yes"
+        ],
+        "got": "Yes",
+        "verdict": "ok",
+        "source": "03-your-package-has-shipped.eml",
+        "reason": "your package shipping confirmation lists 994 Willow Way"
+      },
+      {
+        "id": "ssn4",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "account_pin",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "esign_consent",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      },
+      {
+        "id": "credit_consent",
+        "kind": "never",
+        "want": null,
+        "got": null,
+        "verdict": "ok",
+        "source": null,
+        "reason": null
+      }
+    ],
+    "uploadErrors": []
+  }
+]

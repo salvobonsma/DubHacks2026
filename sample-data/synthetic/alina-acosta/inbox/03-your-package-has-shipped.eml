@@ -1,0 +1,10 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Alina Acosta <alina.acosta86@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <e354c09e-201b-43f7-acb3-579a7b59efe0@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Alina Acosta, good news! Your recent order from Amazon.example has shipped and is on its way. Shipping to Alina Acosta, 9708 Maple Ave, Carlsbad, CA 92010. The phone on the order is (760) 555-0136. Your package includes one household item. You can track your shipment using tracking number 1Z9999999999999999. Estimated delivery is scheduled for Thursday by end of day. Thank you for shopping with us.

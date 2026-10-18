@@ -1,0 +1,24 @@
+From: Netflix <billing@example.com>
+To: Deeva Cintron <deeva.cintron75@example.com>
+Subject: Your Netflix receipt
+Date: Sat, 05 Sep 2026 15:30:00 +0000
+Message-ID: <7b65d998-a5c3-4116-8981-6838def4d9d4@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hi Deeva Cintron,
+
+Your Netflix monthly membership has been renewed. Thank you for staying with us and enjoying our wide selection of movies and television shows.
+
+Billing Details:
+Member: Deeva Cintron
+Subscription: Netflix monthly membership (Standard Plan)
+Amount charged: $15.49
+Payment date: Today
+
+Your next billing date will be on the same day next month. You can manage your profile, update your payment details, or change your plan at any time by logging into your account settings.
+
+Happy streaming,
+The Netflix Team
+support@email.example.com

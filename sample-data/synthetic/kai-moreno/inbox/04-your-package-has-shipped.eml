@@ -1,0 +1,25 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Kai Moreno <kai.moreno17@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <f5897927-61e5-4c59-abf8-84ffa4008c9e@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Amazon.example Shipping Update
+
+Hello Kai,
+
+Your recent order has shipped and is on the way.
+
+Shipping to Kai Moreno, 5032 Forbes Hall, Box 2187, Pittsburgh, PA 15213
+Contact phone on the order (412) 555-0176
+
+Items in this shipment:
+1x Ergonomic Desk Lamp (household item)
+
+Tracking number: 1Z999AA10123456784
+Estimated delivery: Thursday by 7:00 PM
+
+Thank you for shopping with us.

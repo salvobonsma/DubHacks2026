@@ -250,7 +250,9 @@ Return one entry per form field id. Each field has a rule:
   No evidence: null. A carrier is never inferred from a phone purchase, a contact or a family member's mail.
 - "choice": a choice or preference. If the data states it, kind "fact". Otherwise ALWAYS give the best
   suggestion (kind "suggestion") that fits the evidence and what ${schema.business} offers: plan from how they use
-  their phone and what they pay for (a streaming subscription a plan includes, data use, travel, being a student;
+  their phone and what they pay for now (a streaming subscription a plan includes, data use, travel, being a student;
+  a budget carrier or a low bill, roughly under $40 a line, points to the cheapest plans, and streaming perks only
+  count when they already pay for that exact service; a student gets a "Student Savings" option when one is listed;
   the reason names that receipt or bill and what the plan gives them for it, and only perks the business lists
   for that very plan), number of lines from the lines on their own carrier bill (else 1, just them), keep their number when
   they have a phone number of their own (name the number, and the carrier when known), bring their own phone when
@@ -269,6 +271,8 @@ Values:
 - Ages and years of experience: work them out from the dates in the data, as of today.
 - If the data explicitly says there is none (no lienholder, no apartment number, no suffix), that is an answer:
   use "None", or "N/A" if the data says N/A. For a select, pick the option that means none if there is one.
+  Only when the data says so in words: an address that simply has no unit leaves the apartment/suite field null,
+  never "None".
 - Never invent a name, number, date or address that isn't in the data.
 evidence: first, up to 3 short quotes copied word for word from the data that bear on this field (for a plan:
   every streaming or subscription receipt, data use, travel, student status; for a device: the phone on the
@@ -290,28 +294,48 @@ ${JSON.stringify(critical)}
 
 FULL DIGITAL TWIN:
 ${twinMarkdown}`,
-    config: FILL_RESPONSE,
+    // Same data, same answers: no sampling randomness on top of the rules above.
+    config: { ...FILL_RESPONSE, temperature: 0 },
   });
   const byId = new Map(formFields.map((f) => [f.id, f]));
   const out = JSON.parse(res.text ?? "[]") as (FilledField & { kind?: string; evidence?: string[] })[];
-  return out.map(({ kind, evidence, ...f }) =>
+  const checked = out.map(({ kind, evidence, ...f }) =>
     checkFill(byId.get(f.fieldId), { ...f, suggested: kind === "suggestion" }, evidence?.filter((e) => e.trim()) ?? []),
   );
+  // A choice with a usual pick is never left blank, even when the model skipped it.
+  const answered = new Set(checked.map((f) => f.fieldId));
+  const skipped = formFields.filter((f) => !answered.has(f.id) && f.default && fieldRule(f) === "choice");
+  return [...checked, ...skipped.map(usualPick)];
+}
+
+/** Shown after "because" when nothing in the user's data made the choice: honest, and the same every time. */
+const USUAL_REASON = "it's the usual pick, and you can change it";
+
+/**
+ * The schema's usual pick for a choice nothing in the data bears on. Picked here in code, not by the model, so
+ * the same data gets the same suggestion on every run (the model flip-flopped between plans and number choices).
+ */
+function usualPick(field: FormField): FilledField {
+  return { fieldId: field.id, value: field.default ?? null, source: null, confidence: 0.5, suggested: true, reason: USUAL_REASON };
 }
 
 /**
  * The model's answer for one field, held to the rules: identity facts are never suggestions, a select value
  * must be one of its options, a number is digits, and a suggestion without a reason isn't shown as one. Only a
- * choice may be suggested with nothing in the data behind it ("the usual choice"); any other field suggested
+ * choice may be suggested with nothing in the data behind it, and then it gets the schema's usual pick when it
+ * has one rather than the model's guess of the moment; any other field suggested
  * without evidence (a carrier guessed as "Other") is dropped, so the business asks for it instead.
  */
 function checkFill(field: FormField | undefined, f: FilledField, evidence: string[] = []): FilledField {
   const blank = { ...f, value: null, source: null, reason: null, suggested: false };
   let value = f.value?.trim() || null;
-  if (!field || !value || neverFill(field)) return blank;
+  if (!field || neverFill(field)) return blank;
   const rule = fieldRule(field);
+  const noEvidence = !evidence.length || /nothing in your data/i.test(f.reason ?? "");
+  if (rule === "choice" && field.default && (!value || (f.suggested && noEvidence))) return usualPick(field);
+  if (!value) return blank;
   if (rule === "copy" && f.suggested) return blank;
-  if (rule === "fact" && f.suggested && (!evidence.length || /nothing in your data/i.test(f.reason ?? ""))) return blank;
+  if (rule === "fact" && f.suggested && noEvidence) return blank;
   if (field.type === "select" && field.options?.length) {
     const opt = field.options.find((o) => o.toLowerCase() === value!.toLowerCase());
     if (!opt) return blank;

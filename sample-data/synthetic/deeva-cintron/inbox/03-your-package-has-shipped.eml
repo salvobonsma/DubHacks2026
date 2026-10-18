@@ -1,0 +1,25 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Deeva Cintron <deeva.cintron75@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <af886587-2575-4420-a692-07c292bafb1e@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Deeva Cintron,
+
+Good news! Your recent order from Amazon.example has shipped and is on its way to you.
+
+Shipping Details:
+Shipping to: Deeva Cintron, 7695 Maple Ave, Apt 6A, Saline, MI 48176
+Phone on the order: (734) 555-0141
+Item: one household item (Stainless Steel Measuring Spoon Set)
+Tracking number: 1Z999AA10123456784
+Carrier: UPS
+Estimated delivery: Thursday by 7:00 PM
+
+You can track the live progress of your package by clicking the tracking number above or visiting your orders page on our website. Thank you for shopping with us.
+
+Best,
+Amazon.example Shipping Team

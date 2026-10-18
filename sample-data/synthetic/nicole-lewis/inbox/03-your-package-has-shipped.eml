@@ -1,0 +1,23 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Nicole Lewis <nicole.lewis38@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <c3453c8b-c1a0-40fa-9a4b-1b5ee507b29e@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Nicole Lewis,
+
+Good news! Your recent order from Amazon.example has shipped and is on its way to you. Your package is currently in transit and should arrive soon.
+
+Shipping Details:
+Shipping To: Nicole Lewis, 2225 Oak St, Morton Grove, IL 60053
+Phone on Order: (847) 555-0166
+Items Included: One household item (Stainless Steel Herb Scissors)
+Tracking Number: 1Z9999999999999999
+
+You can track the live progress of your shipment at any time by clicking the tracking link in your account dashboard. Thank you for shopping with us.
+
+Best wishes,
+Amazon.example Shipping Team
