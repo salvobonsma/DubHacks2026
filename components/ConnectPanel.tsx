@@ -178,7 +178,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
             />
           </div>
           <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
-            <LockIcon className="h-3 w-3" /> Secure with Formly
+            <LockIcon className="h-2.5 w-2.5" /> Secure with Formly
           </p>
         </Modal>
       )}

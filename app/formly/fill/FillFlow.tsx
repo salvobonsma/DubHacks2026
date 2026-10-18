@@ -200,23 +200,18 @@ export function FillFlow() {
           </div>
         ) : (
           <>
-            <p className="text-base text-muted">
+            <p className="flex items-end gap-2 text-base text-muted">
               {session.schema.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={session.schema.logo}
-                  alt={session.business}
-                  className="mr-1.5 inline-block h-6 w-auto align-[-5px]"
-                />
+                <img src={session.schema.logo} alt={session.business} className="h-6 w-auto" />
               ) : (
                 <strong className="text-navy">{session.business}</strong>
-              )}{" "}
-              wants to fill out
+              )}
+              <span className="leading-none">wants to fill out</span>
             </p>
             <h1 className="mt-0.5 text-[28px] leading-tight font-bold">{session.schema.title}</h1>
-            <p className="mt-2 text-sm text-muted">
-              {session.schema.fields.length} {session.schema.fields.length === 1 ? "field" : "fields"}. Your source data
-              is never sent to {session.business}.
+            <p className="mt-0.5 text-sm text-muted">
+              Your source data never leaves Formly.
             </p>
 
             {step === "connect" && (
@@ -239,8 +234,7 @@ export function FillFlow() {
                     <div>
                       <p className="font-semibold">You have no data sources yet</p>
                       <p className="mt-0.5 text-sm text-muted">
-                        Add one below to begin. Formly builds your digital twin from it, then fills {session.business}
-                        &apos;s form for you.
+                        Add one below to begin.
                       </p>
                     </div>
                   </div>
@@ -270,7 +264,7 @@ export function FillFlow() {
                             <span className="block text-sm font-semibold">
                               {m.label}
                               {m.id === "all" && (
-                                <WarningIcon className="ml-1.5 inline h-3.5 w-3.5 align-[-2px] text-amber-600" />
+                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" />
                               )}
                             </span>
                             <span className="block text-xs text-muted">{m.hint}</span>
