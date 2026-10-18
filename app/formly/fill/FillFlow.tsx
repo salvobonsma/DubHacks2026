@@ -27,6 +27,8 @@ interface Row {
   include: boolean;
   reveal: boolean;
   denied: boolean;
+  /** Formly found a value for it; decides the Filled / Not filled tab without moving rows as you type. */
+  found: boolean;
 }
 
 type Step = "connect" | "filling" | "permissions" | "review" | "sent";
@@ -42,6 +44,7 @@ export function FillFlow() {
   const [mode, setMode] = useState<SharingMode>("auto");
   const [queue, setQueue] = useState<PromptRequest[]>([]);
   const [promptIdx, setPromptIdx] = useState(0);
+  const [reviewTab, setReviewTab] = useState<"filled" | "missing">("filled");
 
   useEffect(() => {
     if (!sessionId) return;
@@ -88,6 +91,7 @@ export function FillFlow() {
         include: !!hit?.value,
         reveal: f.category !== "sensitive",
         denied: false,
+        found: !!hit?.value,
       };
     });
     setRows(newRows);
@@ -182,6 +186,8 @@ export function FillFlow() {
 
   const filled = rows.filter((r) => r.include && r.value).length;
   const essayCount = session?.schema.fields.filter((f) => f.type === "textarea").length ?? 0;
+  const isFound = (r: Row) => r.found && !r.denied;
+  const foundCount = rows.filter(isFound).length;
 
   return (
     <div className="flex flex-1 flex-col bg-white">
@@ -313,8 +319,31 @@ export function FillFlow() {
                 <p className="mb-2 text-sm font-semibold">
                   Review what you&apos;ll share ({filled}/{rows.length})
                 </p>
-                <ul className="divide-y divide-line rounded-xl border border-line">
-                  {rows.map((r) => (
+                <div className="mb-2 flex gap-1 rounded-xl bg-bg p-1 text-sm">
+                  {(
+                    [
+                      ["filled", "Filled", foundCount],
+                      ["missing", "Not filled", rows.length - foundCount],
+                    ] as const
+                  ).map(([id, label, count]) => (
+                    <button
+                      key={id}
+                      onClick={() => setReviewTab(id)}
+                      className={`flex-1 rounded-lg px-3 py-1.5 font-medium transition-colors ${
+                        reviewTab === id ? "bg-white text-navy shadow-sm" : "text-muted hover:text-navy"
+                      }`}
+                    >
+                      {label} <span className="text-muted">{count}</span>
+                    </button>
+                  ))}
+                </div>
+                {rows.filter((r) => isFound(r) === (reviewTab === "filled")).length === 0 && (
+                  <p className="rounded-xl border border-line px-3 py-6 text-center text-sm text-muted">
+                    {reviewTab === "filled" ? "Nothing was filled." : "Every field was filled."}
+                  </p>
+                )}
+                <ul className="divide-y divide-line rounded-xl border border-line empty:hidden">
+                  {rows.filter((r) => isFound(r) === (reviewTab === "filled")).map((r) => (
                     <li key={r.fieldId} className={`px-3 py-2 ${r.include ? "" : "opacity-50"}`}>
                       <div className="flex items-center gap-2">
                         <input
