@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
 import { ProgressStatus } from "@/components/ProgressStatus";
-import { CheckIcon, LockIcon, WarningIcon } from "@/components/Icons";
+import { CheckIcon, LockIcon, SyncIcon, WarningIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
 import { askKey, groupTitle, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
@@ -24,6 +24,8 @@ interface Row {
   category: string;
   maxWords?: number;
   value: string;
+  /** What Formly filled in; a different value on approve is saved back to your twin. */
+  original: string;
   source: string | null;
   include: boolean;
   reveal: boolean;
@@ -88,6 +90,7 @@ export function FillFlow() {
         category: f.category,
         maxWords: f.maxWords,
         value: hit?.value ?? "",
+        original: hit?.value ?? "",
         source: hit?.source ?? null,
         include: !!hit?.value,
         reveal: f.category !== "sensitive",
@@ -175,7 +178,17 @@ export function FillFlow() {
   function approve() {
     const values = Object.fromEntries(rows.filter((r) => r.include && r.value).map((r) => [r.fieldId, r.value]));
     setStep("sent");
-    finish("completed", values);
+    // Short answers are written for this form only; everything else you typed becomes part of your twin.
+    const edits = rows.filter((r) => isEdited(r) && !r.maxWords);
+    Promise.all(
+      edits.map((r) =>
+        fetch("/api/twin", {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ label: r.label, action: "edit", value: r.value }),
+        }),
+      ),
+    ).finally(() => finish("completed", values));
   }
 
   function cancel() {
@@ -189,6 +202,7 @@ export function FillFlow() {
   const essayCount = session?.schema.fields.filter((f) => f.type === "textarea").length ?? 0;
   const isFound = (r: Row) => r.found && !r.denied;
   const foundCount = rows.filter(isFound).length;
+  const isEdited = (r: Row) => r.include && !!r.value.trim() && r.value.trim() !== r.original.trim();
 
   return (
     <div className="flex flex-1 flex-col bg-white">
@@ -365,7 +379,15 @@ export function FillFlow() {
                           {r.label}
                           {r.category === "sensitive" && <LockIcon className="ml-1 inline h-3 w-3 align-[-1px]" />}
                         </span>
-                        {r.source && (
+                        {isEdited(r) && !r.maxWords ? (
+                          <span
+                            title="Saved to your Formly"
+                            className="flex items-center gap-1 rounded-full bg-navy/[0.06] px-2 py-0.5 text-[10px] font-medium text-navy"
+                          >
+                            <SyncIcon className="h-2.5 w-2.5" />
+                            You
+                          </span>
+                        ) : r.source && (
                           <span className="max-w-[40%] truncate rounded-full bg-brand/15 px-2 py-0.5 text-[10px] text-brand-dark">
                             {r.source}
                           </span>
