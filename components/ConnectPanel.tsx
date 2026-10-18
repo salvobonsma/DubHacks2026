@@ -252,7 +252,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
 
       {moreOpen && (
         <Modal title="Add a source" wide onClose={() => setMoreOpen(false)}>
-          <div className="max-h-[60vh] space-y-4 overflow-y-auto overscroll-contain pr-1">
+          <div className="-mx-2 -mb-2 max-h-[60vh] space-y-4 overflow-y-auto overscroll-contain px-2 pt-0.5 pb-2">
             <div>
               <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">Files</p>
               <div className="grid grid-cols-2 gap-2">
