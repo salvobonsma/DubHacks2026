@@ -110,7 +110,7 @@ export default function FormlyHome() {
           <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <h2 className="font-bold">Delete all your data?</h2>
             <p className="mt-2 text-sm text-muted">
-              Formly deletes your sources, your digital twin, your sharing choices and your form sessions, and
+              Formly deletes your sources, your saved logins, your digital twin, your sharing choices and your form sessions, and
               disconnects Google and Microsoft. This can&apos;t be undone.
             </p>
             <div className="mt-6 flex justify-end gap-2">

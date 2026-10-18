@@ -5,7 +5,7 @@ import { ConnectBank } from "./ConnectBank";
 import { ConnectorLogo } from "./ConnectorLogo";
 import { ProgressStatus } from "./ProgressStatus";
 import { ScanFromPhone } from "./ScanFromPhone";
-import { ArrowRightIcon, CheckIcon, CloseIcon, LockIcon } from "./Icons";
+import { ArrowRightIcon, CheckIcon, CloseIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
 
 export interface SourceRow {
@@ -31,6 +31,8 @@ export interface ConnectorStatus {
   microsoft: { mode: "live" | "off"; connected: boolean; email?: string };
   scan: { lanUrl: string | null };
   ttl: { minutes: number; label: string };
+  /** Saved logins imported from Apple Passwords / Chrome (the count only, never the logins). */
+  passwords?: { logins: number };
 }
 
 type Account = "google" | "microsoft";
@@ -39,9 +41,46 @@ const NAMES: Record<string, string> = {
   google: "Google",
   microsoft: "Microsoft",
   plaid: "Bank",
+  "password-manager": "Password manager",
+  passwords: "Saved logins",
   scan: "Phone scan",
   sample: "Sample data",
 };
+/** The password-manager modal's choices: how to export from each, and which files it takes. */
+type Manager = "1password" | "bitwarden" | "apple" | "chrome";
+const MANAGERS: { id: Manager; name: string; accept: string; steps: string; reads: string }[] = [
+  {
+    id: "1password",
+    name: "1Password",
+    accept: ".1pux",
+    steps: "In the 1Password app on a computer: File > Export, pick your account, choose 1PUX.",
+    reads: "Formly reads identities, cards, driver's licenses, passports, SSN and bank accounts. Logins and notes are skipped.",
+  },
+  {
+    id: "bitwarden",
+    name: "Bitwarden",
+    accept: ".json,.csv",
+    steps: "In Bitwarden: Tools > Export vault > File format .json (the plain one, not encrypted). A .csv works only if it has cards or identities.",
+    reads: "Formly reads cards and identities. Logins and notes are skipped.",
+  },
+  {
+    id: "apple",
+    name: "Apple Passwords",
+    accept: ".csv",
+    steps: "On a Mac, open Passwords, then File > Export All Passwords to File.",
+    reads:
+      "Passwords are stored encrypted and never reach your twin. Formly only uses which emails you sign in with, and where.",
+  },
+  {
+    id: "chrome",
+    name: "Google Password Manager / Chrome",
+    accept: ".csv",
+    steps: "In Chrome: Google Password Manager > Settings > Export passwords. Or passwords.google.com > Settings > Export.",
+    reads:
+      "Passwords are stored encrypted and never reach your twin. Formly only uses which emails you sign in with, and where.",
+  },
+];
+
 const SYNC_SCOPES: Record<Account, string[]> = {
   google: ["profile", "contacts", "gmail", "drive"],
   microsoft: ["profile", "onedrive", "outlook"],
@@ -77,6 +116,11 @@ export function ConnectPanel({
   const [drag, setDrag] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [scanOpen, setScanOpen] = useState(false);
+  /** The password-manager modal, the manager picked in it, and the inline "delete saved logins?" confirm. */
+  const [pmOpen, setPmOpen] = useState(false);
+  const [manager, setManager] = useState<Manager | null>(null);
+  const [pmDrag, setPmDrag] = useState(false);
+  const [dropLogins, setDropLogins] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
   /** Picker mode: the "Continue with Google" sheet with the optional address/phone/birthday box. */
   const [googleStart, setGoogleStart] = useState(false);
@@ -87,6 +131,8 @@ export function ConnectPanel({
   const [phone, setPhone] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const camera = useRef<HTMLInputElement>(null);
+  const pmInput = useRef<HTMLInputElement>(null);
+  const vcfInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Read once after mount (no matchMedia during server render).
@@ -170,7 +216,12 @@ export function ConnectPanel({
    * On an error the server may still have changed (sources saved, stale twin dropped), so the twin is
    * reloaded rather than left as it was. added: this added data, so tell the parent (onAdded) when it worked.
    */
-  async function run(label: string, req: () => Promise<Response>, done?: string, added = false): Promise<Twin | null> {
+  async function run(
+    label: string,
+    req: () => Promise<Response>,
+    done?: string | ((res: Record<string, unknown>) => string),
+    added = false,
+  ): Promise<Twin | null> {
     setBusy(label);
     setError(null);
     setNotice(null);
@@ -184,7 +235,7 @@ export function ConnectPanel({
       } else {
         twin = res.twin ?? null;
         gotTwin(twin);
-        if (done) setNotice(done);
+        if (done) setNotice(typeof done === "string" ? done : done(res));
         if (added && twin) onAdded?.(twin);
       }
     } catch (e) {
@@ -211,6 +262,30 @@ export function ConnectPanel({
       undefined,
       true,
     );
+  }
+
+  /**
+   * A password-manager export: parsed in memory on the server. Vault items (1Password, Bitwarden) become a source;
+   * saved logins (Apple, Chrome) are stored encrypted and only a summary reaches the twin.
+   */
+  function importPasswords(file: File) {
+    setPmOpen(false);
+    const body = new FormData();
+    body.append("file", file);
+    run(
+      "Reading your password manager export…",
+      () => fetch("/api/connectors/password-manager", { method: "POST", body }),
+      (res) =>
+        res.kind === "logins"
+          ? `${res.items} saved login${res.items === 1 ? "" : "s"} imported from ${res.manager}. Passwords stay encrypted and never reach your twin.`
+          : `Imported ${res.items} item${res.items === 1 ? "" : "s"} from ${res.manager}.`,
+      true,
+    );
+  }
+
+  function deleteSavedLogins() {
+    setDropLogins(false);
+    run("Deleting your saved logins…", () => fetch("/api/connectors/password-manager?what=logins", { method: "DELETE" }), "Saved logins deleted.");
   }
 
   function sync(account: Account, done?: string, added = true) {
@@ -309,7 +384,9 @@ export function ConnectPanel({
   const idle = "border-transparent shadow-surface hover:shadow-surface-hover";
   const on = "border-brand bg-brand/5";
   const manageEmail = manage && status?.[manage].email;
-  const tiles = 2 + (googleLive ? 1 : 0) + (msLive ? 1 : 0);
+  const tiles = 3 + (googleLive ? 1 : 0) + (msLive ? 1 : 0);
+  const savedLogins = status?.passwords?.logins ?? 0;
+  const picked = MANAGERS.find((m) => m.id === manager);
 
   return (
     <div className="space-y-4">
@@ -329,33 +406,33 @@ export function ConnectPanel({
             }}
             onClick={() => input.current?.click()}
             className={`flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed px-6 py-10 text-center transition ${
-              drag ? "border-brand bg-brand/10" : "border-line hover:border-brand hover:bg-brand/5"
+              drag ? "border-brand bg-bg" : "border-line hover:border-navy hover:bg-bg"
             }`}
           >
-            <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-brand/15 text-brand-dark">
+            <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-bg text-navy">
               <UploadIcon />
             </span>
-            <div className="text-sm font-semibold">Drop files or click to upload</div>
+            <div className="text-sm font-semibold">Drop a file here, or choose a file</div>
             <div className="mt-1 text-xs text-muted">
-              Driver&apos;s license or passport photo, pay stub, utility bill, resume, contact card (.vcf)
+              Driver&apos;s license or passport photo, pay stub, utility bill, resume or contact card
             </div>
-            <input
-              ref={input}
-              type="file"
-              multiple
-              hidden
-              accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json,.vcf,.eml"
-              onChange={(e) => {
-                setUploadOpen(false);
-                if (e.target.files) upload(e.target.files);
-              }}
-            />
           </div>
-          <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
-            <LockIcon className="h-2.5 w-2.5" stroke={1.25} /> Secure with Formly
-          </p>
         </Modal>
       )}
+
+      {/* Outside the modal, so on a phone "Upload a file" opens the file picker straight away. */}
+      <input
+        ref={input}
+        type="file"
+        multiple
+        hidden
+        accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json,.vcf,.eml"
+        onChange={(e) => {
+          setUploadOpen(false);
+          if (e.target.files?.length) upload(e.target.files);
+          e.target.value = "";
+        }}
+      />
 
       {/* Phones: straight to the back camera for the front of a driver's license (or a passport page). */}
       <input
@@ -369,6 +446,116 @@ export function ConnectPanel({
           e.target.value = "";
         }}
       />
+
+      {/* The password-manager file: no accept on phones, where iOS greys out a .1pux it has no type for. */}
+      <input
+        ref={pmInput}
+        type="file"
+        hidden
+        accept={phone ? undefined : (picked?.accept ?? ".1pux,.json,.csv")}
+        onChange={(e) => {
+          if (e.target.files?.[0]) importPasswords(e.target.files[0]);
+          e.target.value = "";
+        }}
+      />
+      <input
+        ref={vcfInput}
+        type="file"
+        hidden
+        accept=".vcf,text/vcard"
+        onChange={(e) => {
+          setPmOpen(false);
+          if (e.target.files?.length) upload(e.target.files);
+          e.target.value = "";
+        }}
+      />
+
+      {pmOpen && (
+        <Modal title="Import from a password manager" onClose={() => setPmOpen(false)}>
+          <div className="grid grid-cols-2 gap-2">
+            {MANAGERS.map((m) => (
+              <button
+                key={m.id}
+                onClick={() => setManager(m.id)}
+                aria-pressed={manager === m.id}
+                className={`min-h-11 rounded-xl border px-3 py-2 text-left text-sm font-medium transition ${
+                  manager === m.id ? "border-brand bg-brand/5" : "border-line hover:border-navy"
+                }`}
+              >
+                {m.name}
+              </button>
+            ))}
+          </div>
+          {picked ? (
+            <div className="mt-4">
+              <p className="text-sm">{picked.steps}</p>
+              <p className="mt-1 text-xs text-muted">{picked.reads}</p>
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setPmDrag(true);
+                }}
+                onDragLeave={() => setPmDrag(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setPmDrag(false);
+                  if (e.dataTransfer.files[0]) importPasswords(e.dataTransfer.files[0]);
+                }}
+                onClick={() => pmInput.current?.click()}
+                className={`mt-3 flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed px-4 py-6 text-center transition ${
+                  pmDrag ? "border-brand bg-bg" : "border-line hover:border-navy hover:bg-bg"
+                }`}
+              >
+                <span className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-bg text-navy">
+                  <KeyIcon className="h-5 w-5" />
+                </span>
+                <span className="text-sm font-semibold">{phone ? "Choose the export file" : "Drop the export here, or choose it"}</span>
+                <span className="mt-1 text-xs text-muted">
+                  {picked.accept.split(",").join(" or ")} file, read on Formly&apos;s server and never saved as a file
+                </span>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-3 text-xs text-muted">Pick the one you use to see how to export from it.</p>
+          )}
+          <div className="mt-5 border-t border-line pt-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Or add</p>
+            <div className="space-y-2">
+              <button
+                onClick={() => vcfInput.current?.click()}
+                className="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border border-line px-3 py-2 text-left text-sm transition hover:border-navy"
+              >
+                <span>
+                  <span className="block font-medium">Your contact card (.vcf)</span>
+                  <span className="block text-xs text-muted">
+                    Apple Contacts: select your card, then File &gt; Export &gt; Export vCard. iPhone: your card &gt; Share
+                    Contact.
+                  </span>
+                </span>
+                <ArrowRightIcon className="h-4 w-4 shrink-0 text-muted" />
+              </button>
+              {googleLive && !googleConnected && (
+                <button
+                  onClick={() => {
+                    setPmOpen(false);
+                    openGoogle();
+                  }}
+                  className="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl border border-line px-3 py-2 text-left text-sm transition hover:border-navy"
+                >
+                  <span className="flex items-center gap-2.5">
+                    <ConnectorLogo slug="google" className="h-5 w-5 shrink-0" />
+                    <span>
+                      <span className="block font-medium">Connect Google</span>
+                      <span className="block text-xs text-muted">Your Google profile, Gmail and Drive</span>
+                    </span>
+                  </span>
+                  <ArrowRightIcon className="h-4 w-4 shrink-0 text-muted" />
+                </button>
+              )}
+            </div>
+          </div>
+        </Modal>
+      )}
 
       {scanOpen && (
         <Modal title="Scan with phone" onClose={() => setScanOpen(false)}>
@@ -501,11 +688,18 @@ export function ConnectPanel({
               />
             )}
             <Row
-              onClick={() => setUploadOpen(true)}
+              onClick={() => (phone ? input.current?.click() : setUploadOpen(true))}
               disabled={!!busy}
               icon={<UploadIcon className="h-5 w-5" />}
               title="Upload a file"
-              detail="A PDF, photo or resume from your files"
+              detail="A PDF, photo, resume or contact card from your files"
+            />
+            <Row
+              onClick={() => setPmOpen(true)}
+              disabled={!!busy}
+              icon={<KeyIcon className="h-5 w-5" />}
+              title="Password manager or contact card"
+              detail="1Password, Bitwarden, Apple Passwords, Chrome, or a .vcf card"
             />
             {msLive && (
               <Row
@@ -525,7 +719,11 @@ export function ConnectPanel({
       ) : (
       <div>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Add a source</p>
-        <div className={`grid gap-2 ${tiles === 4 ? "grid-cols-2 sm:grid-cols-4" : tiles === 3 ? "grid-cols-3" : "grid-cols-2"}`}>
+        <div
+          className={`grid gap-2 ${
+            tiles === 5 ? "grid-cols-3 sm:grid-cols-5" : tiles === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3"
+          }`}
+        >
           {googleLive && (
             <button
               onClick={openGoogle}
@@ -557,11 +755,21 @@ export function ConnectPanel({
               <span className="w-full truncate text-[11px] font-medium">Scan with phone</span>
             </button>
           )}
-          <button onClick={() => setUploadOpen(true)} disabled={!!busy} className={`${tile} ${idle}`}>
+          <button
+            onClick={() => (phone ? input.current?.click() : setUploadOpen(true))}
+            disabled={!!busy}
+            className={`${tile} ${idle}`}
+          >
             <span className="flex h-6 w-6 items-center justify-center text-navy">
               <UploadIcon className="h-5 w-5" />
             </span>
             <span className="w-full truncate text-[11px] font-medium">Upload a file</span>
+          </button>
+          <button onClick={() => setPmOpen(true)} disabled={!!busy} className={`${tile} ${idle}`}>
+            <span className="flex h-6 w-6 items-center justify-center text-navy">
+              <KeyIcon className="h-5 w-5" />
+            </span>
+            <span className="w-full truncate px-1 text-[11px] font-medium">Password manager</span>
           </button>
           {msLive && (
             <button
@@ -593,13 +801,48 @@ export function ConnectPanel({
           onConnected={(twin) => bankChanged(twin, true)}
           onDisconnected={(twin) => bankChanged(twin, false)}
         />
+        {savedLogins > 0 && (
+          <div className="mt-2 flex min-h-11 items-center gap-3 rounded-xl border border-line px-3 py-2 text-sm">
+            <KeyIcon className="h-4 w-4 shrink-0 text-navy" />
+            <span className="min-w-0 flex-1">
+              {dropLogins
+                ? `Delete ${savedLogins} saved login${savedLogins === 1 ? "" : "s"}?`
+                : `${savedLogins} saved login${savedLogins === 1 ? "" : "s"} imported`}
+            </span>
+            {dropLogins ? (
+              <>
+                <button
+                  onClick={() => setDropLogins(false)}
+                  className="-my-1 min-h-9 shrink-0 px-2 text-xs font-medium text-muted transition-colors hover:text-navy"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={deleteSavedLogins}
+                  disabled={!!busy}
+                  className="-my-1 min-h-9 shrink-0 rounded-full bg-red-600 px-3 text-xs font-semibold text-white transition-colors hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setDropLogins(true)}
+                disabled={!!busy}
+                className="-my-1 min-h-9 shrink-0 px-2 text-xs font-medium text-muted transition-colors hover:text-red-600"
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        )}
       </div>
       )}
 
-      {busy && <ProgressStatus label={busy} className="rounded-lg bg-brand/10 px-3 py-2.5" />}
+      {busy && <ProgressStatus label={busy} className="rounded-lg bg-bg px-3 py-2.5" />}
       {notice && !busy && (
-        <div className="flex items-center gap-2 rounded-lg bg-brand/10 px-3 py-2 text-sm text-brand-dark">
-          <CheckIcon className="h-3.5 w-3.5 shrink-0" /> {notice}
+        <div className="flex items-center gap-2 rounded-lg bg-bg px-3 py-2 text-sm text-navy">
+          <CheckIcon className="h-3.5 w-3.5 shrink-0 text-brand" /> {notice}
         </div>
       )}
       {error && (
@@ -664,11 +907,15 @@ export function ConnectPanel({
                     <span className="block text-xs text-muted">
                       {s.connector === "scan"
                         ? "Scanned with phone"
-                        : s.connector === "sample"
-                          ? "Sample data for testing"
-                          : NAMES[s.connector]
-                            ? `Synced from ${NAMES[s.connector]}`
-                            : "Uploaded"}{" "}
+                        : s.connector === "passwords"
+                          ? "Emails and sites from your saved logins, no passwords"
+                          : s.connector === "password-manager"
+                            ? "Imported from your password manager"
+                            : s.connector === "sample"
+                              ? "Sample data for testing"
+                              : NAMES[s.connector]
+                                ? `Synced from ${NAMES[s.connector]}`
+                                : "Uploaded"}{" "}
                       on {new Date(s.created_at).toLocaleDateString()}
                     </span>
                   </span>
@@ -807,6 +1054,7 @@ function SourceIcon({ connector, className }: { connector: string; className: st
   if (connector === "microsoft") return <MicrosoftLogo className={className} />;
   if (connector === "scan") return <PhoneIcon className={`${className} text-muted`} />;
   if (connector === "plaid") return <BankIcon className={`${className} text-muted`} />;
+  if (connector === "password-manager" || connector === "passwords") return <KeyIcon className={`${className} text-muted`} />;
   if (connector === "sample") return <FileIcon />;
   return <FileIcon />;
 }
@@ -831,7 +1079,7 @@ function Modal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
-        className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-2xl bg-white p-5 shadow-2xl`}
+        className={`max-h-[90dvh] w-full overflow-y-auto overscroll-contain ${wide ? "max-w-xl" : "max-w-md"} rounded-2xl bg-white p-5 shadow-2xl`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
@@ -923,6 +1171,23 @@ function CameraIcon({ className = "h-4 w-4" }: { className?: string }) {
     >
       <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" />
       <circle cx="12" cy="13" r="3.25" />
+    </svg>
+  );
+}
+
+function KeyIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={`icon-line ${className}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="8" cy="15" r="4" />
+      <path d="M10.85 12.15 19 4M15.5 7.5l2.5 2.5M17.5 5.5 20 8" />
     </svg>
   );
 }

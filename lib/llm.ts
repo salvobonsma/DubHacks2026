@@ -38,15 +38,24 @@ async function generate(params: GenerateContentParameters) {
   const models = [...new Set([params.model, ...FALLBACKS, MODEL])];
   const config = { ...params.config, thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } };
   let lastErr: unknown;
-  for (const model of models) {
-    try {
-      return await ai().models.generateContent({ ...params, model, config });
-    } catch (e) {
-      lastErr = e;
-      const status = (e as { status?: number }).status;
-      if (status !== 503 && status !== 429 && status !== 500) throw e;
-      console.warn(`[formly] ${model} returned ${status}, falling back`);
+  // Per-minute caps (free tier: 15/min on flash-lite) clear in seconds, so after every model has refused,
+  // wait out the shortest "retry in Ns" once instead of failing the user's fill.
+  for (let round = 0; round < 2; round++) {
+    let waitMs = Infinity;
+    for (const model of models) {
+      try {
+        return await ai().models.generateContent({ ...params, model, config });
+      } catch (e) {
+        lastErr = e;
+        const status = (e as { status?: number }).status;
+        if (status !== 503 && status !== 429 && status !== 500) throw e;
+        const retry = String((e as Error).message).match(/retry in (\d+(?:\.\d+)?)s/i);
+        if (retry) waitMs = Math.min(waitMs, Number(retry[1]) * 1000 + 500);
+        console.warn(`[formly] ${model} returned ${status}, falling back`);
+      }
     }
+    if (round > 0 || waitMs > 30_000) break;
+    await new Promise((r) => setTimeout(r, waitMs === Infinity ? 2000 : waitMs));
   }
   throw lastErr;
 }

@@ -29,7 +29,7 @@ export function ProgressStatus({
       <style href="formly-progress" precedence="default">
         {`@keyframes formly-progress { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }`}
       </style>
-      <p className="mb-1.5 text-sm font-medium text-brand-dark">{text}</p>
+      <p className="mb-1.5 text-sm font-medium text-navy">{text}</p>
       <div className="h-1.5 overflow-hidden rounded-full bg-brand/15">
         <div className="h-full w-2/5 animate-[formly-progress_1.4s_ease-in-out_infinite] rounded-full bg-brand motion-reduce:w-full motion-reduce:animate-none" />
       </div>

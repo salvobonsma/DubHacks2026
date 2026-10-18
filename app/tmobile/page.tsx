@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { Suspense } from "react";
+import { CHOICES_COOKIE, parseChoices } from "./choices";
 import { Signup, SignupPending } from "./Signup";
 
 /**
@@ -20,12 +21,15 @@ async function WithParams({ searchParams }: { searchParams: PageProps<"/tmobile"
   const q = await searchParams;
   const sessionId = typeof q.formly_session === "string" ? q.formly_session : null;
   let initial = null;
+  let mine = null;
   if (sessionId) {
     // Only this visitor's own session (same cookie as the Formly popup, which shares this origin). Loaded only
     // here, so a plain visit never opens the database while the page is prerendered.
     const { sessionResult, UID_COOKIE, UID_PATTERN } = await import("@/lib/user");
-    const uid = (await cookies()).get(UID_COOKIE)?.value;
+    const jar = await cookies();
+    const uid = jar.get(UID_COOKIE)?.value;
     if (uid && UID_PATTERN.test(uid)) initial = sessionResult(sessionId, uid);
+    mine = parseChoices(jar.get(CHOICES_COOKIE)?.value);
   }
-  return <Signup race={q.race === "1"} returning={!!sessionId} initial={initial} />;
+  return <Signup race={q.race === "1"} returning={!!sessionId} initial={initial} mine={mine} />;
 }

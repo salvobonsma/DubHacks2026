@@ -28,14 +28,14 @@
     "radius": { "button": 4, "input": 2, "card": 12 }
   },
   "fields": [
-    { "id": "lines", "label": "Number of lines", "type": "select", "section": "Pick your plan", "category": "basic", "required": true, "suggest": true, "options": ["1", "2", "3", "4", "5"] },
-    { "id": "plan", "label": "Plan", "type": "select", "section": "Pick your plan", "category": "basic", "required": true, "suggest": true, "options": ["Experience Beyond 2.0", "Experience More 2.0", "Essentials 2.0", "Essentials Saver 2.0"] },
+    { "id": "lines", "label": "Number of lines", "type": "select", "section": "Pick your plan", "category": "basic", "required": true, "suggest": true, "default": "1", "options": ["1", "2", "3", "4", "5"] },
+    { "id": "plan", "label": "Plan", "type": "select", "section": "Pick your plan", "category": "basic", "required": true, "suggest": true, "default": "Experience More 2.0", "options": ["Experience Beyond 2.0", "Experience More 2.0", "Essentials 2.0", "Essentials Saver 2.0"] },
 
     { "id": "line1_name", "label": "Line 1 name", "type": "text", "section": "Name your lines", "category": "basic", "hint": "the user's own first name, for their line" },
 
-    { "id": "device", "label": "Phone for your line", "type": "select", "section": "Shop phones", "category": "basic", "required": true, "suggest": true, "options": ["Bring your own phone", "Buy a new phone"] },
-    { "id": "port_number", "label": "Keep your current number?", "type": "select", "section": "Shop phones", "category": "basic", "required": true, "suggest": true, "options": ["Yes, keep my number", "No, get a new number"] },
-    { "id": "current_carrier", "label": "Current carrier", "type": "select", "section": "Shop phones", "category": "basic", "options": ["AT&T", "Verizon", "Mint Mobile", "Visible", "Google Fi", "US Mobile", "Cricket Wireless", "Metro by T-Mobile", "Boost Mobile", "Xfinity Mobile", "Spectrum Mobile", "Other"] },
+    { "id": "device", "label": "Phone for your line", "type": "select", "section": "Shop phones", "category": "basic", "required": true, "suggest": true, "default": "Bring your own phone", "options": ["Bring your own phone", "Buy a new phone"] },
+    { "id": "port_number", "label": "Keep your current number?", "type": "select", "section": "Shop phones", "category": "basic", "required": true, "suggest": true, "default": "Yes, keep my number", "options": ["Yes, keep my number", "No, get a new number"] },
+    { "id": "current_carrier", "label": "Current carrier", "type": "select", "section": "Shop phones", "category": "basic", "showIf": { "field": "port_number", "value": "Yes, keep my number" }, "options": ["AT&T", "Verizon", "Mint Mobile", "Visible", "Google Fi", "US Mobile", "Cricket Wireless", "Metro by T-Mobile", "Boost Mobile", "Xfinity Mobile", "Spectrum Mobile", "Other"] },
 
     { "id": "first_name", "label": "First name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
     { "id": "last_name", "label": "Last name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
@@ -50,7 +50,7 @@
     { "id": "city", "label": "City", "type": "text", "section": "Residential address", "category": "basic", "required": true },
     { "id": "state", "label": "State", "type": "select", "section": "Residential address", "category": "basic", "required": true, "options": ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"] },
     { "id": "zip", "label": "ZIP code", "type": "text", "section": "Residential address", "category": "basic", "required": true },
-    { "id": "delivery_same", "label": "Use as delivery address", "type": "select", "section": "Residential address", "category": "basic", "suggest": true, "options": ["Yes", "No"] },
+    { "id": "delivery_same", "label": "Use as delivery address", "type": "select", "section": "Residential address", "category": "basic", "suggest": true, "default": "Yes", "options": ["Yes", "No"] },
 
     { "id": "esign_consent", "label": "E-SIGN consent", "type": "select", "section": "Consents", "category": "basic", "required": true, "never": true, "options": ["Yes"] },
     { "id": "credit_consent", "label": "Credit check consent", "type": "select", "section": "Consents", "category": "basic", "required": true, "never": true, "options": ["Yes"] }

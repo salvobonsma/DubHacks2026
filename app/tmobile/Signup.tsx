@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FormlyButton, type FormlyMeta, type FormlyValues } from "@/components/FormlyButton";
 import schemaJson from "@/lib/schemas/tmobile.json";
 import type { FormField, FormSchema } from "@/lib/types";
+import { CHOICES_COOKIE } from "./choices";
 import { TmFlowHeader, TmFooter } from "./Chrome";
 import { STATE_NAMES } from "./states";
 
@@ -197,6 +198,19 @@ function landing(v: FormlyValues): { focus: string | null } {
   return { focus: missing.find((id) => stepOf(id) === "checkout") ?? null };
 }
 
+/**
+ * Formly's suggestions never replace a choice the user already made on this page: pick 2 lines, tap Fill, and it
+ * stays 2 lines. A value that only an earlier Formly fill put there may be replaced. Facts from the data still win.
+ */
+function keepUserChoices(fill: FormlyValues, suggested: string[], before: FormlyValues, beforeFormly: FormlyValues): FormlyValues {
+  const out = { ...fill };
+  for (const id of suggested) {
+    const mine = before[id]?.trim();
+    if (mine && before[id] !== beforeFormly[id]) delete out[id];
+  }
+  return out;
+}
+
 function readSnapshot(): Snapshot | null {
   try {
     const s = JSON.parse(sessionStorage.getItem(SNAPSHOT_KEY) ?? "null") as Snapshot | null;
@@ -206,17 +220,23 @@ function readSnapshot(): Snapshot | null {
   }
 }
 
+/** Fields Formly may only suggest (lines, plan, phone, number…): the ones a user's own choice must win on. */
+const CHOICE_IDS = schema.fields.filter((f) => f.suggest).map((f) => f.id);
+
 /** Kept per tab so the Formly round trip, a reload or back-navigation lands on the same step. No secrets or consents. */
 function writeSnapshot(s: Omit<Snapshot, "at">) {
   try {
     const values = Object.fromEntries(Object.entries(s.values).filter(([id]) => !SECRET.has(id) && !FIELD[id]?.never));
     sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ ...s, values, at: Date.now() }));
+    const mine = Object.fromEntries(CHOICE_IDS.filter((id) => values[id] && values[id] !== s.formly[id]).map((id) => [id, values[id]]));
+    document.cookie = `${CHOICES_COOKIE}=${encodeURIComponent(JSON.stringify(mine))}; path=/tmobile; max-age=1800; samesite=lax`;
   } catch {}
 }
 
 function clearSnapshot() {
   try {
     sessionStorage.removeItem(SNAPSHOT_KEY);
+    document.cookie = `${CHOICES_COOKIE}=; path=/tmobile; max-age=0; samesite=lax`;
   } catch {}
 }
 
@@ -224,14 +244,18 @@ export function Signup({
   race,
   returning: returningAtLoad,
   initial,
+  mine = null,
 }: {
   race: boolean;
   returning: boolean;
   /** Read on the server for a same-tab return, so the first paint already has the answers. */
   initial: InitialFill | null;
+  /** The choices the user made here before leaving (from the choices cookie), so a suggestion can't replace them. */
+  mine?: FormlyValues | null;
 }) {
-  const first = initial ? cleanIncoming(initial.values) : null;
-  const [values, setValues] = useState<FormlyValues>(first ?? {});
+  const own = mine ? cleanIncoming(mine) : {};
+  const first = initial ? keepUserChoices(cleanIncoming(initial.values), initial.suggested, own, {}) : null;
+  const [values, setValues] = useState<FormlyValues>(first ? { ...own, ...first } : {});
   /** What Formly filled, so a field keeps its mark only while it still holds that answer. */
   const [formly, setFormly] = useState<FormlyValues>(first ?? {});
   /** Of those, the ones that were Formly's suggestions rather than facts from the user's data. */
@@ -258,10 +282,11 @@ export function Signup({
     pendingScroll.current = 0;
   }
 
-  function applyFormly(incoming: FormlyValues, meta?: FormlyMeta) {
-    const clean = cleanIncoming(incoming);
-    if (!Object.keys(clean).length) return;
-    const merged = { ...values, ...clean };
+  function applyFormly(incoming: FormlyValues, meta?: FormlyMeta, before = values, beforeFormly = formly) {
+    const all = cleanIncoming(incoming);
+    if (!Object.keys(all).length) return;
+    const clean = keepUserChoices(all, meta?.suggested ?? [], before, beforeFormly);
+    const merged = { ...before, ...clean };
     setValues(merged);
     setFormly(clean);
     setSuggested((meta?.suggested ?? []).filter((id) => id in clean));
@@ -284,8 +309,13 @@ export function Signup({
     // Syncing from browser storage on mount; there's no render-time source for it (SSR has no sessionStorage).
     /* eslint-disable react-hooks/set-state-in-effect */
     if (first) {
-      if (snap) setValues({ ...snap.values, ...first });
-      pendingFocus.current = landing({ ...(snap?.values ?? {}), ...first }).focus;
+      const fill = snap ? keepUserChoices(first, initial?.suggested ?? [], snap.values, snap.formly) : first;
+      if (snap) {
+        setValues({ ...snap.values, ...fill });
+        setFormly(fill);
+        setSuggested((initial?.suggested ?? []).filter((id) => id in fill));
+      }
+      pendingFocus.current = landing({ ...(snap?.values ?? {}), ...fill }).focus;
       return;
     }
     if (snap) {
@@ -300,7 +330,7 @@ export function Signup({
     fetch(`/api/sessions?id=${encodeURIComponent(sessionId)}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((s: { values?: FormlyValues | null; suggested?: string[] } | null) => {
-        if (s?.values) applyFormly({ ...(snap?.values ?? {}), ...s.values }, { suggested: s.suggested ?? [] });
+        if (s?.values) applyFormly(s.values, { suggested: s.suggested ?? [] }, snap?.values ?? {}, snap?.formly ?? {});
         else if (snap) pendingScroll.current = snap.scrollY;
       })
       .catch(() => undefined)
@@ -454,14 +484,17 @@ export function Signup({
   });
 
   const total = monthly(values.plan, lines);
-  const missingForFormly = filledByFormly.length ? missingFields(values, allIds()) : [];
+  // In the race T-Mobile asks for the carrier itself later (spec section 6), so it isn't listed as missing.
+  const missingForFormly = filledByFormly.length
+    ? missingFields(values, allIds()).filter((id) => !(race && id === "current_carrier"))
+    : [];
   const userOnly = schema.fields.filter((f) => f.never).map((f) => f.label);
   const stepErrors = showErrors && missingFields(values, STEP_FIELDS[step], step === "checkout" && !race).length > 0;
 
   return (
     <Frame title={STEP_TITLE[step]} progress={(stepIndex + 1) / STEPS.length} cart={cart} gray={step !== "checkout"}>
       {stepIndex > 0 && (
-        <button type="button" onClick={back} className="tm-btn tm-btn-tertiary -ml-1 min-h-11 py-0 text-sm">
+        <button type="button" onClick={back} className="tm-btn tm-btn-tertiary -ml-1 min-h-11 self-start py-0 text-sm">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
             <path d="M15 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -553,7 +586,7 @@ export function Signup({
             <p className="tm-legal mt-2">Plus taxes and fees. Due today is a ${CONNECT_FEE} connection charge per line.</p>
           </div>
           <div className="tm-card mt-4 p-4">
-            <OrderSummary values={values} onEdit={(s) => goTo(s)} marked={marked} />
+            <OrderSummary values={values} onEdit={(s) => goTo(s)} marked={marked} suggested={suggested} />
           </div>
           <p className="tm-notice mt-4">Add your personal info to see your exact payments and taxes.</p>
         </section>
@@ -577,7 +610,7 @@ export function Signup({
           </button>
           {cartOpen && (
             <div className="tm-card mt-2 p-4">
-              <OrderSummary values={values} onEdit={(s) => goTo(s)} marked={marked} />
+              <OrderSummary values={values} onEdit={(s) => goTo(s)} marked={marked} suggested={suggested} />
             </div>
           )}
 
@@ -598,13 +631,13 @@ export function Signup({
               </p>
               {missingForFormly.length > 0 && (
                 <div className="mt-3">
-                  <p className="tm-caption">Formly couldn&apos;t fill these. Add them to continue:</p>
+                  <p className="tm-caption">Formly couldn&apos;t fill these. Tap one to add it:</p>
                   <ul className="mt-2 flex flex-wrap gap-2">
                     {missingForFormly.map((id) => (
                       <li key={id}>
                         <button
                           type="button"
-                          className="tm-chip min-h-8"
+                          className="tm-chip"
                           onClick={() => {
                             if (stepOf(id) !== "checkout") return goTo(stepOf(id), id);
                             const el = document.getElementById(`f-${id}`);
@@ -746,7 +779,7 @@ function Frame({
   return (
     <div className={`flex flex-1 flex-col ${gray ? "tm-page-gray" : ""}`}>
       <TmFlowHeader title={title} progress={progress} cart={cart} />
-      <main className="mx-auto w-full max-w-xl flex-1 px-4 pt-3 pb-8">{children}</main>
+      <main className="tm-main mx-auto w-full max-w-xl flex-1 px-4 pt-3 pb-8">{children}</main>
       <TmFooter />
     </div>
   );
@@ -756,10 +789,12 @@ function OrderSummary({
   values,
   onEdit,
   marked,
+  suggested,
 }: {
   values: FormlyValues;
   onEdit: (s: StepId) => void;
   marked: (id: string) => boolean;
+  suggested: string[];
 }) {
   const lines = Number(values.lines || 1);
   const rows: [StepId, string, string | undefined, string[]][] = [
@@ -788,7 +823,9 @@ function OrderSummary({
           <dt className="tm-caption w-16 flex-none">{label}</dt>
           <dd className="min-w-0 flex-1 text-sm leading-5">
             {text ?? <span className="tm-secondary">Not chosen yet</span>}
-            {ids.some(marked) && <Mark kind="filled" />}
+            {ids.some(marked) && (
+              <Mark kind={ids.filter(marked).every((id) => suggested.includes(id)) ? "suggested" : "filled"} />
+            )}
           </dd>
           <button type="button" className="tm-link -my-3 min-h-11 flex-none text-sm" onClick={() => onEdit(s)}>
             Edit
@@ -964,6 +1001,7 @@ function Choice({ field, value, mark, error, onChange, details }: FieldProps & {
       <p className="tm-h3" id={`l-${field.id}`}>
         {field.label}
       </p>
+      {mark && !error && <Mark kind={mark} />}
       <div className="mt-3 grid gap-3">
         {field.options?.map((o, i) => (
           <button
@@ -980,7 +1018,7 @@ function Choice({ field, value, mark, error, onChange, details }: FieldProps & {
           </button>
         ))}
       </div>
-      <FieldFoot mark={mark} error={error} />
+      <FieldFoot mark={null} error={error} />
     </div>
   );
 }

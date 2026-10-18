@@ -32,6 +32,7 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Everything but build assets and static files.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png|manifest.webmanifest|.*\\.(?:png|jpg|jpeg|svg|webp|gif|ico|woff2?|ttf|otf|css|js|map)$).*)"],
+  // Everything but build assets, static files and the password-manager import: the proxy buffers request bodies up to
+  // 10 MB (proxyClientMaxBodySize), which would cut a 20 MB export, and that route needs the cookie the page load set.
+  matcher: ["/((?!api/connectors/password-manager|_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png|manifest.webmanifest|.*\\.(?:png|jpg|jpeg|svg|webp|gif|ico|woff2?|ttf|otf|css|js|map)$).*)"],
 };

@@ -17,13 +17,14 @@ const FOOTER_COLUMNS: [string, string[]][] = [
 /**
  * The flow pages' transactional header on t-mobile.com (plan/TMOBILE-REVERSED.md): 56px, logo, the step title at
  * 16/600, a cart icon with its magenta count, and a thin magenta progress bar underneath. The site shows the
- * T-digit alone there; the mock uses the full logo, which is the asset we have and the brand guide's default.
+ * T-digit alone there; the mock uses the full logo, which is the asset we have and the brand guide's default,
+ * with 24px of clear space before the title. The Formly popup's themed header uses the same size and spacing.
  */
 export function TmFlowHeader({ title, progress, cart = 0 }: { title: string; progress: number; cart?: number }) {
   return (
     <header className="tm-header sticky top-0 z-20">
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4">
-        <Link href="/tmobile" aria-label="T-Mobile home" className="flex-none">
+      <div className="mx-auto flex h-14 max-w-6xl items-center gap-6 px-4">
+        <Link href="/tmobile" aria-label="T-Mobile home" className="flex min-h-11 flex-none items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tmobile/logo.png" alt="T-Mobile" className="h-5 w-auto" />
         </Link>
@@ -67,7 +68,7 @@ export function TmFooter() {
             <p className="tm-footer-head">Demo</p>
             <ul className="mt-3 space-y-2">
               <li>
-                <Link href="/demo" className="tm-footer-link underline underline-offset-4">
+                <Link href="/demo" className="tm-footer-link -my-3 inline-flex min-h-11 items-center underline underline-offset-4">
                   Back to demo forms
                 </Link>
               </li>

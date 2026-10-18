@@ -47,6 +47,8 @@ const CONNECTOR_NAMES: Record<string, string> = {
   google: "Google",
   microsoft: "Microsoft",
   plaid: "your bank",
+  "password-manager": "your password manager",
+  passwords: "your saved logins",
   scan: "your phone",
   sample: "sample data",
 };
@@ -107,6 +109,12 @@ function heading(schema: FormSchema) {
     : { title: `Fill your ${schema.business} form`, subtitle: schema.title };
 }
 
+/** A date reads the way the form prints it, 07/22/1994, not the ISO value that gets sent. */
+function shownDate(v: string) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+  return m ? `${m[2]}/${m[3]}/${m[1]}` : v;
+}
+
 /** Show only the last four characters of a sensitive value until the user reveals it. */
 function maskValue(v: string) {
   return v.length <= 4 ? "••••" : `${"•".repeat(Math.min(v.length - 4, 8))}${v.slice(-4)}`;
@@ -133,6 +141,11 @@ export function FillFlow() {
   const [autoFill, setAutoFill] = useState(false);
   /** The approved answers went out but this window can't hand them back itself (no opener, can't close). */
   const [orphaned, setOrphaned] = useState(false);
+
+  // A merchant-themed popup's tab is titled as the merchant's step ("Fill your signup · T-Mobile"), not "Formly".
+  useEffect(() => {
+    if (session?.schema.theme) document.title = `${session.schema.theme.headerTitle} · ${session.business}`;
+  }, [session]);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -309,7 +322,8 @@ export function FillFlow() {
       );
     } else if (session.returnUrl) {
       const back = new URL(session.returnUrl);
-      back.searchParams.set("formly_session", session.id);
+      // A cancel has no answers to bring back, so the merchant page just restores its step (no "Returning…" flash).
+      if (status === "completed") back.searchParams.set("formly_session", session.id);
       setTimeout(() => (window.location.href = back.toString()), status === "completed" ? 900 : 0);
     }
   }
@@ -343,16 +357,23 @@ export function FillFlow() {
   }
 
   const sendCount = rows.filter(willSend).length;
+  const fieldById = new Map((session?.schema.fields ?? []).map((f) => [f.id, f]));
   const isFound = (r: Row) => r.found && !r.denied;
   const tabRows = rows.filter((r) => pinned.has(r.fieldId) || willSend(r) === (reviewTab === "send"));
   /** What the business will still ask for on its own page: never filled (SSN, PIN, consent) or not in the data. */
-  const askLater = rows.filter((r) => !isFound(r) && !r.denied);
+  // A field the form only asks under another answer (the carrier, when keeping the number) is left out otherwise.
+  const askLater = rows.filter((r) => {
+    if (isFound(r) || r.denied) return false;
+    const cond = fieldById.get(r.fieldId)?.showIf;
+    return !cond || rows.find((o) => o.fieldId === cond.field)?.value === cond.value;
+  });
   const theme = session?.schema.theme;
   const head = session ? heading(session.schema) : null;
   const fillable = session?.schema.fields.filter((f) => !f.never).length ?? 0;
   const progress = step === "connect" ? 1 : step === "filling" || step === "permissions" ? 2 : 3;
+  // Disabled under a theme is the real site's disabled primary (gray fill, gray text), not a faded magenta.
   const primary = theme
-    ? "bg-[var(--fy-primary)] text-[var(--fy-primary-text)] enabled:hover:bg-[var(--fy-primary-hover)]"
+    ? "bg-[var(--fy-primary)] text-[var(--fy-primary-text)] enabled:hover:bg-[var(--fy-primary-hover)] disabled:bg-bg disabled:text-[#8C8C8C]"
     : null;
 
   return (
@@ -361,9 +382,9 @@ export function FillFlow() {
       {theme ? (
         // The merchant's transactional header: its logo and the step title, a thin progress bar under it.
         <header className="sticky top-0 z-10 bg-white">
-          <div className="flex h-14 items-center gap-3 border-b border-line px-4">
+          <div className="flex h-14 items-center gap-6 border-b border-line px-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={theme.logo} alt={session!.business} className="h-6 w-auto" />
+            <img src={theme.logo} alt={session!.business} className="h-5 w-auto" />
             <span className="text-base leading-5 font-semibold">{theme.headerTitle}</span>
           </div>
           <div className="h-1 bg-bg" aria-hidden>
@@ -402,10 +423,12 @@ export function FillFlow() {
                 {twinLoaded && !panelOpen && twin && (
                   <div className="flex min-h-12 items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-sm">
                     <CheckIcon className="h-4 w-4 shrink-0 text-brand-dark" stroke={2} />
-                    <span className="min-w-0 flex-1 truncate">Using your data from {sourceSummary(sources)}</span>
+                    <span className="min-w-0 flex-1 break-words">Using your data from {sourceSummary(sources)}</span>
                     <button
                       onClick={() => setPanelOpen(true)}
-                      className="-my-2 min-h-11 shrink-0 text-sm font-semibold text-brand-dark hover:underline"
+                      className={`-my-2 min-h-11 shrink-0 text-sm font-semibold ${
+                        theme ? "text-navy underline underline-offset-2" : "text-brand-dark hover:underline"
+                      }`}
                     >
                       Change sources
                     </button>
@@ -446,8 +469,9 @@ export function FillFlow() {
 
             {step === "review" && (
               <div className="mt-5">
-                <p className="mb-2 text-sm font-semibold">
-                  Review what you&apos;ll send ({sendCount} of {rows.length})
+                <p className="text-sm font-semibold">Review what you&apos;ll send</p>
+                <p className="mb-2 text-xs text-muted">
+                  {sendCount} of {rows.length} fields
                 </p>
                 <div className="mb-2 flex gap-1 rounded-xl bg-bg p-1 text-sm">
                   {(
@@ -459,7 +483,7 @@ export function FillFlow() {
                     <button
                       key={id}
                       onClick={() => switchTab(id)}
-                      className={`min-h-10 flex-1 rounded-lg px-3 py-1.5 font-medium transition-colors ${
+                      className={`min-h-11 flex-1 rounded-lg px-3 py-1.5 font-medium transition-colors ${
                         reviewTab === id ? "bg-white text-navy shadow-sm" : "text-muted hover:text-navy"
                       }`}
                     >
@@ -482,13 +506,16 @@ export function FillFlow() {
                     <li key={r.fieldId} className={`px-3 py-2 ${!isFound(r) || willSend(r) ? "" : "opacity-50"}`}>
                       <div className="flex items-center gap-2">
                         {isFound(r) && (
-                          <input
-                            type="checkbox"
-                            checked={r.include}
-                            onChange={(e) => toggle(r, e.target.checked)}
-                            aria-label={`Send ${r.label}`}
-                            className="h-4 w-4 accent-brand"
-                          />
+                          // A 44px tap target around a 20px box.
+                          <label className="-my-3 -ml-3 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center">
+                            <input
+                              type="checkbox"
+                              checked={r.include}
+                              onChange={(e) => toggle(r, e.target.checked)}
+                              aria-label={`Send ${r.label}`}
+                              className="h-5 w-5 cursor-pointer accent-brand"
+                            />
+                          </label>
                         )}
                         <span className="flex-1 text-xs font-medium text-muted">
                           {r.label}
@@ -496,7 +523,7 @@ export function FillFlow() {
                         </span>
                         {isFound(r) && r.suggested && (
                           <span
-                            className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                            className={`shrink-0 rounded-full border px-2 py-0.5 text-xs font-medium ${
                               theme ? "border-navy text-navy" : "border-amber-300 bg-amber-50 text-amber-800"
                             }`}
                           >
@@ -504,7 +531,7 @@ export function FillFlow() {
                           </span>
                         )}
                         {isFound(r) && r.source && (
-                          <span className="max-w-[40%] truncate rounded-full bg-bg px-2 py-0.5 text-[10px] text-muted">
+                          <span className="max-w-[40%] truncate rounded-full bg-bg px-2 py-0.5 text-xs text-muted">
                             {r.source}
                           </span>
                         )}
@@ -514,10 +541,14 @@ export function FillFlow() {
                         <p className="mt-0.5 text-xs text-muted">{session.business} will ask you for this</p>
                       )}
                       {isFound(r) && (
-                        <div className="mt-1 flex items-start gap-2 pl-6">
+                        <div className="mt-1 flex items-start gap-2 pl-10">
                           <p className="flex-1 text-sm whitespace-pre-wrap break-words">
                             {r.suggested && <span className="text-muted">Suggested: </span>}
-                            {r.reveal ? r.value : maskValue(r.value)}
+                            {r.reveal
+                              ? fieldById.get(r.fieldId)?.type === "date"
+                                ? shownDate(r.value)
+                                : r.value
+                              : maskValue(r.value)}
                           </p>
                           {r.category === "sensitive" && (
                             <button
@@ -530,10 +561,10 @@ export function FillFlow() {
                         </div>
                       )}
                       {isFound(r) && r.suggested && r.reason && (
-                        <p className="mt-0.5 pl-6 text-xs text-muted">because {r.reason}</p>
+                        <p className="mt-0.5 pl-10 text-xs text-muted">because {r.reason}</p>
                       )}
                       {isFound(r) && r.maxWords && (
-                        <p className="mt-1 pl-6 text-[11px] text-muted">
+                        <p className="mt-1 pl-10 text-xs text-muted">
                           {countWords(r.value)}/{r.maxWords} words
                         </p>
                       )}
@@ -569,12 +600,12 @@ export function FillFlow() {
       {session && (step === "connect" || step === "review") && (
         <footer className="sticky bottom-0 border-t border-line bg-white px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] sm:px-5">
           {step === "review" && (
-            <label className="mb-2 flex min-h-8 items-center gap-1 text-xs text-muted">
+            <label className="mb-1 flex min-h-11 items-center gap-1 text-sm text-muted">
               Sharing:
               <select
                 value={mode}
                 onChange={(e) => changeMode(e.target.value as SharingMode)}
-                className="cursor-pointer rounded bg-transparent font-semibold text-navy outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="min-h-11 min-w-0 cursor-pointer rounded bg-transparent text-sm font-semibold text-navy outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 {MODES.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -596,8 +627,8 @@ export function FillFlow() {
               <button
                 onClick={fill}
                 disabled={!twin}
-                className={`min-h-12 flex-1 rounded-xl text-base font-semibold transition-colors disabled:opacity-40 ${
-                  primary ?? "bg-navy text-white enabled:hover:bg-black"
+                className={`min-h-12 flex-1 rounded-xl text-base font-semibold transition-colors ${
+                  primary ?? "bg-navy text-white enabled:hover:bg-black disabled:opacity-40"
                 }`}
               >
                 {twin || !twinLoaded
@@ -610,8 +641,8 @@ export function FillFlow() {
               <button
                 onClick={approve}
                 disabled={sendCount === 0}
-                className={`min-h-12 flex-1 rounded-xl text-base font-semibold transition-colors disabled:opacity-40 ${
-                  primary ?? "bg-brand text-navy enabled:hover:bg-brand/90"
+                className={`min-h-12 flex-1 rounded-xl text-base font-semibold transition-colors ${
+                  primary ?? "bg-brand text-navy enabled:hover:bg-brand/90 disabled:opacity-40"
                 }`}
               >
                 Send {sendCount} field{sendCount === 1 ? "" : "s"}

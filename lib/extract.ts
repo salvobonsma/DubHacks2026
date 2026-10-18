@@ -1,6 +1,7 @@
 import JSZip from "jszip";
 import mammoth from "mammoth";
 import { transcribeFile } from "./llm";
+import { isPasswordExport } from "./passwordManager";
 
 const TEXT_EXT = /\.(txt|md|json|csv|tsv)$/i;
 const IMAGE_MIME: Record<string, string> = {
@@ -70,6 +71,11 @@ export async function expandZips(files: UploadFile[]): Promise<{ files: UploadFi
 /** Stage 1: turn any supported upload into plain text. */
 export async function extractText(name: string, mime: string, data: Buffer): Promise<string> {
   const ext = name.split(".").pop()?.toLowerCase() ?? "";
+
+  // A password-manager export must never reach Gemini as raw text: only the password-manager import reads it.
+  if (isPasswordExport(name, data)) {
+    throw new Error("This is a password manager export. Add it with Password manager instead, so passwords are never read");
+  }
 
   // Before the generic text branch: these arrive as text/vcard or message/rfc822 but need parsing.
   if (ext === "vcf" || /^text\/(x-)?vcard$/i.test(mime)) return vcardText(data.toString("utf8"));

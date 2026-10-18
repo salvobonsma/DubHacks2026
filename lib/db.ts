@@ -16,6 +16,37 @@ function open() {
 
 export const db = g.__formlyDb ?? (g.__formlyDb = open());
 
+// Deleted rows are zeroed, not just unlinked: sources hold ID numbers and imported vault data, and "Delete my data"
+// must take them off the disk. Set outside open() so the connection kept across hot reloads gets it too.
+db.pragma("secure_delete = ON");
+
+/**
+ * Push zeroed pages into formly.db and empty the WAL, which still holds every earlier version of a deleted row.
+ * Call after deleting a user's data. Best effort: a busy checkpoint just leaves it to the next call or the timer.
+ */
+export function scrubDeleted(): void {
+  try {
+    db.pragma("wal_checkpoint(TRUNCATE)");
+  } catch {
+    // A reader is mid-transaction; the timer below retries.
+  }
+}
+
+// Every minute as well, so deletes made by any route (DELETE /api/sources, lib/user.ts wipeUser, the TTL purge)
+// leave the WAL within a minute even when the caller doesn't scrub. Once per process; once now for older leftovers.
+const t = globalThis as unknown as { __formlyScrub?: ReturnType<typeof setInterval> };
+if (!t.__formlyScrub) {
+  // Pages freed before secure_delete was on still hold old rows; VACUUM rewrites the file without them.
+  try {
+    if ((db.pragma("freelist_count", { simple: true }) as number) > 0) db.exec("VACUUM");
+  } catch {
+    // Busy at startup; nothing new is left behind now that deletes zero their pages.
+  }
+  scrubDeleted();
+  t.__formlyScrub = setInterval(scrubDeleted, 60_000);
+  t.__formlyScrub.unref?.();
+}
+
 /**
  * Every visitor's data is keyed by user_id (the formly_uid cookie, see lib/user.ts). Schema 2 added that
  * column to every per-user table. Migration: drop and recreate. These tables only ever held demo data and

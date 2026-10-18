@@ -2,6 +2,7 @@ import { connection } from "next/server";
 import { googleAccess, googleConfigured, googleConnection, googleDetailsGranted, pickerConfigured } from "@/lib/google";
 import { microsoftConfigured, microsoftConnection } from "@/lib/microsoft";
 import { oauthRedirectAllowed, originOf } from "@/lib/oauth";
+import { loginCount } from "@/lib/passwordManager";
 import { lanOrigin } from "@/lib/scan";
 import { currentUser, ttlLabel, ttlMinutes } from "@/lib/user";
 
@@ -12,6 +13,7 @@ import { currentUser, ttlLabel, ttlMinutes } from "@/lib/user";
  * google.access: "full" (Gmail + Drive search) or "picker" (Drive files the user picks, Gmail off).
  * google.details: picker mode only, whether address, phone and birthday were granted.
  * scan.lanUrl is this machine's Wi-Fi origin when the request came from localhost. ttl: auto-delete window.
+ * passwords.logins: how many saved logins (Apple Passwords / Chrome import) this visitor has, never the logins.
  */
 export async function GET(req: Request) {
   await connection();
@@ -42,6 +44,7 @@ export async function GET(req: Request) {
         ? { mode: "live", connected: !!ms, ...(ms ? { email: ms.email } : {}) }
         : { mode: "off", connected: false },
       scan: { lanUrl: lanOrigin(req) },
+      passwords: { logins: loginCount(user) },
       ttl: { minutes: ttlMinutes(), label: ttlLabel() },
     },
     { headers: { "Cache-Control": "no-store" } },

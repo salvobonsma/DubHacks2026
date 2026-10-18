@@ -116,6 +116,12 @@
 @media (min-width: 600px) {
   .tm-h1 { font-size: 32px; line-height: 40px; }
 }
+/* Display sizes for the /race screen on a laptop or projector. Set here, not as Tailwind utilities: the unlayered
+   .tm-h* rules above would beat a layered lg:text-[…] utility. */
+@media (min-width: 1024px) {
+  .tm-h1.tm-display { font-size: 44px; line-height: 52px; }
+  .tm-h2.tm-display { font-size: 32px; line-height: 40px; }
+}
 .tm-body { font-size: 16px; line-height: 22px; }
 .tm-num { font-family: var(--tm-font-headline); font-weight: 800; color: var(--tm-text); font-variant-numeric: tabular-nums; }
 .tm-caption { font-size: 14px; line-height: 20px; color: var(--tm-text-secondary); }
@@ -210,6 +216,8 @@
   background: var(--tm-gray-200);
   color: var(--tm-gray-900);
 }
+/* A chip that is a button (the "Formly couldn't fill these" list) is a full 44px tap target. */
+button.tm-chip { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; font-size: 14px; }
 .tm-chip-magenta { background: var(--tm-magenta-100); color: var(--tm-magenta-600); }
 
 /* ---------- Inputs ---------- */
@@ -383,6 +391,12 @@ select.tm-input {
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
   background: var(--tm-white);
   border-top: 1px solid var(--tm-border);
+}
+/* On a short step (Name your lines) the page fills the screen, so the bar sits at the bottom, not mid-screen.
+   61px is the flow header: 56px bar, 1px border, 4px progress. */
+@media (max-width: 767px) {
+  .tm-main { display: flex; flex-direction: column; min-height: calc(100dvh - 61px); }
+  .tm-main > section { flex-grow: 1; }
 }
 @media (min-width: 768px) {
   .tm-actionbar { position: static; margin: 32px 0 0; padding: 0; border: 0; background: none; }

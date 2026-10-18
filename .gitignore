@@ -44,3 +44,6 @@ next-env.d.ts
 /data
 !.env.example
 
+
+# Temporary QA scripts served for in-browser audits; never commit them.
+/public/qa-tmp/

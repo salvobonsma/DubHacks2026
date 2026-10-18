@@ -27,6 +27,13 @@ export interface FormField {
   never?: boolean;
   /** What belongs in the field when the label alone doesn't say, for the fill ("the user's first name"). */
   hint?: string;
+  /**
+   * For a choice: the usual pick, used whenever nothing in the user's data bears on it, so the suggestion is the
+   * same on every run instead of whatever the model picks that time.
+   */
+  default?: string;
+  /** Only asked when another field has this value (the current carrier, only when keeping the number). */
+  showIf?: { field: string; value: string };
 }
 
 /**

@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import { connection } from "next/server";
 import { db } from "@/lib/db";
 import { extractText } from "@/lib/extract";
+import { deleteLogins } from "@/lib/passwordManager";
 import { listSources, rebuildTwin } from "@/lib/twin";
 import { currentUser } from "@/lib/user";
 import { WipedError, wipedSince } from "@/lib/wipes";
@@ -57,12 +58,17 @@ export async function DELETE(req: Request) {
   const params = new URL(req.url).searchParams;
   const id = params.get("id");
   const connector = params.get("connector");
+  // The saved-logins summary goes with the encrypted logins it was made from, so "Remove" leaves no passwords behind.
+  const isLogins =
+    connector === "passwords" ||
+    (!!id && !!db.prepare("SELECT 1 FROM sources WHERE user_id = ? AND id = ? AND connector = 'passwords'").get(user, id));
   if (id) db.prepare("DELETE FROM sources WHERE user_id = ? AND id = ?").run(user, id);
   else if (connector) db.prepare("DELETE FROM sources WHERE user_id = ? AND connector = ?").run(user, connector);
   else {
     db.prepare("DELETE FROM sources WHERE user_id = ?").run(user);
     db.prepare("DELETE FROM fact_overrides WHERE user_id = ?").run(user);
   }
+  if (isLogins || (!id && !connector)) deleteLogins(user);
   try {
     return Response.json({ twin: await rebuildTwin(user, { removed: true }) });
   } catch (e) {

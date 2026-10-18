@@ -1,0 +1,106 @@
+{
+  "encrypted": false,
+  "folders": [],
+  "items": [
+    {
+      "id": "b1",
+      "organizationId": null,
+      "folderId": null,
+      "type": 4,
+      "reprompt": 0,
+      "name": "Alex Chen",
+      "notes": "CANARY-NOTE-BW-identity",
+      "favorite": false,
+      "fields": [
+        {
+          "name": "Date of birth",
+          "value": "04/12/1999",
+          "type": 0,
+          "linkedId": null
+        },
+        {
+          "name": "Account PIN",
+          "value": "CANARY-PIN-BW-hidden",
+          "type": 1,
+          "linkedId": null
+        }
+      ],
+      "identity": {
+        "title": "Mr",
+        "firstName": "Alexander",
+        "middleName": "Wei",
+        "lastName": "Chen",
+        "address1": "4521 Brooklyn Ave NE",
+        "address2": "Apt 3B",
+        "address3": null,
+        "city": "Seattle",
+        "state": "WA",
+        "postalCode": "98105",
+        "country": "US",
+        "company": "Northwind Robotics",
+        "email": "alex.chen.dev@gmail.com",
+        "phone": "206-555-0147",
+        "ssn": "412-55-8890",
+        "username": "alexchen",
+        "passportNumber": "X51234987",
+        "licenseNumber": "CHENAW*412KJ"
+      },
+      "collectionIds": null
+    },
+    {
+      "id": "b2",
+      "organizationId": null,
+      "folderId": null,
+      "type": 3,
+      "reprompt": 0,
+      "name": "Chase Sapphire",
+      "notes": null,
+      "favorite": false,
+      "card": {
+        "cardholderName": "Alexander W Chen",
+        "brand": "Visa",
+        "number": "4242424242424242",
+        "expMonth": "8",
+        "expYear": "2029",
+        "code": "CANARY-CVV-BW"
+      },
+      "collectionIds": null
+    },
+    {
+      "id": "b3",
+      "organizationId": null,
+      "folderId": null,
+      "type": 1,
+      "reprompt": 0,
+      "name": "Verizon",
+      "notes": "CANARY-NOTE-BW-login",
+      "favorite": false,
+      "login": {
+        "uris": [
+          {
+            "match": null,
+            "uri": "https://www.verizon.com/"
+          }
+        ],
+        "username": "alex.chen.dev@gmail.com",
+        "password": "CANARY-PW-BW-verizon",
+        "totp": "CANARYTOTPBW"
+      },
+      "collectionIds": null
+    },
+    {
+      "id": "b4",
+      "organizationId": null,
+      "folderId": null,
+      "type": 2,
+      "reprompt": 0,
+      "name": "Lockbox",
+      "notes": "CANARY-NOTE-BW-secure-note",
+      "favorite": false,
+      "secureNote": {
+        "type": 0
+      },
+      "collectionIds": null
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Logo } from "@/components/Logo";
 
 interface Race {
   startedAt: number | null;
@@ -35,6 +34,26 @@ const EMPTY: Race = {
   bTyped: null,
   wipeSince: null,
 };
+
+/** What each wiped table holds, in plain words for the room. */
+const TABLE_WORDS: Record<string, string> = {
+  sources: "uploaded files",
+  twin: "profiles",
+  twins: "profiles",
+  sessions: "form sessions",
+  session_results: "form sessions",
+  oauth_states: "sign-ins",
+  oauth_tokens: "sign-ins",
+  grants: "sharing choices",
+  scan_tokens: "phone scans",
+  logins: "saved logins",
+};
+
+/** {sources: 2, twin: 1, sessions: 3} -> "uploaded files, profiles and form sessions". */
+function plainTables(tables: Record<string, number>): string {
+  const words = [...new Set(Object.keys(tables).map((t) => TABLE_WORDS[t] ?? (/plaid|bank/.test(t) ? "bank links" : "other records")))];
+  return words.length < 2 ? (words[0] ?? "") : `${words.slice(0, -1).join(", ")} and ${words.at(-1)}`;
+}
 
 /** 83400 -> "1:23.4", the clock face. */
 function clock(ms: number): string {
@@ -165,21 +184,21 @@ export function RaceBoard() {
   return (
     <div className="flex min-h-screen flex-1 flex-col bg-[var(--tm-bg-secondary)]">
       <header className="tm-header">
-        <div className="mx-auto flex h-20 max-w-7xl items-center gap-3 px-6 md:gap-5">
+        {/* The T-Mobile logo stands alone with its clear space; Formly is named on the right, never as a lockup. */}
+        <div className="mx-auto flex h-20 max-w-7xl items-center gap-12 px-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/tmobile/logo.png" alt="T-Mobile" className="h-6 w-auto md:h-8" />
-          <span className="tm-secondary text-2xl" aria-hidden>
-            ×
-          </span>
-          <Logo />
-          <span className="tm-chip ml-auto hidden sm:inline-block">{running ? (bothDone ? "Finished" : "Race on") : "Ready"}</span>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="tm-secondary text-sm font-semibold">Race with Formly</span>
+            <span className="tm-chip hidden sm:inline-block">{running ? (bothDone ? "Finished" : "Race on") : "Ready"}</span>
+          </div>
         </div>
       </header>
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h1 className="tm-h1 lg:text-[44px]">The T-Mobile signup race</h1>
+            <h1 className="tm-h1 tm-display">The T-Mobile signup race</h1>
             <p className="tm-secondary mt-2 text-lg">
               Same signup, two ways. Both judges use their own details and stop at the credit check. Nobody enters a
               Social Security number.
@@ -192,7 +211,12 @@ export function RaceBoard() {
               </button>
             )}
             {running && (
-              <button type="button" onClick={newRace} disabled={busy} className="tm-btn tm-btn-secondary tm-btn-hero min-w-40">
+              <button
+                type="button"
+                onClick={newRace}
+                disabled={busy}
+                className={`tm-btn ${bothDone ? "tm-btn-primary" : "tm-btn-secondary"} tm-btn-hero min-w-40`}
+              >
                 New race
               </button>
             )}
@@ -232,8 +256,8 @@ export function RaceBoard() {
           <p className="tm-notice mt-4" role="status">
             {wiped.since === null
               ? "Nothing to delete. No race has started since the last wipe."
-              : `Deleted ${wiped.deleted} row${wiped.deleted === 1 ? "" : "s"} of judges' data${
-                  Object.keys(wiped.tables).length ? ` from ${Object.keys(wiped.tables).join(", ")}` : ""
+              : `Deleted ${wiped.deleted} item${wiped.deleted === 1 ? "" : "s"} of judges' data${
+                  Object.keys(wiped.tables).length ? `: ${plainTables(wiped.tables)}` : ""
                 }.${wiped.revoked ? ` Google access revoked for ${wiped.revoked} account${wiped.revoked === 1 ? "" : "s"}.` : ""}`}
           </p>
         )}
@@ -256,7 +280,7 @@ export function RaceBoard() {
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <section className="tm-card flex flex-col" aria-labelledby="judge-a">
             <span className="tm-chip w-fit">Judge A</span>
-            <h2 id="judge-a" className="tm-h2 mt-3 lg:text-[32px]">
+            <h2 id="judge-a" className="tm-h2 tm-display mt-3">
               By hand on t-mobile.com
             </h2>
             <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
@@ -274,9 +298,7 @@ export function RaceBoard() {
               {!running
                 ? "Waiting to start"
                 : aStop !== null
-                  ? total
-                    ? `Stopped · ${total} fields typed by hand`
-                    : "Stopped · every field typed by hand"
+                  ? "Stopped at the credit check"
                   : "Tap Stop when Judge A reaches the credit check"}
             </p>
             <div className="mt-auto pt-4">
@@ -292,13 +314,13 @@ export function RaceBoard() {
 
           <section className="flex flex-col rounded-[12px] bg-navy p-6 text-white" aria-labelledby="judge-b">
             <span className="w-fit rounded-[24px] bg-white/10 px-2.5 py-0.5 text-xs font-bold">Judge B</span>
-            <h2 id="judge-b" className="mt-3 font-display text-[24px] leading-tight font-semibold lg:text-[32px]">
+            <h2 id="judge-b" className="mt-3 font-display text-[20px] leading-7 font-semibold lg:text-[32px] lg:leading-10">
               With Formly
             </h2>
             <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-start">
               <QrBox qr={qr?.b} label="Scan for the Formly signup" />
               <ol className="space-y-2 text-lg text-white/85">
-                <li>1. Scan and tap Fill with Formly.</li>
+                <li>1. Scan and tap Fill it in for me.</li>
                 <li>2. Connect your own data and approve.</li>
                 <li>3. Continue to the credit check. The clock stops itself.</li>
               </ol>
