@@ -1,17 +1,13 @@
 import Link from "next/link";
 import { ArrowRightIcon, CheckIcon, LockIcon } from "@/components/Icons";
 import { Logo, Mark } from "@/components/Logo";
-import chase from "@/lib/schemas/chase.json";
-import dmv from "@/lib/schemas/dmv.json";
-import spacexai from "@/lib/schemas/spacexai.json";
-import tmobile from "@/lib/schemas/tmobile.json";
 import "./home.css";
 
 const DEMOS = [
-  { href: "/tmobile", logo: "/tmobile/t-mark.svg", w: 32, h: 32, name: "T-Mobile", title: "Switch to T-Mobile", fields: tmobile.fields.length },
-  { href: "/spacexai", logo: "/spacexai/logo-black.png", w: 58, h: 22, name: "SpaceXAI", title: "Software Engineer application", fields: spacexai.fields.length },
-  { href: "/chase", logo: "/chase/logo-blue.svg", w: 86, h: 16, name: "Chase", title: "Freedom Unlimited card application", fields: chase.fields.length },
-  { href: "/dmv", logo: "/dmv/logo-ca-dmv-blue.svg", w: 62, h: 24, name: "California DMV", title: "Title or register a vehicle", fields: dmv.fields.length },
+  { href: "/tmobile", logo: "/tmobile/t-mark.svg", w: 32, h: 32, name: "T-Mobile", title: "Switch to T-Mobile" },
+  { href: "/spacexai", logo: "/spacexai/logo-black.png", w: 58, h: 22, name: "SpaceXAI", title: "Software Engineer application" },
+  { href: "/chase", logo: "/chase/logo-blue.svg", w: 86, h: 16, name: "Chase", title: "Freedom Unlimited card application" },
+  { href: "/dmv", logo: "/dmv/logo-ca-dmv-blue.svg", w: 62, h: 24, name: "California DMV", title: "Title or register a vehicle" },
 ];
 
 export default function Home() {
@@ -97,10 +93,7 @@ export default function Home() {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={d.logo} alt={d.name} width={d.w} height={d.h} className="max-h-8 w-auto object-contain object-left" />
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate font-medium">{d.title}</span>
-                    <span className="block text-sm text-[var(--home-muted)]">{d.fields} fields Formly can fill</span>
-                  </span>
+                  <span className="min-w-0 flex-1 truncate font-medium">{d.title}</span>
                   <ArrowRightIcon className="h-4 w-4 shrink-0 text-[var(--home-muted)] transition-transform motion-safe:group-hover:translate-x-0.5" stroke={1.5} />
                 </Link>
               </li>
@@ -110,18 +103,12 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-[var(--home-line)]">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-3 px-5 py-8 text-sm text-[var(--home-muted)] sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-8 text-sm text-[var(--home-muted)] sm:px-8">
           <span className="flex items-center gap-2 text-[var(--home-ink)]">
             <Mark className="h-4 w-4" />
             <span className="font-display font-semibold">formly</span>
           </span>
           <span>Made at DubHacks 2026.</span>
-          <Link href="/demo" className="hover:text-[var(--home-ink)]">
-            Demo forms
-          </Link>
-          <Link href="/formly" className="hover:text-[var(--home-ink)]">
-            My Formly
-          </Link>
         </div>
       </footer>
     </div>
