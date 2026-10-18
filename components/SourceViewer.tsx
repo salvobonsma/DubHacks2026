@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import type { Source } from "@/lib/types";
 import { ConnectorLogo } from "./ConnectorLogo";
+import { CloseIcon } from "./Icons";
 import type { TwinFact } from "./Markdown";
 
 type SourceMeta = Omit<Source, "text">;
@@ -53,7 +54,7 @@ export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () =>
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
-        className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl bg-white shadow-2xl"
+        className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-[32px] bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 border-b border-line p-5">
@@ -61,8 +62,8 @@ export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () =>
             <p className="text-xs font-semibold uppercase tracking-wider text-brand-dark">{fact.label || "Source"}</p>
             <p className="mt-0.5 font-semibold">{fact.value.replace(/\*\*/g, "")}</p>
           </div>
-          <button onClick={onClose} aria-label="Close" className="text-xl leading-none text-muted hover:text-navy">
-            ×
+          <button onClick={onClose} aria-label="Close" className="-m-1 p-1 text-muted transition-colors hover:text-navy">
+            <CloseIcon />
           </button>
         </div>
 
@@ -71,7 +72,7 @@ export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () =>
         ) : (
           <>
             {matched.length > 1 && (
-              <div className="flex gap-1 overflow-x-auto border-b border-line px-5 pt-3">
+              <div className="flex gap-1 overflow-x-auto overscroll-x-contain border-b border-line px-5 pt-3">
                 {matched.map((s) => (
                   <button
                     key={s.id}
@@ -149,7 +150,7 @@ function Document({ text, value }: { text: string; value: string }) {
   return (
     <pre
       ref={ref}
-      className="m-5 mt-3 flex-1 overflow-auto whitespace-pre-wrap rounded-xl border border-line bg-bg p-4 font-mono text-[12.5px] leading-relaxed"
+      className="m-5 mt-3 flex-1 overflow-auto overscroll-contain whitespace-pre-wrap rounded-xl border border-line bg-bg p-4 font-mono text-[12.5px] leading-relaxed"
     >
       {pieces}
     </pre>
@@ -216,7 +217,7 @@ function esc(s: string) {
 
 function FolderIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2}>
+    <svg viewBox="0 0 24 24" className="icon-line h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.5}>
       <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
     </svg>
   );

@@ -9,9 +9,20 @@
   --border: #e5e7eb;
   --muted: #6b7280;
   --magenta: #e20074;
+  /* Surface depth: a 1px ring, a lift and an ambient layer. Use with a transparent border. */
+  --surface-shadow:
+    0px 0px 0px 1px oklch(0 0 0 / 0.06),
+    0px 1px 2px -1px oklch(0 0 0 / 0.06),
+    0px 2px 4px 0px oklch(0 0 0 / 0.04);
+  --surface-shadow-hover:
+    0px 0px 0px 1px oklch(0 0 0 / 0.08),
+    0px 1px 2px -1px oklch(0 0 0 / 0.08),
+    0px 2px 4px 0px oklch(0 0 0 / 0.06);
 }
 
 @theme inline {
+  --shadow-surface: var(--surface-shadow);
+  --shadow-surface-hover: var(--surface-shadow-hover);
   --color-navy: var(--navy);
   --color-brand: var(--green);
   --color-brand-dark: var(--green-dark);
@@ -43,10 +54,20 @@ body {
   color: var(--navy);
 }
 
+/* Line icons keep their stroke width in px at any size (components/Icons.tsx). */
+.icon-line * {
+  vector-effect: non-scaling-stroke;
+}
+
 @keyframes formly-fill {
   0% { background-color: #d9f3e4; }
   100% { background-color: #ffffff; }
 }
+/* Fields Formly filled flash once, then keep a green left edge so they stay identifiable. */
 .formly-filled {
+  background-image: linear-gradient(var(--green), var(--green));
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 3px 100%;
   animation: formly-fill 1.2s ease-out;
 }

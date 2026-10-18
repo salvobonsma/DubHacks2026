@@ -88,7 +88,7 @@
   padding: 8px 12px;
   font-size: 16px;
   color: var(--tm-text);
-  background: var(--tm-input);
+  background-color: var(--tm-input);
   border: 1px solid var(--tm-border-input);
   border-radius: 2px;
   outline: none;
@@ -113,7 +113,16 @@
 }
 .tm-btn-hero { min-height: 50px; font-size: 16px; }
 .tm-btn-primary { background: var(--tm-magenta-400); color: var(--tm-gray-100); }
-.tm-btn-primary:hover { background: var(--tm-magenta-500); }
+.tm-btn-secondary {
+  background: var(--tm-gray-100);
+  color: var(--tm-gray-1000);
+  border: 1px solid var(--tm-gray-400);
+}
+/* Hover only where a pointer can hover, so a tap on a phone doesn't latch the hover color. */
+@media (hover: hover) {
+  .tm-btn-primary:hover { background: var(--tm-magenta-500); }
+  .tm-btn-secondary:hover { background: var(--tm-gray-200); }
+}
 .tm-btn-primary:active { background: var(--tm-magenta-600); }
 .tm-btn:disabled,
 .tm-btn:disabled:hover {
@@ -121,12 +130,6 @@
   color: var(--tm-gray-600);
   cursor: not-allowed;
 }
-.tm-btn-secondary {
-  background: var(--tm-gray-100);
-  color: var(--tm-gray-1000);
-  border: 1px solid var(--tm-gray-400);
-}
-.tm-btn-secondary:hover { background: var(--tm-gray-200); }
 
 .tm-check {
   display: flex;

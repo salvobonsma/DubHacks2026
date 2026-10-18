@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
+import { CheckIcon, LockIcon, WarningIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
 import { askKey, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
@@ -179,19 +180,7 @@ export function FillFlow() {
       <header className="flex items-center justify-between bg-navy px-5 py-4">
         <Logo light />
         <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 ring-1 ring-white/10">
-          <svg
-            viewBox="0 0 24 24"
-            className="h-3.5 w-3.5 text-[#22C985]"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2.2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <rect x="5" y="11" width="14" height="10" rx="2" />
-            <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-          </svg>
+          <LockIcon className="h-3.5 w-3.5 text-[#22C985]" />
           Secure session
         </span>
       </header>
@@ -237,7 +226,9 @@ export function FillFlow() {
                         <span>
                           <span className="block text-sm font-semibold">
                             {m.label}
-                            {m.id === "all" && <span className="ml-1.5 text-xs text-amber-600">⚠</span>}
+                            {m.id === "all" && (
+                              <WarningIcon className="ml-1.5 inline h-3.5 w-3.5 align-[-2px] text-amber-600" />
+                            )}
                           </span>
                           <span className="block text-xs text-muted">{m.hint}</span>
                         </span>
@@ -293,7 +284,7 @@ export function FillFlow() {
                         />
                         <span className="flex-1 text-xs font-medium text-muted">
                           {r.label}
-                          {r.category === "sensitive" && " 🔒"}
+                          {r.category === "sensitive" && <LockIcon className="ml-1 inline h-3 w-3 align-[-1px]" />}
                         </span>
                         {r.source && (
                           <span className="max-w-[40%] truncate rounded-full bg-brand/15 px-2 py-0.5 text-[10px] text-brand-dark">
@@ -328,8 +319,8 @@ export function FillFlow() {
 
             {step === "sent" && (
               <div className="mt-16 text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-xl text-white">
-                  ✓
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white">
+                  <CheckIcon className="h-6 w-6" stroke={2.5} />
                 </div>
                 <p className="font-semibold">Sent to {session.business}</p>
               </div>
@@ -340,19 +331,25 @@ export function FillFlow() {
 
       {session && (step === "connect" || step === "review") && (
         <footer className="sticky bottom-0 flex gap-2 border-t border-line bg-white px-5 py-4">
-          <button onClick={cancel} className="rounded-xl px-4 py-3 text-sm font-semibold text-muted hover:bg-bg">
+          <button
+            onClick={cancel}
+            className="rounded-xl px-4 py-3 text-sm font-semibold text-muted transition-colors hover:bg-bg"
+          >
             Cancel
           </button>
           {step === "connect" ? (
             <button
               onClick={fill}
               disabled={!twin}
-              className="flex-1 rounded-xl bg-navy py-3 font-semibold text-white disabled:opacity-40"
+              className="flex-1 rounded-xl bg-navy py-3 font-semibold text-white transition-colors enabled:hover:bg-black disabled:opacity-40"
             >
               Fill my form
             </button>
           ) : (
-            <button onClick={approve} className="flex-1 rounded-xl bg-brand py-3 font-semibold text-navy">
+            <button
+              onClick={approve}
+              className="flex-1 rounded-xl bg-brand py-3 font-semibold text-navy transition-colors hover:bg-brand/90"
+            >
               Approve &amp; send {filled} fields
             </button>
           )}

@@ -48,7 +48,7 @@ export function PermissionPrompt({
   }, []);
 
   return (
-    <div className="rounded-2xl border-2 border-navy bg-white p-4 shadow-lg">
+    <div className="rounded-[30px] border-2 border-navy bg-white p-4 shadow-lg">
       <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-muted">
         <span>Permission request</span>
         <span>
@@ -99,7 +99,7 @@ function Choice({
     <button
       onClick={onClick}
       className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left text-sm font-medium transition ${
-        primary ? "border-navy bg-navy text-white hover:bg-black" : "border-line hover:border-navy"
+        primary ? "border-navy bg-navy text-white hover:bg-black" : "border-transparent shadow-surface hover:shadow-surface-hover"
       }`}
     >
       <span

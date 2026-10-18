@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
 import { GoogleConsent } from "./GoogleConsent";
+import { ArrowRightIcon, CheckIcon, CloseIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
 
 interface SourceRow {
@@ -191,13 +192,13 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           <div className="mt-6 flex justify-end gap-2">
             <button
               onClick={() => setDisconnectOpen(false)}
-              className="rounded-full px-4 py-2 text-sm font-medium text-muted hover:bg-bg"
+              className="rounded-full px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-bg"
             >
               Cancel
             </button>
             <button
               onClick={disconnectGoogle}
-              className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700"
+              className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700"
             >
               Disconnect
             </button>
@@ -211,7 +212,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           <button
             onClick={() => setUploadOpen(true)}
             disabled={!!busy}
-            className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}
+            className={`${tile} border-transparent shadow-surface hover:shadow-surface-hover`}
           >
             <span className="flex h-6 w-6 items-center justify-center text-navy">
               <UploadIcon className="h-5 w-5" />
@@ -221,25 +222,25 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           <button
             onClick={openGoogle}
             disabled={!!busy}
-            className={`${tile} ${googleSynced ? "border-brand bg-brand/5" : "border-line hover:border-navy/30 hover:shadow-sm"}`}
+            className={`${tile} ${googleSynced ? "border-brand bg-brand/5" : "border-transparent shadow-surface hover:shadow-surface-hover"}`}
           >
             <span className="relative">
               <ConnectorLogo slug={GOOGLE.slug} />
               {googleSynced && (
                 <span className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-brand text-white ring-2 ring-white">
-                  <CheckIcon />
+                  <CheckIcon className="h-2.5 w-2.5" />
                 </span>
               )}
             </span>
             <span className="w-full truncate text-[11px] font-medium">Drive</span>
           </button>
           {COMING_SOON.slice(0, FEATURED).map((c) => (
-            <button key={c.name} type="button" className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}>
+            <button key={c.name} type="button" className={`${tile} border-transparent shadow-surface hover:shadow-surface-hover`}>
               <ConnectorLogo slug={c.slug} />
               <span className="w-full truncate text-center text-[11px] font-medium">{c.name}</span>
             </button>
           ))}
-          <button onClick={() => setMoreOpen(true)} className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}>
+          <button onClick={() => setMoreOpen(true)} className={`${tile} border-transparent shadow-surface hover:shadow-surface-hover`}>
             <span className="flex h-6 items-center text-base font-bold">+{COMING_SOON.length - FEATURED}</span>
             <span className="w-full truncate text-[11px] text-muted">More</span>
           </button>
@@ -248,7 +249,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
 
       {moreOpen && (
         <Modal title="Add a source" wide onClose={() => setMoreOpen(false)}>
-          <div className="max-h-[60vh] space-y-4 overflow-y-auto pr-1">
+          <div className="max-h-[60vh] space-y-4 overflow-y-auto overscroll-contain pr-1">
             <div>
               <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">Files</p>
               <div className="grid grid-cols-2 gap-2">
@@ -258,7 +259,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                     setUploadOpen(true);
                   }}
                   disabled={!!busy}
-                  className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+                  className="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-sm shadow-surface transition hover:shadow-surface-hover"
                 >
                   <UploadIcon className="h-5 w-5" />
                   <span className="flex-1 truncate font-medium">Upload files</span>
@@ -280,7 +281,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                             openGoogle();
                           }}
                           disabled={!!busy}
-                          className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+                          className="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-sm shadow-surface transition hover:shadow-surface-hover"
                         >
                           <ConnectorLogo slug={c.slug} className="h-5 w-5" />
                           <span className="flex-1 truncate font-medium">{c.name}</span>
@@ -290,7 +291,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                         <button
                           key={c.name}
                           type="button"
-                          className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+                          className="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-sm shadow-surface transition hover:shadow-surface-hover"
                         >
                           <ConnectorLogo slug={c.slug} className="h-5 w-5" />
                           <span className="flex-1 truncate font-medium">{c.name}</span>
@@ -314,7 +315,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       {sources.length > 0 && (
         <button
           onClick={() => setSourcesOpen(true)}
-          className="flex w-full items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+          className="flex w-full items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-sm shadow-surface transition hover:shadow-surface-hover"
         >
           <span className="flex -space-x-1.5">
             {[...new Set(sources.map((s) => s.connector))].map((c) => (
@@ -326,7 +327,9 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           <span className="flex-1 font-medium">
             {sources.length} source{sources.length === 1 ? "" : "s"} connected
           </span>
-          <span className="text-xs text-muted">Manage →</span>
+          <span className="flex items-center gap-1 text-xs text-muted">
+            Manage <ArrowRightIcon />
+          </span>
         </button>
       )}
 
@@ -335,7 +338,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           {sources.length === 0 ? (
             <p className="text-sm text-muted">No sources yet.</p>
           ) : (
-            <ul className="max-h-[60vh] divide-y divide-line overflow-y-auto rounded-xl border border-line">
+            <ul className="max-h-[60vh] divide-y divide-line overflow-y-auto overscroll-contain rounded-xl border border-line">
               {sources.map((s) => (
                 <li key={s.id} className="flex items-center gap-3 px-3 py-2.5 text-sm">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-bg">
@@ -350,7 +353,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                   <button
                     onClick={() => remove(s.id)}
                     disabled={!!busy}
-                    className="text-xs text-muted hover:text-red-600"
+                    className="text-xs text-muted transition-colors hover:text-red-600"
                   >
                     Remove
                   </button>
@@ -383,11 +386,15 @@ function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-2xl bg-white p-5 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
+      <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-[32px] bg-white p-5 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-bold">{title}</h2>
-          <button onClick={onClose} aria-label="Close" className="text-xl leading-none text-muted hover:text-navy">
-            ×
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="-m-1 p-1 text-muted transition-colors hover:text-navy"
+          >
+            <CloseIcon />
           </button>
         </div>
         {children}
@@ -396,17 +403,9 @@ function Modal({
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12.5l4.5 4.5L19 7.5" />
-    </svg>
-  );
-}
-
 function FileIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-muted" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className="icon-line h-3.5 w-3.5 text-muted" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
       <path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z M14 3v5h5" />
     </svg>
   );
@@ -414,12 +413,15 @@ function FileIcon() {
 
 function UploadIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className={`icon-line ${className}`} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 16V4M6 10l6-6 6 6M4 20h16" />
     </svg>
   );
 }
 
 export function Spinner() {
-  return <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />;
+  // Reduced motion swaps the spin for an opacity pulse.
+  return (
+    <span className="inline-block h-4 w-4 rounded-full border-2 border-current border-t-transparent motion-safe:animate-spin motion-reduce:animate-pulse" />
+  );
 }

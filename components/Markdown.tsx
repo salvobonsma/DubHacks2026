@@ -180,16 +180,24 @@ function FactRow({
           onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
           className="min-w-0 flex-1 rounded-md border border-line bg-white px-2 py-0.5 outline-none focus:border-brand"
         />
-        <button type="submit" className="rounded-md bg-navy px-2.5 py-0.5 text-xs font-semibold text-white">
+        <button
+          type="submit"
+          className="rounded-md bg-navy px-2.5 py-0.5 text-xs font-semibold text-white transition-colors hover:bg-black"
+        >
           Save
         </button>
-        <button type="button" onClick={() => setEditing(false)} className="text-xs text-muted hover:text-navy">
+        <button
+          type="button"
+          onClick={() => setEditing(false)}
+          className="text-xs text-muted transition-colors hover:text-navy"
+        >
           Cancel
         </button>
       </form>
     );
 
-  const item = "flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-[13px] hover:bg-bg";
+  const item =
+    "flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-left text-[13px] transition-colors hover:bg-bg";
   return (
     <div
       role="button"
@@ -226,7 +234,7 @@ function FactRow({
             </svg>
           </button>
           {menu && (
-            <div className="absolute right-0 z-20 mt-1 w-48 rounded-xl border border-line bg-white p-1 shadow-lg">
+            <div className="absolute right-0 z-20 mt-1 w-48 rounded-xl border border-transparent bg-white p-1 shadow-lg ring-1 ring-black/[0.06]">
               {!censored && (
                 <>
                   <button type="button" className={item} onClick={() => (setMenu(false), onView())}>

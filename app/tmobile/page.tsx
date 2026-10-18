@@ -33,7 +33,7 @@ export default function TMobileSignup() {
       <Shell>
         <div className="tm-card text-center">
           <div className="tm-check" aria-hidden>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            <svg className="icon-line" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
@@ -141,7 +141,9 @@ function Field({
   highlight: boolean;
   onChange: (v: string) => void;
 }) {
-  const cls = `tm-input ${highlight && value ? "formly-filled" : ""}`;
+  const filled = highlight && !!value;
+  const cls = `tm-input ${filled ? "formly-filled" : ""}`;
+  const title = filled ? "Filled by Formly" : undefined;
   return (
     <label className="block">
       <span className="tm-label">
@@ -149,7 +151,13 @@ function Field({
         {field.required && <span className="tm-required"> *</span>}
       </span>
       {field.type === "select" ? (
-        <select className={cls} value={value} required={field.required} onChange={(e) => onChange(e.target.value)}>
+        <select
+          className={cls}
+          title={title}
+          value={value}
+          required={field.required}
+          onChange={(e) => onChange(e.target.value)}
+        >
           <option value="">Select…</option>
           {field.options?.map((o) => (
             <option key={o}>{o}</option>
@@ -158,6 +166,7 @@ function Field({
       ) : (
         <input
           className={cls}
+          title={title}
           type={field.type}
           value={value}
           required={field.required}
