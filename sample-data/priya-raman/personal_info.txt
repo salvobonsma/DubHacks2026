@@ -95,3 +95,14 @@
 
 ### Other
 - Pets: one cat, Mango
+
+### Quick answers for forms
+- Suffix: none
+- Tax ID type: Social Security number (the LLC also has an EIN)
+- Address type: street address
+- Residence: rent. Years at this address: 4 (since March 2022)
+- ID I use on forms: New York driver's license, issued by NY
+- Employment: self-employed
+- Highest degree: Bachelor's (BFA Graphic Design), Rhode Island School of Design, 2014, GPA 3.6
+- Years of work experience: 12 (since 2014)
+- Why SpaceXAI: I use Grok every day for client research, and its image tools still feel built by engineers, for engineers. I'd want to design how Grok Imagine works for designers, the way I redesigned that coffee label once I watched real people use it.

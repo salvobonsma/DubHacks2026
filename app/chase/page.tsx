@@ -214,7 +214,7 @@ function Field({
               required={field.required}
               onChange={(e) => onChange(e.target.value)}
             >
-              <option value="">{field.required ? "Choose one" : "None"}</option>
+              <option value="">Choose one</option>
               {field.options?.map((o) => (
                 <option key={o}>{o}</option>
               ))}

@@ -97,3 +97,15 @@ References:
   Dr. Michael Odom, ICU medical director, 281-555-0139
 
 Pets: our dog, Canela (lab mix), licensed with the county
+
+QUICK ANSWERS FOR FORMS
+  Suffix: none
+  Apt/unit: N/A (single-family house, no apartment number)
+  Tax ID type: Social Security number
+  Address type: street address
+  Residence: own (mortgage $1,640/month). Years at this address: 15 (since May 2011)
+  ID I use on forms: Texas driver's license, issued by TX
+  Employment: employed full-time
+  Highest degree: Bachelor's (B.S. Nursing), UT Health Science Center at San Antonio, 1996, GPA 3.4
+  Years of work experience: 29 (nursing since 1997)
+  Why SpaceXAI: Our ICU piloted an AI sepsis alert in 2025 and it fired so often that nurses started ignoring it. I helped the vendor tune it with real bedside feedback. I'd want to help build AI that clinicians actually trust, like the health tools SpaceXAI is building on Grok. My sister's ranch outside Laredo also finally got internet through Starlink.
