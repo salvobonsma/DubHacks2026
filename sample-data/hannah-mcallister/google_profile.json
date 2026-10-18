@@ -1,0 +1,16 @@
+{
+  "connector": "google",
+  "profile": { "name": "Hannah McAllister", "email": "hannah.mcallister@example.com", "birthday": "1999-12-02", "phone": "+1 406-555-0185" },
+  "contacts": [
+    { "name": "Doug McAllister", "relationship": "Father", "phone": "+1 406-555-0108" },
+    { "name": "Karen McAllister", "relationship": "Mother", "phone": "+1 406-555-0109" }
+  ],
+  "addresses": [
+    { "type": "home", "formatted": "119 N Tracy Ave, Apt B, Bozeman, MT 59715" },
+    { "type": "previous", "formatted": "2240 Grand Ave, Apt 6, Billings, MT 59102" }
+  ],
+  "gmail_receipts": [
+    { "from": "Verizon", "subject": "You've been removed from a shared plan", "summary": "Line 406-555-0185 will leave the McAllister family account" },
+    { "from": "Gallatin Valley Animal Hospital", "subject": "Welcome to the team", "summary": "Veterinary Technician, part time, start date 09/15/2026" }
+  ]
+}

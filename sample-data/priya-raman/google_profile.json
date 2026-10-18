@@ -1,0 +1,13 @@
+{
+  "connector": "google",
+  "profile": { "name": "Priya Raman", "email": "hello@priyaraman-studio.example.com", "birthday": "1992-06-30", "phone": "+1 718-555-0159" },
+  "contacts": [
+    { "name": "Dev Malhotra", "relationship": "Partner", "phone": "+1 917-555-0144" },
+    { "name": "Lakshmi Raman", "relationship": "Mother", "phone": "+1 732-555-0170" }
+  ],
+  "addresses": [{ "type": "home", "formatted": "412 Prospect Pl, Apt 4R, Brooklyn, NY 11238" }],
+  "gmail_receipts": [
+    { "from": "Verizon", "subject": "Your Verizon bill", "summary": "Account for (718) 555-0159, 2 lines, Unlimited Plus, $148.00 due" },
+    { "from": "Squarespace", "subject": "Your domain renewal", "summary": "priyaraman-studio, annual plan renewed" }
+  ]
+}

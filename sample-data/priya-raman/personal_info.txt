@@ -1,0 +1,32 @@
+# Priya Raman: freelancer admin sheet
+
+## Me
+- Legal name: Priya Lakshmi Raman
+- DOB: 1992-06-30
+- SSN: 987-65-4323
+- Email: hello@priyaraman-studio.example.com
+- Mobile: (718) 555-0159 (Verizon, 2 lines with Dev; we want to port both)
+
+## Home
+- 412 Prospect Pl, Apt 4R, Brooklyn, NY 11238
+- Lease started March 2022
+- Rent: $3,200/month (split with Dev, but the lease is in my name)
+
+## ID
+- NY driver's license 724 918 365, expires 06/30/2030
+
+## Work
+- Self-employed: Priya Raman Studio (brand and packaging design), since 2019
+- Title on my LLC paperwork: Founder & Creative Director
+- 2025 income: $112,000 (Schedule C net)
+
+## Phone plan
+- Go5G Next, 2 lines, iPhone 17 Pro Max for me
+- Want to upgrade every year, that's why Next
+
+## Payment
+- Amex Business Gold, Priya L Raman
+- 3782 822463 10005, exp 09/27, billing ZIP 11238
+
+## Emergency
+- Dev Malhotra (partner), (917) 555-0144

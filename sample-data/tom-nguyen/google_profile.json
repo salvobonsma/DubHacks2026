@@ -1,0 +1,13 @@
+{
+  "connector": "google",
+  "profile": { "name": "Tom Nguyen", "email": "tom.nguyen.trucking@example.com", "birthday": "1981-01-17", "phone": "+1 402-555-0163" },
+  "contacts": [
+    { "name": "Lan Nguyen", "relationship": "Wife", "phone": "+1 402-555-0116" },
+    { "name": "Rick Halvorsen", "relationship": "Dispatcher", "phone": "+1 712-555-0140" }
+  ],
+  "addresses": [{ "type": "home", "formatted": "6107 S 42nd St, Omaha, NE 68117" }],
+  "gmail_receipts": [
+    { "from": "UScellular", "subject": "Your bill is ready", "summary": "Account for 402-555-0163, 1 line, Unlimited Pro, $75.00 due" },
+    { "from": "Nebraska DMV", "subject": "CDL renewal reminder", "summary": "Class A commercial license expires 01/17/2028" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "connector": "google",
+  "profile": { "name": "Jamal Washington", "email": "jamal.washington04@example.com", "birthday": "2004-11-22", "phone": "+1 404-555-0136" },
+  "contacts": [
+    { "name": "Denise Washington", "relationship": "Mother", "phone": "+1 404-555-0198" },
+    { "name": "Marcus Hill", "relationship": "Roommate", "phone": "+1 678-555-0151" }
+  ],
+  "addresses": [{ "type": "home", "formatted": "275 Decatur St SE, Unit 1412, Atlanta, GA 30312" }],
+  "gmail_receipts": [
+    { "from": "Georgia State University", "subject": "Fall 2026 enrollment confirmed", "summary": "Undergraduate, Computer Science, junior standing" },
+    { "from": "Cricket Wireless", "subject": "Payment received", "summary": "Account for 404-555-0136, 4 lines, $160.00 paid" }
+  ]
+}

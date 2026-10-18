@@ -1,0 +1,13 @@
+{
+  "connector": "google",
+  "profile": { "name": "Maria Gonzalez", "email": "maria.gonzalez.rn@example.com", "birthday": "1974-03-03", "phone": "+1 713-555-0142" },
+  "contacts": [
+    { "name": "Roberto Gonzalez", "relationship": "Husband", "phone": "+1 713-555-0187" },
+    { "name": "Sofia Gonzalez", "relationship": "Daughter", "phone": "+1 713-555-0119" }
+  ],
+  "addresses": [{ "type": "home", "formatted": "8814 Wildflower Bend, Houston, TX 77084" }],
+  "gmail_receipts": [
+    { "from": "AT&T", "subject": "Your AT&T bill is ready", "summary": "Wireless account, 3 lines, Unlimited Extra plan, $187.40 due" },
+    { "from": "Memorial Hermann", "subject": "Your pay statement is available", "summary": "Pay date 08/15/2026, Registered Nurse, ICU" }
+  ]
+}

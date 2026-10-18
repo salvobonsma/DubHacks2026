@@ -1,0 +1,16 @@
+{
+  "connector": "google",
+  "profile": { "name": "Luis Ortega", "email": "luis@laortega-cocina.example.com", "birthday": "1987-07-09", "phone": "+1 505-555-0132" },
+  "contacts": [
+    { "name": "Rosa Ortega", "relationship": "Wife", "phone": "+1 505-555-0145" },
+    { "name": "Javier Ortega", "relationship": "Brother", "phone": "+1 915-555-0166" }
+  ],
+  "addresses": [
+    { "type": "home", "formatted": "3214 Calle del Monte NW, Albuquerque, NM 87120" },
+    { "type": "work", "formatted": "La Ortega Cocina, 2011 Mountain Rd NW, Albuquerque, NM 87104" }
+  ],
+  "gmail_receipts": [
+    { "from": "Mint Mobile", "subject": "Your plan renews soon", "summary": "Family account, 4 lines, Unlimited, $120.00 due" },
+    { "from": "Toast", "subject": "Your monthly sales summary", "summary": "La Ortega Cocina, September 2026" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "connector": "google",
+  "profile": { "name": "Dorothy Kowalski", "email": "dorothy.kowalski51@example.net", "birthday": "1951-09-14", "phone": "+1 414-555-0175" },
+  "contacts": [
+    { "name": "Michael Kowalski", "relationship": "Son", "phone": "+1 262-555-0128" }
+  ],
+  "addresses": [{ "type": "home", "formatted": "2918 S Delaware Ave, Milwaukee, WI 53207" }],
+  "gmail_receipts": [
+    { "from": "Consumer Cellular", "subject": "Your monthly statement", "summary": "Account for 414-555-0175, 1 line, $52.18 due" },
+    { "from": "Wisconsin Retirement System", "subject": "Annual benefit statement", "summary": "Retired teacher annuity, Milwaukee Public Schools" }
+  ]
+}
