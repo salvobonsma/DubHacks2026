@@ -1,0 +1,6 @@
+# Used only if Dokploy's build type is Nixpacks; the Dockerfile is the preferred build.
+[variables]
+NIXPACKS_NODE_VERSION = "22"
+
+[phases.setup]
+nixPkgs = ["...", "python3", "gcc", "gnumake"]
