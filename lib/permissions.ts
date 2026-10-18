@@ -5,7 +5,7 @@ export type SharingMode = "ask" | "auto" | "all";
 export const MODES: { id: SharingMode; label: string; hint: string }[] = [
   { id: "ask", label: "Ask every time", hint: "Approve each group of info before it's shared" },
   { id: "auto", label: "Auto-share basics", hint: "Name, email, address go through; ask for anything personal" },
-  { id: "all", label: "Share everything", hint: "No prompts — you still review before sending" },
+  { id: "all", label: "Share everything", hint: "No prompts. You still review everything before it's sent." },
 ];
 
 /**

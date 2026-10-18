@@ -197,7 +197,7 @@ export function FillFlow() {
             </p>
             <h1 className="text-xl font-bold">{session.schema.title}</h1>
             <p className="mt-1 text-xs text-muted">
-              {session.schema.fields.length} fields · {session.business} only receives the answers you approve, never
+              {session.schema.fields.length} fields. {session.business} only receives the answers you approve, never
               your files.
             </p>
 
@@ -297,7 +297,7 @@ export function FillFlow() {
                           value={r.value}
                           type={r.reveal ? "text" : "password"}
                           placeholder={
-                            r.denied ? "Denied — type it yourself or leave blank" : "Not found — type it or leave blank"
+                            r.denied ? "Denied. Type it yourself or leave it blank." : "Not found. Type it or leave it blank."
                           }
                           onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
                           className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"

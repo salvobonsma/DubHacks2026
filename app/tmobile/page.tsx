@@ -52,8 +52,8 @@ export default function TMobileSignup() {
       <div className="tm-card">
         <h1 className="tm-h1">Create your account</h1>
         <p className="tm-secondary mt-2 text-sm">
-          {schema.title} · <span className="tm-num">{done}</span> of{" "}
-          <span className="tm-num">{schema.fields.length}</span> fields complete
+          {schema.title}. <span className="tm-num">{done}</span> of{" "}
+          <span className="tm-num">{schema.fields.length}</span> fields complete.
         </p>
 
         <div className="mt-6">
@@ -62,7 +62,7 @@ export default function TMobileSignup() {
         <div className="tm-secondary my-6 flex items-center gap-3 text-sm">
           <div className="tm-divider" />
           <span>
-            or fill in manually · <span className="tm-required">*</span> required
+            Or fill it in yourself. Fields marked <span className="tm-required">*</span> are required.
           </span>
           <div className="tm-divider" />
         </div>
@@ -96,8 +96,8 @@ export default function TMobileSignup() {
             </button>
             {missing > 0 && (
               <p className="tm-secondary mt-2 text-center text-sm">
-                Fill in {missing} more required field{missing === 1 ? "" : "s"} to submit · about{" "}
-                {timeLeft(missing)} left
+                Fill in {missing} more required field{missing === 1 ? "" : "s"} to submit. That&apos;s about{" "}
+                {timeLeft(missing)} of typing.
               </p>
             )}
           </div>

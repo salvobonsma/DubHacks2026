@@ -347,7 +347,8 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                   <span className="min-w-0 flex-1">
                     <span className="block truncate">{s.name}</span>
                     <span className="block text-xs text-muted">
-                      {s.connector === "google" ? GOOGLE.name : "Upload"} · {new Date(s.created_at).toLocaleDateString()}
+                      {s.connector === "google" ? `Synced from ${GOOGLE.name}` : "Uploaded"} on{" "}
+                      {new Date(s.created_at).toLocaleDateString()}
                     </span>
                   </span>
                   <button
@@ -386,7 +387,7 @@ function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-[32px] bg-white p-5 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
+      <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-2xl bg-white p-5 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-bold">{title}</h2>
           <button

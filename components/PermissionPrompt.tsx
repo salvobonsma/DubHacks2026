@@ -13,7 +13,7 @@ function mask(v: string) {
   return v.length <= 4 ? "••••" : `${"•".repeat(Math.min(v.length - 4, 8))}${v.slice(-4)}`;
 }
 
-/** Claude Code–style permission card: allow once / always allow / deny. */
+/** Claude Code style permission card: allow once / always allow / deny. */
 export function PermissionPrompt({
   business,
   request,
@@ -48,7 +48,7 @@ export function PermissionPrompt({
   }, []);
 
   return (
-    <div className="rounded-[30px] border-2 border-navy bg-white p-4 shadow-lg">
+    <div className="rounded-2xl border-2 border-navy bg-white p-4 shadow-lg">
       <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-wider text-muted">
         <span>Permission request</span>
         <span>
@@ -77,7 +77,7 @@ export function PermissionPrompt({
           Always allow for {business}
         </Choice>
         <Choice n={3} onClick={() => onDecide("deny")}>
-          Deny — I&apos;ll type it myself
+          Deny and type it myself
         </Choice>
       </div>
     </div>

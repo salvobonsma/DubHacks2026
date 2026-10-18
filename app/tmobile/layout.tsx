@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "T-Mobile · Create your account",
+  title: "Create your T-Mobile account",
 };
 
 export default function TMobileLayout({ children }: { children: React.ReactNode }) {

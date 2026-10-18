@@ -55,7 +55,7 @@ export default function FormlyHome() {
       </header>
       <main className="mx-auto grid max-w-5xl gap-6 px-4 py-8 md:grid-cols-[360px_1fr]">
         <div className="h-fit space-y-3">
-          <section className="rounded-[32px] border border-transparent bg-white p-5 shadow-surface">
+          <section className="rounded-2xl border border-transparent bg-white p-5 shadow-surface">
             <h2 className="mb-1 font-bold">Your data sources</h2>
             <p className="mb-4 text-sm text-muted">Formly reads these to keep your digital twin up to date.</p>
             <ConnectPanel onTwin={setTwin} />
@@ -67,7 +67,7 @@ export default function FormlyHome() {
             Reset demo
           </button>
         </div>
-        <section className="rounded-[32px] border border-transparent bg-white p-5 shadow-surface">
+        <section className="rounded-2xl border border-transparent bg-white p-5 shadow-surface">
           <div className="mb-3 flex items-baseline justify-between">
             <h2 className="font-bold">Your digital twin</h2>
             {twin && (
@@ -93,11 +93,10 @@ export default function FormlyHome() {
                 onAction={(f, action, value) => (action === "censor" ? setCensoring(f) : act(f, action, value))}
               />
               {removed.length > 0 && (
-                <div className="mt-6 border-t border-line pt-3 text-xs text-muted">
-                  <span className="font-semibold">Removed:</span>{" "}
-                  {removed.map((o, i) => (
+                <div className="mt-6 flex flex-wrap gap-x-4 gap-y-1 border-t border-line pt-3 text-xs text-muted">
+                  <span className="font-semibold">Removed:</span>
+                  {removed.map((o) => (
                     <span key={o.label}>
-                      {i > 0 && " · "}
                       <span className="capitalize">{o.label}</span>{" "}
                       <button onClick={() => act(o, "restore")} className="font-medium text-brand-dark hover:underline">
                         Restore
@@ -145,7 +144,7 @@ export default function FormlyHome() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
           onClick={() => setCensoring(null)}
         >
-          <div className="w-full max-w-sm rounded-[32px] bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <h2 className="font-bold">Censor {censoring.label} permanently?</h2>
             <p className="mt-2 text-sm text-muted">
               Formly will hide this value everywhere and never share it with a business, even if you approve a form that
