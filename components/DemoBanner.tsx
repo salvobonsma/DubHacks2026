@@ -17,6 +17,7 @@ const PAGE_BG: [prefix: string, color: string][] = [
   ["/chase", "#ffffff"],
   ["/dmv", "#f3f7fb"],
   ["/demo", "#f3f4f6"],
+  ["/endless", "#ffffff"],
   ["/", "#0f1a2a"],
 ];
 
@@ -45,6 +46,9 @@ export function DemoBanner() {
     document.documentElement.style.backgroundColor = color;
     document.body.style.backgroundColor = color;
   }, [path]);
+
+  // The endless form is filmed as a plain white page, so it has no banner.
+  if (path.startsWith("/endless")) return null;
 
   return (
     <div className="sticky top-0 z-40 border-b border-white/10 bg-[#0a121e] font-sans text-[12px] text-white/75">
