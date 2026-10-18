@@ -215,8 +215,8 @@ function FactRow({
             type="button"
             aria-label={`Options for ${fact.label}`}
             onClick={() => setMenu(!menu)}
-            className={`flex h-6 w-6 items-center justify-center rounded-md text-muted transition hover:bg-white hover:text-navy ${
-              menu ? "bg-white text-navy opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100"
+            className={`flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white hover:text-navy ${
+              menu ? "bg-white text-navy" : "text-muted/60 group-hover:bg-white group-hover:text-navy"
             }`}
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>

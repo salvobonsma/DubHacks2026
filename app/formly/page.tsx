@@ -74,7 +74,6 @@ export default function FormlyHome() {
               <span className="text-xs text-muted">Updated {new Date(twin.updatedAt).toLocaleTimeString()}</span>
             )}
           </div>
-          {twin && <p className="-mt-2 mb-1 text-xs text-muted">Click any fact to see where it came from.</p>}
           {twin ? (
             <>
               <Markdown
