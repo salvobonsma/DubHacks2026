@@ -52,7 +52,7 @@ export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () =>
   const current = doc?.id === activeId ? doc : null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 m-0 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
         className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-2xl bg-white shadow-2xl"
         onClick={(e) => e.stopPropagation()}

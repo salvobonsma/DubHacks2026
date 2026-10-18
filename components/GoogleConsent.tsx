@@ -64,7 +64,7 @@ export function GoogleConsent({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+    <div className="fixed inset-0 z-50 m-0 flex items-center justify-center bg-black/40 p-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
         <div className="text-2xl font-medium">
           <span className="text-[#4285F4]">G</span>

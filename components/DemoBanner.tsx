@@ -86,7 +86,7 @@ export function DemoBanner() {
       </div>
       {resetting && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 text-sm text-navy"
+          className="fixed inset-0 z-50 m-0 flex items-center justify-center bg-black/40 p-4 text-sm text-navy"
           onClick={() => !resetBusy && setResetting(false)}
         >
           <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
