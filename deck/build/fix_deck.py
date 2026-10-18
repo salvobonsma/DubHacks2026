@@ -79,25 +79,25 @@ set_text(shape_by_id(S[4], 29), "Manually")
 # Slide 8: same layout, four facts that each stand alone (no chained calculation)
 s8 = S[7]
 set_text(shape_by_id(s8, 250), "Put the button on your switch page for one month. We count how many more people finish.")
-set_text(shape_by_id(s8, 252), "50%")
+set_text(shape_by_id(s8, 252), "49%")
 set_text(shape_by_id(s8, 253), "of Americans say the hassle of switching puts them off.")
-set_text(shape_by_id(s8, 254), "YouGov, 2023")
+set_text(shape_by_id(s8, 254), "YouGov, Feb 2022")
 set_text(shape_by_id(s8, 256), "~5M")
 set_text(shape_by_id(s8, 257), "accounts open at T\u2011Mobile every year.")
-set_text(shape_by_id(s8, 258), "Your filings: churn + 2026 net adds")
+set_text(shape_by_id(s8, 258), "Our estimate from T\u2011Mobile's Q2 2026 SEC 8-K")
 set_text(shape_by_id(s8, 260), "$1,835")
 set_text(shape_by_id(s8, 261), "a year from every account that finishes.")
-set_text(shape_by_id(s8, 262), "Postpaid ARPA, Q2 2026")
+set_text(shape_by_id(s8, 262), "$152.91 ARPA x 12, Q2 2026 SEC 8-K")
 set_text(shape_by_id(s8, 264), "+$94M")
 set_text(shape_by_id(s8, 265), "a year in new revenue for every 1% more switchers who finish.")
-set_text(shape_by_id(s8, 266), "1% of 5M accounts x $1,835")
+set_text(shape_by_id(s8, 266), "1% of ~5M accounts x $1,835")
 set_notes(s8,
-    "Bring Formly to T-Mobile. Four facts, no story to argue with. Half of Americans say the hassle of switching puts "
+    "Bring Formly to T-Mobile. Four facts, no story to argue with. 49% of Americans say the hassle of switching puts "
     "them off. Your switch form is 30 fields and autofill covers 13 of them. You open about 5M accounts a year. Each one "
     "is worth $1,835 a year. The pilot: put the button on the switch page for one month and count completions and "
     "port-in errors against the month before. If asked for the upside: every extra 1% of 5M finishing is about $90M a "
     "year; 10% is about $940M. 34.7M postpaid accounts x 0.99% monthly churn x 12 = about 4.1M, plus about 1M net adds "
-    "(2026 guidance 950K to 1.05M) = about 5.1M sign-ups. $152.91 postpaid ARPA x 12 = $1,835. T-Mobile's public Q2 2026 numbers.\n"
+    "(2026 guidance 950K to 1.05M) = about 5.1M sign-ups. $152.91 postpaid ARPA x 12 = $1,835. Sources: YouGov, Feb 2022 (49% of Americans find changing carrier too much of a hassle); T-Mobile Q2 2026 Form 8-K on sec.gov (ARPA $152.91, churn 0.99%, 34.7M postpaid accounts).\n"
     "Q&A jump list (type the number, press Enter): 9 how it works, 10 how T-Mobile adds it, 11 wrong answers, "
     "12 what T-Mobile sees, 13 vs autofill and Plaid, 14 business model, 15 what works today, 16 stack, "
     "17 why not build it.")
