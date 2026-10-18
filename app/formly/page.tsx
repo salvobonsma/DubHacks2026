@@ -13,6 +13,15 @@ export default function FormlyHome() {
   const [twin, setTwin] = useState<Twin | null>(null);
   const [fact, setFact] = useState<TwinFact | null>(null);
   const [censoring, setCensoring] = useState<TwinFact | null>(null);
+  const [resetting, setResetting] = useState(false);
+  const [resetBusy, setResetBusy] = useState(false);
+
+  // In-page confirm: the in-app browser silently blocks window.confirm().
+  async function resetDemo() {
+    setResetBusy(true);
+    await Promise.all([fetch("/api/sources", { method: "DELETE" }), fetch("/api/grants", { method: "DELETE" })]);
+    location.reload();
+  }
   const removed = twin?.overrides.filter((o) => o.action === "remove") ?? [];
 
   async function act(f: { label: string }, action: FactAction | "restore", value?: string) {
@@ -52,14 +61,7 @@ export default function FormlyHome() {
             <ConnectPanel onTwin={setTwin} />
           </section>
           <button
-            onClick={async () => {
-              if (!confirm("Remove all sources, the twin, and saved permissions?")) return;
-              await Promise.all([
-                fetch("/api/sources", { method: "DELETE" }),
-                fetch("/api/grants", { method: "DELETE" }),
-              ]);
-              location.reload();
-            }}
+            onClick={() => setResetting(true)}
             className="w-full rounded-2xl border border-line bg-white px-4 py-2.5 text-sm font-medium text-muted shadow-sm transition hover:border-red-200 hover:text-red-600"
           >
             Reset demo
@@ -103,6 +105,35 @@ export default function FormlyHome() {
         </section>
       </main>
       {fact && <SourceViewer fact={fact} onClose={() => setFact(null)} />}
+      {resetting && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => !resetBusy && setResetting(false)}
+        >
+          <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h2 className="font-bold">Reset the demo?</h2>
+            <p className="mt-2 text-sm text-muted">
+              This removes every connected source, your digital twin, your edits, and saved sharing permissions.
+            </p>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setResetting(false)}
+                disabled={resetBusy}
+                className="rounded-full px-4 py-2 text-sm font-medium text-muted hover:bg-bg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={resetDemo}
+                disabled={resetBusy}
+                className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-60"
+              >
+                {resetBusy ? "Resetting…" : "Reset"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {censoring && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
