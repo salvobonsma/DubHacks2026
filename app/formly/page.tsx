@@ -108,7 +108,7 @@ export default function FormlyHome() {
               )}
             </>
           ) : (
-            <p className="text-sm text-muted">Upload a file to build your twin.</p>
+            <p className="text-sm text-muted">Add a source to build your digital twin.</p>
           )}
         </section>
       </main>
