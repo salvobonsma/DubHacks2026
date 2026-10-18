@@ -142,7 +142,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     <div className="flex flex-1 flex-col">
       <main className="mx-auto w-full max-w-[760px] flex-1 px-6 pt-8 pb-12 sm:px-8">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/spacexai/logo-white.png" alt="SpaceXAI" className="mb-8 h-16 w-auto" />
+        <img src="/spacexai/logo-white.png" alt="SpaceXAI" width={400} height={153} className="mb-8 block h-16 w-auto object-contain" />
         {children}
       </main>
       <footer className="sx-legal mx-auto w-full max-w-[760px] px-6 pb-8 sm:px-8">

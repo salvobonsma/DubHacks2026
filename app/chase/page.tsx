@@ -63,7 +63,6 @@ export default function ChaseApplication() {
 
       <div className="mt-6">
         <FormlyButton schema={schema} onFilled={applyFormly} />
-        <p className="ch-note mt-2 text-center">Fill this application from your own data, then review it here.</p>
       </div>
 
       <form
@@ -163,7 +162,7 @@ function Shell({ children }: { children: React.ReactNode }) {
               <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" />
             </svg>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/chase/octagon-white.svg" alt="Chase" className="h-8 w-8" />
+            <img src="/chase/octagon-white.svg" alt="Chase" width={32} height={32} className="h-8 w-8 shrink-0 object-contain" />
           </div>
         </div>
       </header>
@@ -171,7 +170,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-[#e4e8ec] px-6 py-6">
         <div className="mx-auto flex max-w-[478px] flex-col items-center gap-3 text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/chase/logo-blue.svg" alt="Chase" className="h-5 w-auto" />
+          <img src="/chase/logo-blue.svg" alt="Chase" width={124} height={23} className="h-5 w-auto object-contain" />
           <p className="ch-legal">
             A demo application page for Formly, styled after Chase&apos;s card application. Not affiliated with
             JPMorgan Chase. Nothing you enter here leaves this page.
@@ -214,7 +213,7 @@ function Field({
               required={field.required}
               onChange={(e) => onChange(e.target.value)}
             >
-              <option value="">{field.required ? "Choose one" : "None"}</option>
+              <option value="">Choose one</option>
               {field.options?.map((o) => (
                 <option key={o}>{o}</option>
               ))}

@@ -1,0 +1,104 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Jamal Washington",
+    "email": "jwash.atl@icloud.com",
+    "phone": "+1 404-555-0136",
+    "birthday": "2004-11-22",
+    "country": "United States",
+    "member_since": "2016"
+  },
+  "address": "275 Decatur St SE, Unit 1412, Atlanta, GA 30312",
+  "devices": [
+    {
+      "name": "Jamal's iPhone",
+      "model": "iPhone 11",
+      "os": "iOS 26",
+      "carrier": "Cricket (mom's plan)",
+      "note": "hand-me-down, switching to a Pixel 10a"
+    },
+    {
+      "name": "Jamal's MacBook Air",
+      "model": "MacBook Air 13-inch (M2)",
+      "os": "macOS 26",
+      "note": "bought for school with his Pell refund"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Denise Washington",
+      "relationship": "Mother",
+      "phone": "+1 404-555-0198"
+    },
+    {
+      "name": "Marcus Hill",
+      "relationship": "Roommate",
+      "phone": "+1 678-555-0151"
+    },
+    {
+      "name": "Isaiah Washington",
+      "relationship": "Father",
+      "phone": "+1 404-555-0197"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 50 GB, $0.99/month, renews monthly"
+    },
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "Apple Music Student, $5.99/month"
+    },
+    {
+      "from": "GEICO",
+      "subject": "Welcome to GEICO",
+      "summary": "Policy 6125-33-890-12, 2014 Honda Fit, term 09/20/2026 to 03/20/2027"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Chase debit (Mastercard)",
+        "last4": "4444",
+        "expires": "06/29",
+        "cardholder": "Jamal I Washington"
+      }
+    ],
+    "ids": [
+      {
+        "type": "Georgia state ID in Apple Wallet",
+        "number": "058213947",
+        "expires": "2030-11-22"
+      }
+    ],
+    "passes": [
+      "Georgia State University PantherCard",
+      "MARTA Breeze card"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "B+",
+    "height": "6'1\"",
+    "weight": "175 lb",
+    "allergies": [
+      "Peanuts (severe, carries an EpiPen)"
+    ],
+    "medications": [
+      "EpiPen as needed"
+    ],
+    "conditions": [
+      "Peanut allergy"
+    ],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Denise Washington",
+        "relationship": "Mother",
+        "phone": "+1 404-555-0198"
+      }
+    ]
+  }
+}

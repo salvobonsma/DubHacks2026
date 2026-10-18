@@ -1,0 +1,133 @@
+/* Look for the /dmv demo, taken from the California DMV's online vehicle applications: a blue
+   brand bar with the CA and DMV logos, a blue banner with an italic uppercase title, and a white
+   card holding Playfair headings, small uppercase labels and outlined fields.
+   Scoped to .dmv-root so the rest of the Formly site keeps its own look. */
+
+.dmv-root {
+  --dmv-blue: #0077c8;
+  --dmv-blue-dark: #0b669e;
+  --dmv-navy: #163159;
+  --dmv-text: #5d6c7a;
+  --dmv-line: #d3d8dd;
+  --dmv-chip: #eaf2f8;
+  --dmv-page: #f3f7fb;
+  --dmv-required: #d34312;
+  --dmv-gold: #fdb81e;
+
+  --dmv-font: var(--font-figtree), "Helvetica Neue", Arial, sans-serif;
+  --dmv-serif: var(--font-playfair), Georgia, serif;
+
+  min-height: 100vh;
+  background: var(--dmv-page);
+  color: var(--dmv-text);
+  font-family: var(--dmv-font);
+  font-size: 16px;
+  line-height: 1.6;
+  color-scheme: light;
+}
+
+/* Formly's global h1/h2 use Sora; the DMV uses its own faces. */
+.dmv-root h1,
+.dmv-root h2,
+.dmv-root h3 { letter-spacing: normal; }
+
+.dmv-bar { background: linear-gradient(90deg, #0b5fa5 0%, var(--dmv-blue) 100%); }
+.dmv-banner {
+  background:
+    radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.12) 0 90px, transparent 91px),
+    radial-gradient(circle at 8% 90%, rgba(0, 40, 90, 0.35) 0 120px, transparent 121px),
+    linear-gradient(180deg, #2a7fd0 0%, #1f6fbf 100%);
+}
+.dmv-banner-title {
+  font-family: var(--dmv-font);
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+@media (min-width: 640px) {
+  .dmv-banner-title { font-size: 34px; }
+}
+
+.dmv-card { background: #ffffff; border-radius: 8px; }
+
+.dmv-crumb {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 16px 0 14px;
+  margin-right: 14px;
+  font-size: 14px;
+  color: var(--dmv-text);
+  background: var(--dmv-chip);
+}
+.dmv-crumb::after {
+  content: "";
+  position: absolute;
+  right: -14px;
+  top: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 14px solid var(--dmv-chip);
+}
+.dmv-app-name { font-size: 14px; font-weight: 700; color: var(--dmv-blue-dark); }
+.dmv-required-note { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dmv-text); }
+
+.dmv-h2 { font-family: var(--dmv-serif); font-size: 26px; line-height: 1.25; font-weight: 700; color: var(--dmv-navy); }
+.dmv-h3 { font-family: var(--dmv-font); font-size: 22px; line-height: 1.3; font-weight: 700; color: var(--dmv-navy); }
+.dmv-intro { color: var(--dmv-navy); }
+
+.dmv-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dmv-navy);
+}
+.dmv-req { color: var(--dmv-required); margin-left: 4px; }
+.dmv-input {
+  display: block;
+  width: 100%;
+  height: 45px;
+  padding: 0 12px;
+  font-family: var(--dmv-font);
+  font-size: 16px;
+  color: var(--dmv-navy);
+  background-color: #ffffff;
+  border: 0.8px solid var(--dmv-line);
+  border-radius: 3px;
+  outline: none;
+}
+.dmv-input:focus { border-color: var(--dmv-blue); box-shadow: 0 0 0 2px rgba(0, 119, 200, 0.25); }
+.dmv-input::placeholder { color: #8a97a3; }
+select.dmv-input { appearance: none; padding-right: 36px; cursor: pointer; }
+.dmv-chevron { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--dmv-navy); }
+.dmv-helper { margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--dmv-text); }
+
+.dmv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 60px;
+  font-family: var(--dmv-font);
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--dmv-blue);
+  border: 0.8px solid var(--dmv-blue);
+  border-radius: 36px;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .dmv-btn:hover { background: var(--dmv-blue-dark); border-color: var(--dmv-blue-dark); }
+}
+.dmv-btn:disabled { background: #b8c4ce; border-color: #b8c4ce; cursor: not-allowed; }
+.dmv-link { font-weight: 700; color: var(--dmv-blue-dark); }
+
+.dmv-footer { background: var(--dmv-navy); color: rgba(255, 255, 255, 0.8); }

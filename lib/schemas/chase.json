@@ -7,7 +7,7 @@
     { "id": "first_name", "label": "First name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
     { "id": "middle_name", "label": "Middle name (optional)", "type": "text", "section": "Personal info", "category": "basic" },
     { "id": "last_name", "label": "Last name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
-    { "id": "suffix", "label": "Suffix (optional)", "type": "select", "section": "Personal info", "category": "basic", "options": ["Jr.", "Sr.", "II", "III", "IV"] },
+    { "id": "suffix", "label": "Suffix (optional)", "type": "select", "section": "Personal info", "category": "basic", "options": ["None", "Jr.", "Sr.", "II", "III", "IV"] },
 
     { "id": "dob", "label": "Date of birth", "type": "date", "section": "Identification", "category": "personal", "required": true },
     { "id": "mothers_maiden_name", "label": "Mother's maiden name", "type": "text", "section": "Identification", "category": "sensitive", "required": true },

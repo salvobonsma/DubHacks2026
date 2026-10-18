@@ -18,6 +18,7 @@ Local data is stored in `./data/formly.db`, which git ignores. You can also clic
 - `/tmobile`: a long T-Mobile signup form (plans: Essentials, Experience More, Experience Beyond) with the Fill with Formly button
 - `/spacexai`: a SpaceXAI job application. Formly fills it from your resume and drafts the two 50-word short answers
 - `/chase`: a Chase Freedom Unlimited (Visa) credit card application, styled after Chase's own
+- `/dmv`: a California DMV Application for Title or Registration (REG 343), styled after the DMV's online vehicle services
 - `/formly`: your connected sources and your live digital twin
 - `/formly/fill?session=…`: the popup that fills, reviews and sends the form
 - `/formly/scan/<token>`: the phone page behind the "Scan with phone" QR code

@@ -1,0 +1,96 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Maria Gonzalez",
+    "email": "mariagonzalez.rn@icloud.com",
+    "phone": "+1 713-555-0142",
+    "birthday": "1974-03-03",
+    "country": "United States",
+    "member_since": "2012"
+  },
+  "address": "8814 Wildflower Bend, Houston, TX 77084",
+  "devices": [
+    {
+      "name": "Maria's iPad",
+      "model": "iPad Air (M2)",
+      "os": "iPadOS 26",
+      "note": "FaceTime with family and reading; her phone is a Samsung"
+    },
+    {
+      "name": "Family iMac",
+      "model": "iMac 24-inch (M3)",
+      "os": "macOS 26"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Roberto Gonzalez",
+      "relationship": "Husband",
+      "phone": "+1 713-555-0187"
+    },
+    {
+      "name": "Sofia Gonzalez",
+      "relationship": "Daughter",
+      "phone": "+1 713-555-0119"
+    },
+    {
+      "name": "Carmen Rivera",
+      "relationship": "Sister",
+      "phone": "+1 832-555-0164"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 2 TB, Family Sharing with 4 members, $9.99/month, renews monthly"
+    },
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "Apple Music Family, $16.99/month"
+    },
+    {
+      "from": "State Farm",
+      "subject": "Your auto ID cards",
+      "summary": "Policy 2201-447-53F, 2022 Toyota Highlander and 2015 Honda Civic, term ends 12/15/2026"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Wells Fargo Visa",
+        "last4": "5556",
+        "expires": "11/28",
+        "cardholder": "Maria E Gonzalez"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "Memorial Hermann employee badge",
+      "H-E-B rewards card"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "A+",
+    "height": "5'4\"",
+    "weight": "150 lb",
+    "allergies": [
+      "Sulfa drugs"
+    ],
+    "medications": [
+      "Lisinopril 10 mg daily"
+    ],
+    "conditions": [
+      "High blood pressure"
+    ],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Roberto Gonzalez",
+        "relationship": "Husband",
+        "phone": "+1 713-555-0187"
+      }
+    ]
+  }
+}

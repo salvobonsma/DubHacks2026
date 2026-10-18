@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LockIcon } from "./Icons";
 
 export type GoogleScope = "profile" | "contacts" | "gmail" | "drive";
 
@@ -8,7 +9,7 @@ const SCOPES: { id: GoogleScope; label: string; hint: string }[] = [
   { id: "profile", label: "Profile", hint: "Name, birthday, phone and address" },
   { id: "contacts", label: "Contacts", hint: "People you might list as family or emergency contacts" },
   { id: "gmail", label: "Gmail", hint: "Receipts and bills" },
-  { id: "drive", label: "Drive", hint: "Documents like your resume" },
+  { id: "drive", label: "Drive", hint: "Documents like your resume and personal notes" },
 ];
 
 interface Account {
@@ -64,7 +65,8 @@ export function GoogleConsent({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+    <div className="fixed inset-0 z-50 m-0 overflow-y-auto bg-black/40">
+      <div className="flex min-h-full items-center justify-center p-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
         <div className="text-2xl font-medium">
           <span className="text-[#4285F4]">G</span>
@@ -147,10 +149,10 @@ export function GoogleConsent({
             </label>
           ))}
         </div>
-        <p className="mt-4 text-xs text-muted">
-          Formly keeps this data in your digital twin. Businesses only get the answers you approve.
-        </p>
-        <div className="mt-6 flex justify-end gap-2">
+        <div className="mt-6 flex items-center justify-end gap-2">
+          <p className="mr-auto flex items-center gap-1.5 text-xs text-muted">
+            <LockIcon className="h-2.5 w-2.5" stroke={1.25} /> Secure with Formly
+          </p>
           <button
             onClick={onCancel}
             className="rounded-full px-4 py-2 text-sm font-medium text-[#1a73e8] hover:bg-blue-50"
@@ -171,6 +173,7 @@ export function GoogleConsent({
             Allow
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

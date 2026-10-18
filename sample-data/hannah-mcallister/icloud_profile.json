@@ -1,0 +1,96 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Hannah McAllister",
+    "email": "hannah.mcallister99@icloud.com",
+    "phone": "+1 406-555-0185",
+    "birthday": "1999-12-02",
+    "country": "United States",
+    "member_since": "2013"
+  },
+  "address": "119 N Tracy Ave, Apt B, Bozeman, MT 59715",
+  "devices": [
+    {
+      "name": "Hannah's iPhone",
+      "model": "iPhone 13",
+      "os": "iOS 18",
+      "carrier": "Verizon (dad's plan)",
+      "note": "getting an iPhone 16e on her own plan"
+    },
+    {
+      "name": "Hannah's AirPods",
+      "model": "AirPods (3rd generation)"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Doug McAllister",
+      "relationship": "Father",
+      "phone": "+1 406-555-0108"
+    },
+    {
+      "name": "Karen McAllister",
+      "relationship": "Mother",
+      "phone": "+1 406-555-0109"
+    },
+    {
+      "name": "Dr. Elena Price",
+      "relationship": "Manager",
+      "phone": "+1 406-555-0150"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 50 GB, $0.99/month, renews monthly"
+    },
+    {
+      "from": "Bridger Property Management",
+      "subject": "Your lease is signed",
+      "summary": "119 N Tracy Ave, Apt B, $1,450/month, lease through 08/2027"
+    },
+    {
+      "from": "State Farm",
+      "subject": "Auto policy renewal",
+      "summary": "Policy 214-0882-E26, 2016 Subaru Outback, term ends 05/31/2027"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "First Interstate Visa debit",
+        "last4": "4242",
+        "expires": "10/27",
+        "cardholder": "Hannah G McAllister"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "MSU Bobcats student ID (spring 2027)",
+      "Bridger Bowl season pass"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "AB+",
+    "height": "5'5\"",
+    "weight": "135 lb",
+    "allergies": [
+      "Cats",
+      "Amoxicillin"
+    ],
+    "medications": [
+      "Cetirizine 10 mg daily",
+      "Birth control"
+    ],
+    "conditions": [],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Doug McAllister",
+        "relationship": "Father",
+        "phone": "+1 406-555-0108"
+      }
+    ]
+  }
+}

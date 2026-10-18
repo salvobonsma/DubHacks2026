@@ -1,0 +1,122 @@
+/* Landing page. Calm near-white page, two-tone headlines and real product UI as the imagery, after spacefs.com.
+   Scoped to .home so the rest of the site is untouched. */
+
+.home {
+  --home-bg: #f7f8fa;
+  --home-ink: #0f1a2a;
+  --home-muted: #687082;
+  --home-line: #e3e6eb;
+  --home-surface: #ffffff;
+  /* Elevation as layered shadow with a transparent border underneath, so forced-colors mode still draws an edge. */
+  --home-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px -1px oklch(0 0 0 / 0.08),
+    0 12px 32px -12px oklch(0.25 0.03 260 / 0.18);
+  background: var(--home-bg);
+  color: var(--home-ink);
+}
+
+.home-h1 {
+  font-family: var(--font-sora);
+  font-weight: 600;
+  font-size: clamp(38px, 5.2vw, 58px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.home-h2 {
+  font-family: var(--font-sora);
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+/* Second line of a two-tone headline. */
+.home-soft { color: var(--home-muted); }
+.home-lede { color: var(--home-muted); font-size: 18px; line-height: 1.6; text-wrap: pretty; }
+
+/* Pill buttons. Primary carries spacefs's inner highlight and long soft drop. */
+.home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 12px; /* rounded-xl, same as the buttons on My Formly */
+  font-family: var(--font-sora);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  transition-property: scale, background-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+.home-btn:active { scale: 0.96; }
+.home-btn-primary {
+  background: var(--home-ink);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 8px 20px -10px rgba(15, 23, 42, 0.5);
+}
+.home-btn-secondary {
+  background: var(--home-surface);
+  color: var(--home-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 1px oklch(0 0 0 / 0.08),
+    0 1px 2px rgba(15, 23, 42, 0.06);
+}
+@media (hover: hover) {
+  .home-btn-primary:hover { background: #1c2a40; }
+  .home-btn-secondary:hover { background: #fbfbfc; }
+}
+
+.home-surface {
+  background: var(--home-surface);
+  border: 1px solid transparent;
+  box-shadow: var(--home-shadow);
+}
+
+/* Mock form inputs, drawn like the real merchant forms Formly fills. */
+.home-input {
+  display: block;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d4d8de;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 38px;
+  color: var(--home-ink);
+  background: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Formly's own "filled" mark: a green left edge. */
+.home-filled {
+  background-image: linear-gradient(var(--green), var(--green));
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 3px 100%;
+}
+.home-chip {
+  max-width: 100%;
+  padding: 1px 8px;
+  border-radius: 9999px;
+  background: rgba(15, 169, 104, 0.12);
+  color: var(--green-dark);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-row-link { transition-property: background-color; transition-duration: 150ms; }
+@media (hover: hover) {
+  .home-row-link:hover { background: #fafbfc; }
+}

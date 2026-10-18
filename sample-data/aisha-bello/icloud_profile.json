@@ -1,0 +1,99 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Aisha Bello",
+    "email": "aisha.bello.97@icloud.com",
+    "phone": "+1 910-555-0127",
+    "birthday": "1997-08-05",
+    "country": "United States",
+    "member_since": "2014"
+  },
+  "address": "1840 Skibo Rd, Apt 210, Fayetteville, NC 28314",
+  "devices": [
+    {
+      "name": "Aisha's iPhone",
+      "model": "iPhone 15",
+      "os": "iOS 26",
+      "carrier": "Visible",
+      "note": "upgrading to iPhone 17"
+    },
+    {
+      "name": "Aisha's Apple Watch",
+      "model": "Apple Watch SE",
+      "os": "watchOS 26"
+    },
+    {
+      "name": "Aisha's MacBook Air",
+      "model": "MacBook Air 13-inch (M3)",
+      "os": "macOS 26",
+      "note": "for UMGC night classes"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Folake Bello",
+      "relationship": "Mother",
+      "phone": "+1 301-555-0190"
+    },
+    {
+      "name": "Tunde Bello",
+      "relationship": "Brother",
+      "phone": "+1 240-555-0157"
+    },
+    {
+      "name": "SSG Ramon Ortiz",
+      "relationship": "Squad leader",
+      "phone": "+1 910-555-0105"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 200 GB, $2.99/month, renews monthly"
+    },
+    {
+      "from": "USAA",
+      "subject": "Your auto policy is renewed",
+      "summary": "Policy 004418823-7101, 2023 Honda Civic Sport, term ends 03/18/2027"
+    },
+    {
+      "from": "NC DMV",
+      "subject": "Your driver license is on its way",
+      "summary": "NC license 000038421957 mailed Oct 2026, expires 2034-08-05"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Navy Federal Visa",
+        "last4": "5556",
+        "expires": "12/29",
+        "cardholder": "Aisha F Bello"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "Fort Bragg MWR fitness",
+      "Delta SkyMiles"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "O+",
+    "height": "5'7\"",
+    "weight": "145 lb",
+    "allergies": [
+      "Latex"
+    ],
+    "medications": [],
+    "conditions": [],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Folake Bello",
+        "relationship": "Mother",
+        "phone": "+1 301-555-0190"
+      }
+    ]
+  }
+}

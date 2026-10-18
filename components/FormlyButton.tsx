@@ -138,7 +138,25 @@ export function FormlyButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [busy]);
 
+  /** Clicking while waiting: the popup may be lost behind other windows, so close it and start over. */
+  function reset() {
+    const id = sessionRef.current;
+    try {
+      popupRef.current?.close();
+    } catch {}
+    sessionRef.current = null;
+    popupRef.current = null;
+    setBusy(false);
+    if (id)
+      fetch(`${formlyOrigin}/api/sessions`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ sessionId: id, status: "cancelled" }),
+      }).catch(() => {});
+  }
+
   async function open() {
+    if (busy) return reset();
     setBusy(true);
     setPopupGone(false);
     goneSince.current = 0;

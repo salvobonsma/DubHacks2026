@@ -102,3 +102,26 @@ References:
 Other:
   No pets
   Never been arrested or convicted. No bankruptcies
+
+--- Quick answers for forms ---
+  Suffix: none
+  Tax ID type: Social Security number
+  Address type: street address (not military)
+  Residence: rent. Years at this address: 4 (since June 2022)
+  ID I use on forms: Washington driver's license, issued by WA
+  Employment: employed full-time
+  Highest degree: Bachelor's (B.S. Computer Science), University of Washington, 2021, GPA 3.7
+  Years of work experience: 5 (full-time since 2021, plus my 2020 internship)
+  Why SpaceXAI: I've been building rocket telemetry since the UW rocketry team, and my day job is moving fleet telemetry into ML models. I'd want to work on the pipelines that bring Starlink and Starship telemetry into Grok training.
+
+--- Car details for DMV forms ---
+  Vehicle to use on forms: 2019 Subaru Crosstrek Premium (my only car)
+  Body type: SUV (small crossover). Fuel: gas. Color: gray
+  Odometer: 48,210 miles (Oct 2026)
+  Bought used from Lakeside Subaru on 03/14/2022 for $24,300
+  Current registration: Washington, plate CDK4917
+  Use: personal
+  Lienholder: none, paid off in Dec 2024 (title is in my name)
+  Auto insurance: Progressive, policy 9318420571, current term ends 03/01/2027
+
+  Apple Account / iCloud email: alexchen.sea@icloud.com (iPhone 14 Pro, MacBook Pro, Apple Watch)

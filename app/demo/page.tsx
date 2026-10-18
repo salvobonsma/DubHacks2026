@@ -4,6 +4,7 @@ import { ArrowRightIcon } from "@/components/Icons";
 import { FormlyHeader } from "@/components/FormlyHeader";
 import { SampleData } from "@/components/SampleData";
 import chase from "@/lib/schemas/chase.json";
+import dmv from "@/lib/schemas/dmv.json";
 import spacexai from "@/lib/schemas/spacexai.json";
 import tmobile from "@/lib/schemas/tmobile.json";
 
@@ -19,16 +20,16 @@ export default function DemoPicker() {
       <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="text-[28px] leading-tight">Pick a demo form</h1>
         <p className="mt-2 max-w-xl text-muted">
-          All three use the same Fill with Formly button. Connect your data once, then try any of them.
+          Every one uses the same Fill with Formly button. Connect your data once, then try any of them.
         </p>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
           <Link
             href="/tmobile"
             className="group flex flex-col rounded-2xl border border-transparent bg-white p-6 shadow-surface transition hover:shadow-surface-hover"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/tmobile/logo.png" alt="T-Mobile" className="h-7 w-fit" />
+            <img src="/tmobile/logo.png" alt="T-Mobile" width={720} height={145} className="h-7 w-auto self-start object-contain object-left" />
             <h2 className="mt-6 text-xl">{tmobile.title}</h2>
             <p className="mt-1 text-sm text-muted">Plan, phone and your info, up to the credit check</p>
             <p className="mt-4 flex-1 text-[15px]">
@@ -46,7 +47,7 @@ export default function DemoPicker() {
             className="group flex flex-col rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 text-white shadow-surface transition hover:border-white/25"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/spacexai/logo-white.png" alt="SpaceXAI" className="h-7 w-fit" />
+            <img src="/spacexai/logo-white.png" alt="SpaceXAI" width={400} height={153} className="h-7 w-auto self-start object-contain object-left" />
             <h2 className="mt-6 text-xl">{spacexai.title}</h2>
             <p className="mt-1 text-sm text-white/60">
               {spacexai.fields.length} fields · education, experience, 2 short answers
@@ -63,10 +64,10 @@ export default function DemoPicker() {
 
           <Link
             href="/chase"
-            className="group flex flex-col rounded-2xl border border-transparent bg-[#005eb8] p-6 text-white shadow-surface transition hover:bg-[#004a91]"
+            className="group flex flex-col rounded-2xl border border-transparent bg-[#005eb8] p-6 text-white shadow-surface transition"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/chase/logo-white.svg" alt="Chase" className="h-6 w-fit" />
+            <img src="/chase/logo-white.svg" alt="Chase" width={124} height={23} className="h-6 w-auto self-start object-contain object-left" />
             <h2 className="mt-7 text-xl">{chase.title}</h2>
             <p className="mt-1 text-sm text-white/70">{chase.fields.length} fields · SSN, address, income</p>
             <p className="mt-4 flex-1 text-[15px] text-white/90">
@@ -75,6 +76,24 @@ export default function DemoPicker() {
             </p>
             <span className="mt-6 flex items-center gap-1.5 text-sm font-semibold">
               Open the Chase application
+              <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" stroke={2} />
+            </span>
+          </Link>
+
+          <Link
+            href="/dmv"
+            className="group flex flex-col rounded-2xl border border-transparent bg-white p-6 shadow-surface transition hover:shadow-surface-hover"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/dmv/logo-ca-dmv-blue.svg" alt="California DMV" width={103} height={40} className="h-9 w-auto self-start object-contain object-left" />
+            <h2 className="mt-5 text-xl">{dmv.title}</h2>
+            <p className="mt-1 text-sm text-muted">{dmv.fields.length} fields · vehicle, VIN, insurance</p>
+            <p className="mt-4 flex-1 text-[15px]">
+              A California vehicle title and registration. Formly fills your car&apos;s VIN, plate, odometer and
+              insurance along with your license and address.
+            </p>
+            <span className="mt-6 flex items-center gap-1.5 text-sm font-semibold text-[#0b669e]">
+              Open the DMV application
               <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" stroke={2} />
             </span>
           </Link>

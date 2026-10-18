@@ -267,6 +267,8 @@ Values:
   delivery confirmation is kind "suggestion" for every part, with a reason naming the order it shipped to (and
   "a campus mailbox" when it is one); from a profile, ID, lease, bill or bank record it is a fact.
 - Ages and years of experience: work them out from the dates in the data, as of today.
+- If the data explicitly says there is none (no lienholder, no apartment number, no suffix), that is an answer:
+  use "None", or "N/A" if the data says N/A. For a select, pick the option that means none if there is one.
 - Never invent a name, number, date or address that isn't in the data.
 evidence: first, up to 3 short quotes copied word for word from the data that bear on this field (for a plan:
   every streaming or subscription receipt, data use, travel, student status; for a device: the phone on the

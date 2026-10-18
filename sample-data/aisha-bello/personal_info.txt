@@ -56,7 +56,7 @@ Addresses:
   Renters insurance: USAA, policy 004418823-90A
 
 Driver's license:
-  New NC license applied for Sept 2026 (address change), number 000038421957, Class C, no restrictions, expires 2034-08-05
+  New NC license (applied Sept 2026 after the address change, arrived Oct 2026), number 000038421957, Class C, no restrictions, expires 2034-08-05
   Old MD license E-416-782-031-554, expired, surrendered to NC DMV
 Passport: 671204583, issued 2021-05-20, expires 2031-05-19
 DoD ID (CAC) DoD ID number 1584420973
@@ -102,3 +102,27 @@ References:
   1LT Danielle Price, platoon leader, 910-555-0106
 
 Pets: none (on orders too much)
+
+QUICK ANSWERS FOR FORMS (Oct 2026)
+Suffix: none
+Tax ID type: Social Security number
+Address type: street address (civilian, off-post)
+Residence: rent. Years at this address: 1 (since Feb 2025)
+ID for forms now: the new NC driver's license arrived Oct 2026. Number 000038421957, issued by NC, expires 2034-08-05. Use this instead of the passport
+Employment: employed full-time (active duty Army)
+Highest degree: Associate's (A.A.S. Information Systems), Fayetteville Technical Community College, 2022, GPA 3.6. Bachelor's (B.S. Cybersecurity, UMGC) in progress, expected Dec 2027, GPA 3.8
+Years of work experience: 7 (since Jun 2019)
+Why SpaceXAI: Our unit started testing Starlink terminals alongside the VSAT gear in 2025. They came up in minutes where our old terminals took an hour. I'd want to work on Starlink and Starshield network operations, or the systems that move that satellite data around.
+
+VEHICLE DETAILS FOR DMV FORMS
+Vehicle to use on forms: 2023 Honda Civic Sport (only vehicle, titled to me)
+Body type: sedan. Fuel: gas. Color: blue
+VIN 2HGFE2F54PH518840
+Odometer: 31,120 miles (Oct 2026)
+Bought new from Cape Fear Honda on 03/18/2023 for $27,950
+Registered in North Carolina, plate RHX-2219
+Use: personal
+Lienholder: Navy Federal Credit Union, loan 7740021
+Insurance: USAA, policy 004418823-7101, current term ends 03/18/2027
+
+Apple Account / iCloud email: aisha.bello.97@icloud.com (iPhone 15, Apple Watch SE, MacBook Air)
