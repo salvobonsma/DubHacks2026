@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
+import { ProgressStatus } from "@/components/ProgressStatus";
 import { CheckIcon, LockIcon, WarningIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
@@ -289,15 +290,23 @@ export function FillFlow() {
             )}
 
             {step === "filling" && (
-              <div className="mt-16 flex flex-col items-center gap-3 text-center">
-                <span className="text-brand-dark">
-                  <Spinner />
-                </span>
-                <p className="font-semibold">Filling {session.schema.fields.length} fields…</p>
-                <p className="text-xs text-muted">
-                  Matching your digital twin to {session.business}&apos;s form
-                  {essayCount > 0 &&
-                    ` and drafting ${essayCount === 1 ? "a short answer" : `${essayCount} short answers`} from your resume`}
+              <div className="mt-12">
+                <ProgressStatus
+                  task={{
+                    steps: [
+                      `Reading ${session.business}'s form…`,
+                      `Matching your digital twin to ${session.schema.fields.length} fields…`,
+                      ...(essayCount > 0
+                        ? [`Drafting ${essayCount === 1 ? "a short answer" : `${essayCount} short answers`} from your resume…`]
+                        : []),
+                      "Formatting dates, phone numbers and IDs…",
+                      "Almost done…",
+                    ],
+                    expectedMs: 9000 + 6000 * essayCount,
+                  }}
+                />
+                <p className="mt-3 text-xs text-muted">
+                  {session.business} won&apos;t see anything until you review and approve it.
                 </p>
               </div>
             )}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
 import { GoogleConsent, type GoogleScope } from "./GoogleConsent";
+import { ProgressStatus, type ProgressTask } from "./ProgressStatus";
 import { ArrowRightIcon, CheckIcon, CloseIcon, LockIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
 
@@ -52,7 +53,7 @@ const FEATURED = 1;
 /** Data-source connectors. Upload is live; the rest are placeholders for now. */
 export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void }) {
   const [sources, setSources] = useState<SourceRow[]>([]);
-  const [busy, setBusy] = useState<string | null>(null);
+  const [busy, setBusy] = useState<ProgressTask | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -74,7 +75,17 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
 
   async function upload(files: FileList | File[]) {
     if (!files.length) return;
-    setBusy(`Reading ${files.length} file${files.length > 1 ? "s" : ""} and updating your twin…`);
+    const many = files.length > 1;
+    setBusy({
+      steps: [
+        `Uploading ${many ? `${files.length} files` : "your file"}…`,
+        `Reading ${many ? "them" : "it"}…`,
+        "Building your digital twin…",
+        "Double-checking key facts…",
+        "Almost done…",
+      ],
+      expectedMs: 20000 + 5000 * files.length,
+    });
     setError(null);
     const body = new FormData();
     for (const f of files) body.append("files", f);
@@ -92,7 +103,16 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
 
   async function connectGoogle(scopes: GoogleScope[], account: string) {
     setConsent(false);
-    setBusy("Syncing Google account and updating your twin…");
+    setBusy({
+      steps: [
+        "Connecting to Google…",
+        `Syncing ${scopes.length === 4 ? "your Google data" : scopes.join(", ")}…`,
+        "Building your digital twin…",
+        "Double-checking key facts…",
+        "Almost done…",
+      ],
+      expectedMs: 10000,
+    });
     setError(null);
     try {
       const res = await fetch("/api/connectors/google", {
@@ -113,7 +133,10 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
 
   async function disconnectGoogle() {
     setDisconnectOpen(false);
-    setBusy(`Disconnecting ${GOOGLE.name} and updating your twin…`);
+    setBusy({
+      steps: [`Disconnecting ${GOOGLE.name}…`, "Rebuilding your digital twin…", "Almost done…"],
+      expectedMs: 9000,
+    });
     setError(null);
     const res = await fetch("/api/sources?connector=google", { method: "DELETE" }).then((r) => r.json());
     if (res.error) setError(res.error);
@@ -129,7 +152,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   }
 
   async function remove(id: string) {
-    setBusy("Removing source and updating your twin…");
+    setBusy({ steps: ["Removing the source…", "Rebuilding your digital twin…", "Almost done…"], expectedMs: 9000 });
     const res = await fetch(`/api/sources?id=${id}`, { method: "DELETE" }).then((r) => r.json());
     if (res.error) setError(res.error);
     else onTwin?.(res.twin ?? null);
@@ -311,9 +334,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       )}
 
       {busy && (
-        <div className="flex items-center gap-2 rounded-lg bg-brand/10 px-3 py-2 text-sm text-brand-dark">
-          <Spinner /> {busy}
-        </div>
+        <ProgressStatus task={busy} className="rounded-lg bg-brand/10 px-3 py-2.5" />
       )}
       {error && <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
 
