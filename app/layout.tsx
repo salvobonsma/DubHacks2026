@@ -17,6 +17,7 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: "Formly",
   description: "Fill any form with your own data, without handing it over.",
+  appleWebApp: { title: "Formly", capable: true },
 };
 
 // Matches the demo banner at the top of every page, so Safari's tab bar blends into it.
