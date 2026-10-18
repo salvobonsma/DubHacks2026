@@ -37,7 +37,8 @@ There are three sharing modes per business: *Ask every time*, *Auto-share basics
 
 - **Upload** (live): PDF, images, DOCX, TXT, CSV, JSON
 - **Google** (mock): a fake consent screen with an account switcher for every persona in `sample-data/`. It syncs their `google_profile.json`, and Drive brings in their `personal_info.txt` and `resume.docx`
-- OneDrive, Gmail, Apple Wallet: coming soon
+- **iCloud** (mock): the same process as Google, behind a fake Sign in with Apple sheet. It syncs the persona's `icloud_profile.json` (Apple Account and devices, contacts, iCloud Mail receipts, Wallet, Health Medical ID), and iCloud Drive brings in the same `personal_info.txt` and `resume.docx` as Google Drive
+- Dropbox, Notion, banks and the rest: coming soon
 
 ## Deploy (Dokploy)
 

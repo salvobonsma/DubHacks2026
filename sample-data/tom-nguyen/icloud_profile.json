@@ -1,0 +1,94 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Tom Nguyen",
+    "email": "tomnguyen.freight@icloud.com",
+    "phone": "+1 402-555-0163",
+    "birthday": "1981-01-17",
+    "country": "United States",
+    "member_since": "2015"
+  },
+  "address": "6107 S 42nd St, Omaha, NE 68117",
+  "devices": [
+    {
+      "name": "Truck iPad",
+      "model": "iPad mini (A17 Pro)",
+      "os": "iPadOS 26",
+      "note": "mounted in the cab for maps, ELD app and FaceTime home; his phone is a Samsung"
+    },
+    {
+      "name": "Kids' iPad",
+      "model": "iPad (9th generation)",
+      "os": "iPadOS 18"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Lan Nguyen",
+      "relationship": "Wife",
+      "phone": "+1 402-555-0116"
+    },
+    {
+      "name": "Kevin Nguyen",
+      "relationship": "Son",
+      "phone": "+1 402-555-0181"
+    },
+    {
+      "name": "Rick Halvorsen",
+      "relationship": "Dispatcher",
+      "phone": "+1 712-555-0140"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 200 GB, Family Sharing, $2.99/month, renews monthly"
+    },
+    {
+      "from": "Farm Bureau Financial Services",
+      "subject": "Auto policy renewal",
+      "summary": "Policy AU-NE-5521890, 2017 Toyota Tacoma, term ends 01/31/2027"
+    },
+    {
+      "from": "Starlink",
+      "subject": "Your Starlink receipt",
+      "summary": "Roam plan for Starlink Mini, $50.00/month"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Visa",
+        "last4": "4242",
+        "expires": "04/28",
+        "cardholder": "Thomas V Nguyen"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "Pilot Flying J myRewards",
+      "Love's Connect"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "O-",
+    "height": "5'8\"",
+    "weight": "190 lb",
+    "allergies": [],
+    "medications": [
+      "Metformin 500 mg twice a day"
+    ],
+    "conditions": [
+      "Type 2 diabetes, controlled"
+    ],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Lan Nguyen",
+        "relationship": "Wife",
+        "phone": "+1 402-555-0116"
+      }
+    ]
+  }
+}

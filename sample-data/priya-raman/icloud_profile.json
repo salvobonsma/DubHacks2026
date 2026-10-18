@@ -1,0 +1,107 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Priya Raman",
+    "email": "priya.raman.studio@icloud.com",
+    "phone": "+1 718-555-0159",
+    "birthday": "1992-06-30",
+    "country": "United States",
+    "member_since": "2010"
+  },
+  "address": "412 Prospect Pl, Apt 4R, Brooklyn, NY 11238",
+  "devices": [
+    {
+      "name": "Priya's iPhone",
+      "model": "iPhone 16 Pro",
+      "os": "iOS 26",
+      "carrier": "Verizon",
+      "note": "upgrading to iPhone 17 Pro Max"
+    },
+    {
+      "name": "Studio MacBook Pro",
+      "model": "MacBook Pro 16-inch (M4 Pro)",
+      "os": "macOS 26"
+    },
+    {
+      "name": "Priya's iPad Pro",
+      "model": "iPad Pro 13-inch with Apple Pencil Pro",
+      "os": "iPadOS 26"
+    },
+    {
+      "name": "Priya's Apple Watch",
+      "model": "Apple Watch Series 10",
+      "os": "watchOS 26"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Dev Malhotra",
+      "relationship": "Partner",
+      "phone": "+1 917-555-0144"
+    },
+    {
+      "name": "Lakshmi Raman",
+      "relationship": "Mother",
+      "phone": "+1 732-555-0170"
+    },
+    {
+      "name": "Nina Okafor",
+      "relationship": "Accountant",
+      "phone": "+1 212-555-0133"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 2 TB, $9.99/month, renews monthly"
+    },
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "Apple One Premier, $37.95/month"
+    },
+    {
+      "from": "Oscar Health",
+      "subject": "Your 2026 member ID card",
+      "summary": "Member ID OSC70218843, Silver EPO"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "American Express Business Gold",
+        "last4": "0005",
+        "expires": "09/27",
+        "cardholder": "Priya L Raman"
+      },
+      {
+        "name": "Apple Card (Mastercard)",
+        "last4": "2210",
+        "expires": "05/30",
+        "cardholder": "Priya Raman"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "Brooklyn Museum membership",
+      "Equinox Brooklyn Heights"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "B+",
+    "height": "5'6\"",
+    "weight": "128 lb",
+    "allergies": [],
+    "medications": [],
+    "conditions": [],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Dev Malhotra",
+        "relationship": "Partner",
+        "phone": "+1 917-555-0144"
+      }
+    ]
+  }
+}

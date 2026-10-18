@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
-import { GoogleConsent, type GoogleScope } from "./GoogleConsent";
+import { AppleConsent } from "./AppleConsent";
+import { GoogleConsent } from "./GoogleConsent";
 import { FINISH_MS, ProgressStatus, type ProgressTask } from "./ProgressStatus";
 import { ArrowRightIcon, CheckIcon, CloseIcon, LockIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
@@ -22,11 +23,20 @@ interface Connector {
   category: string;
 }
 
-const GOOGLE: Connector = { name: "Google", slug: "google", category: "Accounts" };
+/** Live account connectors: each has a mock sign-in sheet and an /api/connectors/<id> sync route. */
+interface AccountConnector extends Connector {
+  id: "google" | "icloud";
+  /** How many scopes the sign-in sheet offers, so "all of them" can read as "your <name> data". */
+  scopeCount: number;
+}
 
-/** Placeholders for now; only Google (profile, contacts, Gmail, Drive) and file upload are wired up. */
+const GOOGLE: AccountConnector = { id: "google", name: "Google", slug: "google", category: "Accounts", scopeCount: 4 };
+const ICLOUD: AccountConnector = { id: "icloud", name: "iCloud", slug: "icloud", category: "Accounts", scopeCount: 6 };
+const ACCOUNTS = [GOOGLE, ICLOUD];
+const accountFor = (connector: string) => ACCOUNTS.find((a) => a.id === connector);
+
+/** Placeholders for now; Upload, Google and iCloud are the live sources. */
 const COMING_SOON: Connector[] = [
-  { name: "iCloud", slug: "icloud", category: "Accounts" },
   { name: "Dropbox", slug: "dropbox", category: "Email & files" },
   { name: "Apple Wallet", slug: "applepay", category: "Accounts" },
   { name: "Box", slug: "box", category: "Email & files" },
@@ -46,8 +56,8 @@ const COMING_SOON: Connector[] = [
   { name: "GitHub", slug: "github", category: "Travel & more" },
 ];
 
-/** How many placeholder tiles sit next to Upload and Google before the "+N more" tile. */
-const FEATURED = 1;
+/** How many placeholder tiles sit next to Upload, Google and iCloud before the "+N more" tile. */
+const FEATURED = 0;
 
 
 /** Data-source connectors. Upload is live; the rest are placeholders for now. */
@@ -63,11 +73,11 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   }
   const [error, setError] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
-  const [consent, setConsent] = useState(false);
+  const [consent, setConsent] = useState<AccountConnector | null>(null);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [sourcesOpen, setSourcesOpen] = useState(false);
-  const [disconnectOpen, setDisconnectOpen] = useState(false);
+  const [disconnecting, setDisconnecting] = useState<AccountConnector | null>(null);
   const input = useRef<HTMLInputElement>(null);
 
   const refresh = useCallback(async () => {
@@ -108,12 +118,12 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     await finishBusy();
   }
 
-  async function connectGoogle(scopes: GoogleScope[], account: string) {
-    setConsent(false);
+  async function connectAccount(c: AccountConnector, scopes: string[], account: string) {
+    setConsent(null);
     setBusy({
       steps: [
-        "Connecting to Google…",
-        `Syncing ${scopes.length === 4 ? "your Google data" : scopes.join(", ")}…`,
+        `Connecting to ${c.name}…`,
+        `Syncing ${scopes.length === c.scopeCount ? `your ${c.name} data` : scopes.join(", ")}…`,
         "Building your digital twin…",
         "Double-checking key facts…",
         "Almost done…",
@@ -122,7 +132,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     });
     setError(null);
     try {
-      const res = await fetch("/api/connectors/google", {
+      const res = await fetch(`/api/connectors/${c.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scopes, account }),
@@ -136,26 +146,26 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     await finishBusy();
   }
 
-  const googleSynced = sources.some((s) => s.connector === "google");
+  const isSynced = (c: AccountConnector) => sources.some((s) => s.connector === c.id);
 
-  async function disconnectGoogle() {
-    setDisconnectOpen(false);
+  async function disconnect(c: AccountConnector) {
+    setDisconnecting(null);
     setBusy({
-      steps: [`Disconnecting ${GOOGLE.name}…`, "Rebuilding your digital twin…", "Almost done…"],
+      steps: [`Disconnecting ${c.name}…`, "Rebuilding your digital twin…", "Almost done…"],
       expectedMs: 3500,
     });
     setError(null);
-    const res = await fetch("/api/sources?connector=google", { method: "DELETE" }).then((r) => r.json());
+    const res = await fetch(`/api/sources?connector=${c.id}`, { method: "DELETE" }).then((r) => r.json());
     if (res.error) setError(res.error);
     else onTwin?.(res.twin ?? null);
     await refresh();
     await finishBusy();
   }
 
-  /** Google tile/row: connect if not synced, otherwise offer to disconnect. */
-  function openGoogle() {
-    if (googleSynced) setDisconnectOpen(true);
-    else setConsent(true);
+  /** Account tile/row: connect if not synced, otherwise offer to disconnect. */
+  function openAccount(c: AccountConnector) {
+    if (isSynced(c)) setDisconnecting(c);
+    else setConsent(c);
   }
 
   async function remove(id: string) {
@@ -213,26 +223,31 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
         </Modal>
       )}
 
-      {consent && <GoogleConsent onAllow={connectGoogle} onCancel={() => setConsent(false)} />}
+      {consent?.id === "google" && (
+        <GoogleConsent onAllow={(scopes, account) => connectAccount(GOOGLE, scopes, account)} onCancel={() => setConsent(null)} />
+      )}
+      {consent?.id === "icloud" && (
+        <AppleConsent onAllow={(scopes, account) => connectAccount(ICLOUD, scopes, account)} onCancel={() => setConsent(null)} />
+      )}
 
-      {disconnectOpen && (
-        <Modal title={`Disconnect ${GOOGLE.name}?`} onClose={() => setDisconnectOpen(false)}>
+      {disconnecting && (
+        <Modal title={`Disconnect ${disconnecting.name}?`} onClose={() => setDisconnecting(null)}>
           <div className="flex items-start gap-3">
-            <ConnectorLogo slug={GOOGLE.slug} className="mt-0.5 h-8 w-8 shrink-0" />
+            <ConnectorLogo slug={disconnecting.slug} className="mt-0.5 h-8 w-8 shrink-0" />
             <p className="text-sm text-muted">
-              Formly will remove the data it synced from your {GOOGLE.name} account and rebuild your digital twin
-              without it. You can reconnect any time.
+              Formly will remove the data it synced from your {disconnecting.name} account and rebuild your digital
+              twin without it. You can reconnect any time.
             </p>
           </div>
           <div className="mt-6 flex justify-end gap-2">
             <button
-              onClick={() => setDisconnectOpen(false)}
+              onClick={() => setDisconnecting(null)}
               className="rounded-full px-4 py-2 text-sm font-medium text-muted transition-colors hover:bg-bg"
             >
               Cancel
             </button>
             <button
-              onClick={disconnectGoogle}
+              onClick={() => disconnect(disconnecting)}
               className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700"
             >
               Disconnect
@@ -254,21 +269,24 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
             </span>
             <span className="w-full truncate text-[11px] font-medium">Upload</span>
           </button>
-          <button
-            onClick={openGoogle}
-            disabled={!!busy}
-            className={`${tile} ${googleSynced ? "border-brand bg-brand/5" : "border-transparent shadow-surface hover:shadow-surface-hover"}`}
-          >
-            <span className="relative">
-              <ConnectorLogo slug={GOOGLE.slug} />
-              {googleSynced && (
-                <span className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-brand text-white ring-2 ring-white">
-                  <CheckIcon className="h-2.5 w-2.5" />
-                </span>
-              )}
-            </span>
-            <span className="w-full truncate text-[11px] font-medium">{GOOGLE.name}</span>
-          </button>
+          {ACCOUNTS.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => openAccount(c)}
+              disabled={!!busy}
+              className={`${tile} ${isSynced(c) ? "border-brand bg-brand/5" : "border-transparent shadow-surface hover:shadow-surface-hover"}`}
+            >
+              <span className="relative">
+                <ConnectorLogo slug={c.slug} />
+                {isSynced(c) && (
+                  <span className="absolute -right-1.5 -top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-brand text-white ring-2 ring-white">
+                    <CheckIcon className="h-2.5 w-2.5" />
+                  </span>
+                )}
+              </span>
+              <span className="w-full truncate text-[11px] font-medium">{c.name}</span>
+            </button>
+          ))}
           {COMING_SOON.slice(0, FEATURED).map((c) => (
             <button key={c.name} type="button" className={`${tile} border-transparent shadow-surface hover:shadow-surface-hover`}>
               <ConnectorLogo slug={c.slug} />
@@ -301,26 +319,27 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                 </button>
               </div>
             </div>
-            {[...new Set([GOOGLE, ...COMING_SOON].map((c) => c.category))].map((cat) => (
+            {[...new Set([...ACCOUNTS, ...COMING_SOON].map((c) => c.category))].map((cat) => (
               <div key={cat}>
                 <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">{cat}</p>
                 <div className="grid grid-cols-2 gap-2">
-                  {[GOOGLE, ...COMING_SOON]
+                  {[...ACCOUNTS, ...COMING_SOON]
                     .filter((c) => c.category === cat)
-                    .map((c) =>
-                      c === GOOGLE ? (
+                    .map((c) => {
+                      const live = ACCOUNTS.find((a) => a === c);
+                      return live ? (
                         <button
                           key={c.name}
                           onClick={() => {
                             setMoreOpen(false);
-                            openGoogle();
+                            openAccount(live);
                           }}
                           disabled={!!busy}
                           className="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 text-left text-sm shadow-surface transition hover:shadow-surface-hover"
                         >
                           <ConnectorLogo slug={c.slug} className="h-5 w-5" />
                           <span className="flex-1 truncate font-medium">{c.name}</span>
-                          {googleSynced && <span className="text-xs text-brand-dark">Synced</span>}
+                          {isSynced(live) && <span className="text-xs text-brand-dark">Synced</span>}
                         </button>
                       ) : (
                         <button
@@ -331,8 +350,8 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                           <ConnectorLogo slug={c.slug} className="h-5 w-5" />
                           <span className="flex-1 truncate font-medium">{c.name}</span>
                         </button>
-                      ),
-                    )}
+                      );
+                    })}
                 </div>
               </div>
             ))}
@@ -353,7 +372,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           <span className="flex -space-x-1.5">
             {[...new Set(sources.map((s) => s.connector))].map((c) => (
               <span key={c} className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-bg">
-                {c === "google" ? <ConnectorLogo slug={GOOGLE.slug} className="h-3 w-3" /> : <FileIcon />}
+                {accountFor(c) ? <ConnectorLogo slug={accountFor(c)!.slug} className="h-3 w-3" /> : <FileIcon />}
               </span>
             ))}
           </span>
@@ -375,12 +394,16 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
               {sources.map((s) => (
                 <li key={s.id} className="flex items-center gap-3 px-3 py-2.5 text-sm">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-bg">
-                    {s.connector === "google" ? <ConnectorLogo slug={GOOGLE.slug} className="h-3.5 w-3.5" /> : <FileIcon />}
+                    {accountFor(s.connector) ? (
+                      <ConnectorLogo slug={accountFor(s.connector)!.slug} className="h-3.5 w-3.5" />
+                    ) : (
+                      <FileIcon />
+                    )}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate">{s.name}</span>
                     <span className="block text-xs text-muted">
-                      {s.connector === "google" ? `Synced from ${GOOGLE.name}` : "Uploaded"} on{" "}
+                      {accountFor(s.connector) ? `Synced from ${accountFor(s.connector)!.name}` : "Uploaded"} on{" "}
                       {new Date(s.created_at).toLocaleDateString()}
                     </span>
                   </span>

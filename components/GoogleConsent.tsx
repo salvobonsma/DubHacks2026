@@ -63,7 +63,8 @@ export function GoogleConsent({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/40">
+      <div className="flex min-h-full items-center justify-center p-4">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
         <div className="text-2xl font-medium">
           <span className="text-[#4285F4]">G</span>
@@ -167,6 +168,7 @@ export function GoogleConsent({
             Allow
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

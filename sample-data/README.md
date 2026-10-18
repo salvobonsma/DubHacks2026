@@ -1,8 +1,10 @@
 # Demo personas
 
-Every person here is made up. Phone numbers use the fictional 555-01xx range, emails use the reserved `example.com`/`.net`/`.org`/`.edu` domains, SSNs come from the 987-65-432x block set aside for advertising, card numbers are Stripe test cards, and every bank account uses Stripe's test routing number `110000000` with a test account number. VINs, plates, policy and member IDs are invented.
+Every person here is made up. Phone numbers use the fictional 555-01xx range, emails use the reserved `example.com`/`.net`/`.org`/`.edu` domains (the `@icloud.com` Apple Account addresses are invented too and never contacted), SSNs come from the 987-65-432x block set aside for advertising, card numbers are Stripe test cards, and every bank account uses Stripe's test routing number `110000000` with a test account number. VINs, plates, policy and member IDs are invented.
 
-To demo someone, click **Reset demo**, then upload that person's folder with **Upload**. Each folder has `personal_info.txt` (their own notes, each written in a different style), `contacts.csv`, `google_profile.json` and `resume.docx`. Or connect **Google** and pick the person from the account switcher on the sign-in screen; Drive brings in their `personal_info.txt` and resume, so Google alone gives Formly everything in the folder except `contacts.csv`.
+To demo someone, click **Reset demo**, then upload that person's folder with **Upload**. Each folder has `personal_info.txt` (their own notes, each written in a different style), `contacts.csv`, `google_profile.json`, `icloud_profile.json` and `resume.docx`. Or connect **Google** or **iCloud** and pick the person from the account switcher on the sign-in screen. Google Drive and iCloud Drive both bring in their `personal_info.txt` and resume, so either one alone gives Formly enough to fill every demo form.
+
+`icloud_profile.json` is each person's Apple side: an `@icloud.com` Apple Account, their Apple devices (people with Android phones have an iPad or Mac), contacts, iCloud Mail receipts, Wallet (cards by last four digits, plus a state ID or license where that state supports IDs in Wallet) and a Health Medical ID that matches their notes.
 
 ## What every persona covers
 

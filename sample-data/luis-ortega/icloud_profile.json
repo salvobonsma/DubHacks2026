@@ -1,0 +1,105 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Luis Ortega",
+    "email": "luis.ortega.abq@icloud.com",
+    "phone": "+1 505-555-0132",
+    "birthday": "1987-07-09",
+    "country": "United States",
+    "member_since": "2016"
+  },
+  "address": "3214 Calle del Monte NW, Albuquerque, NM 87120",
+  "devices": [
+    {
+      "name": "Cocina iPad",
+      "model": "iPad Air 11-inch (M2)",
+      "os": "iPadOS 26",
+      "note": "runs the restaurant's POS and menu costing; his phone is a Pixel"
+    },
+    {
+      "name": "Kids' iPad",
+      "model": "iPad (10th generation)",
+      "os": "iPadOS 26"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Rosa Ortega",
+      "relationship": "Wife",
+      "phone": "+1 505-555-0145"
+    },
+    {
+      "name": "Javier Ortega",
+      "relationship": "Brother",
+      "phone": "+1 915-555-0166"
+    },
+    {
+      "name": "Teresa Ortega",
+      "relationship": "Mother",
+      "phone": "+1 915-555-0167"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 200 GB, Family Sharing, $2.99/month, renews monthly"
+    },
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "Apple Business Essentials for La Ortega Cocina, 1 device, $2.99/month"
+    },
+    {
+      "from": "State Farm",
+      "subject": "Auto policy documents",
+      "summary": "Policy 498-2216-B04, 2020 Honda Odyssey and 2018 Ford F-150, term ends 05/01/2027"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Business Mastercard",
+        "last4": "4444",
+        "expires": "03/28",
+        "cardholder": "Luis A Ortega"
+      }
+    ],
+    "ids": [
+      {
+        "type": "New Mexico driver's license in Apple Wallet",
+        "number": "194027365",
+        "expires": "2027-07-09"
+      }
+    ],
+    "passes": [
+      "Sam's Club Plus membership",
+      "Costco Business"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "A+",
+    "height": "5'9\"",
+    "weight": "185 lb",
+    "allergies": [
+      "Shellfish"
+    ],
+    "medications": [],
+    "conditions": [
+      "Appendectomy 2014"
+    ],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Rosa Ortega",
+        "relationship": "Wife",
+        "phone": "+1 505-555-0145"
+      },
+      {
+        "name": "Javier Ortega",
+        "relationship": "Brother",
+        "phone": "+1 915-555-0166"
+      }
+    ]
+  }
+}

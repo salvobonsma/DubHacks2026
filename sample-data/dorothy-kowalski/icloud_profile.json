@@ -1,0 +1,95 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Dorothy Kowalski",
+    "email": "dottie.kowalski@icloud.com",
+    "phone": "+1 414-555-0175",
+    "birthday": "1951-09-14",
+    "country": "United States",
+    "member_since": "2019"
+  },
+  "address": "2918 S Delaware Ave, Milwaukee, WI 53207",
+  "devices": [
+    {
+      "name": "Dorothy's iPad",
+      "model": "iPad (10th generation)",
+      "os": "iPadOS 26",
+      "note": "for FaceTime with her grandson Ethan; getting an iPhone 17 soon"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Michael Kowalski",
+      "relationship": "Son",
+      "phone": "+1 262-555-0128"
+    },
+    {
+      "name": "Susan Brandt",
+      "relationship": "Daughter",
+      "phone": "+1 608-555-0146"
+    },
+    {
+      "name": "Paul Nowak",
+      "relationship": "Neighbor",
+      "phone": "+1 414-555-0111"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 50 GB, $0.99/month, renews monthly"
+    },
+    {
+      "from": "American Family Insurance",
+      "subject": "Your new auto policy",
+      "summary": "Policy 48-1192-6630-21, 2023 Toyota Corolla, through 08/12/2027"
+    },
+    {
+      "from": "Consumer Cellular",
+      "subject": "Your monthly statement",
+      "summary": "1 line, 414-555-0175, $42.00 due"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Discover it",
+        "last4": "1117",
+        "expires": "02/30",
+        "cardholder": "Dorothy A Kowalski"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "Milwaukee Public Library card"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "A-",
+    "height": "5'3\"",
+    "weight": "140 lb",
+    "allergies": [
+      "Codeine"
+    ],
+    "medications": [
+      "Levothyroxine 50 mcg every morning",
+      "Atorvastatin 20 mg at night",
+      "Aspirin 81 mg daily"
+    ],
+    "conditions": [
+      "Hypothyroidism",
+      "High cholesterol",
+      "Arthritis in both knees",
+      "Cataract surgery 2020"
+    ],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Michael Kowalski",
+        "relationship": "Son",
+        "phone": "+1 262-555-0128"
+      }
+    ]
+  }
+}

@@ -2,8 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { nanoid } from "nanoid";
 import { db } from "@/lib/db";
-import { extractText } from "@/lib/extract";
-import { listGoogleAccounts, SAMPLE_ROOT } from "@/lib/personas";
+import { listGoogleAccounts, readDriveDocs, SAMPLE_ROOT } from "@/lib/personas";
 import { rebuildTwin } from "@/lib/twin";
 
 const ALL_SCOPES = ["profile", "contacts", "gmail", "drive"] as const;
@@ -46,13 +45,9 @@ export async function POST(req: Request) {
     synced.push("gmail");
   }
   if (scopes.includes("drive")) {
-    // The persona's own notes stand in for a "Personal info" doc in their Drive, so Google alone brings
-    // in everything forms ask for (IDs, vehicles, health, money), not just the resume.
-    const notes = await fs.readFile(path.join(dir, "personal_info.txt"), "utf8").catch(() => null);
-    if (notes) parts.push(`## Drive: Personal info.txt\n${notes}`);
-    const resume = await fs.readFile(path.join(dir, "resume.docx")).catch(() => null);
-    if (resume) parts.push(`## Drive: Resume.docx\n${await extractText("resume.docx", "", resume)}`);
-    if (notes || resume) synced.push("drive");
+    const docs = await readDriveDocs(dir);
+    for (const d of docs) parts.push(`## Drive: ${d.name}\n${d.text}`);
+    if (docs.length) synced.push("drive");
   }
   if (synced.length === 0) return Response.json({ error: "Nothing to sync from that account" }, { status: 400 });
 

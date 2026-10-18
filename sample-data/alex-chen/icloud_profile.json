@@ -1,0 +1,102 @@
+{
+  "connector": "icloud",
+  "apple_account": {
+    "name": "Alex Chen",
+    "email": "alexchen.sea@icloud.com",
+    "phone": "+1 206-555-0147",
+    "birthday": "1999-04-12",
+    "country": "United States",
+    "member_since": "2013"
+  },
+  "address": "4521 Brooklyn Ave NE, Apt 3B, Seattle, WA 98105",
+  "devices": [
+    {
+      "name": "Alex's iPhone",
+      "model": "iPhone 14 Pro",
+      "os": "iOS 26",
+      "carrier": "Verizon"
+    },
+    {
+      "name": "Alex's MacBook Pro",
+      "model": "MacBook Pro 14-inch (M3)",
+      "os": "macOS 26"
+    },
+    {
+      "name": "Alex's Apple Watch",
+      "model": "Apple Watch Series 9",
+      "os": "watchOS 26"
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Mia Chen",
+      "relationship": "Sister",
+      "phone": "+1 425-555-0193"
+    },
+    {
+      "name": "Linda Chen",
+      "relationship": "Mother",
+      "phone": "+1 425-555-0122"
+    },
+    {
+      "name": "Jordan Park",
+      "relationship": "Roommate",
+      "phone": "+1 206-555-0178"
+    }
+  ],
+  "icloud_mail": [
+    {
+      "from": "Apple",
+      "subject": "Your receipt from Apple",
+      "summary": "iCloud+ with 200 GB, $2.99/month, renews monthly"
+    },
+    {
+      "from": "Apple",
+      "subject": "Your AppleCare+ coverage",
+      "summary": "AppleCare+ for iPhone 14 Pro, $9.99/month, coverage through 09/2027"
+    },
+    {
+      "from": "Progressive",
+      "subject": "Your policy documents",
+      "summary": "Auto policy 9318420571, 2019 Subaru Crosstrek, term 09/01/2026 to 03/01/2027"
+    }
+  ],
+  "wallet": {
+    "cards": [
+      {
+        "name": "Chase Sapphire Preferred (Visa)",
+        "last4": "4242",
+        "expires": "08/29",
+        "cardholder": "Alexander W Chen"
+      }
+    ],
+    "ids": [],
+    "passes": [
+      "Northwind Robotics office badge",
+      "Seattle Sounders 2026 season ticket"
+    ]
+  },
+  "medical_id": {
+    "blood_type": "O+",
+    "height": "5'10\"",
+    "weight": "165 lb",
+    "allergies": [
+      "Penicillin (hives)"
+    ],
+    "medications": [
+      "Loratadine 10 mg, seasonal"
+    ],
+    "conditions": [
+      "Seasonal allergies",
+      "Nearsighted"
+    ],
+    "organ_donor": true,
+    "emergency_contacts": [
+      {
+        "name": "Mia Chen",
+        "relationship": "Sister",
+        "phone": "+1 425-555-0193"
+      }
+    ]
+  }
+}
