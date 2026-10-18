@@ -51,7 +51,7 @@ addresses:
   landlord: The Lofts at Georgia State, leasing office 404-555-0115. me and Marcus split rent
   renters insurance: Lemonade, policy LP-GA-7730216
 
-state id: issued 11/22/2022. no license yet. no car, i take marta
+state id: issued 11/22/2022. no license yet. no car until sept 2026 (see below), i still mostly take marta
   driving: have my learner's permit study guide, planning to get a license in 2027
 
 health:
@@ -95,3 +95,14 @@ quick answers for forms
   highest degree: bachelor's in progress (b.s. computer science, georgia state, expected may 2028, gpa 3.52)
   years of work experience: 3 (part-time since sept 2023)
   why spacexai: me and marcus watch every starship launch on the dorm tv. after my recycling sorter project i got hooked on running ml on small hardware. i'd want to work on getting models running on starlink hardware or on the pipelines that move vehicle data into training
+
+car stuff for the dmv (got my first car!!)
+  bought my uncle ray's old car on 09/20/2026 for $6,500 cash. it's in my name, mom drives me until i get my license
+  2014 Honda Fit LX, blue hatchback, gas
+  vin JHMGE8H35EC012847
+  odometer 112,460 miles when i bought it
+  plate: georgia, TCK-9083 (registered at the fulton county tag office 09/2026)
+  use: personal
+  lienholder: none, paid cash
+  insurance: GEICO, policy 6125-33-890-12, 6 month policy, ends 03/20/2027
+  for the registration i use my georgia state id 058213947
