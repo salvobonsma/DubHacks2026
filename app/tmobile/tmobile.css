@@ -89,8 +89,8 @@
   font-size: 16px;
   color: var(--tm-text);
   background-color: var(--tm-input);
-  border: 1px solid var(--tm-border-input);
-  border-radius: 2px;
+  border: 1px solid var(--tm-gray-500);
+  border-radius: 4px;
   outline: none;
 }
 .tm-input:focus {
@@ -144,3 +144,88 @@
 }
 
 .tm-legal { font-size: 12px; color: var(--tm-text-secondary); }
+
+/* ---- Checkout look, from t-mobile.com's "Pick your plan" flow ---- */
+
+/* Checkout header: the magenta T square, a page title, and utility icons. */
+.tm-checkout-title { font-family: var(--tm-font-headline); font-weight: 800; font-size: 18px; color: var(--tm-text); }
+.tm-icon-btn { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--tm-text); }
+
+/* Magenta promo banner with their soft diagonal sheen. */
+.tm-promo {
+  border-radius: 12px;
+  color: #ffffff;
+  background:
+    radial-gradient(120% 140% at 85% 20%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(100deg, #c4006a 0%, var(--tm-magenta-400) 45%, #ec3d95 100%);
+}
+.tm-promo-title { font-family: var(--tm-font-headline); font-weight: 800; font-size: 22px; line-height: 1.15; }
+@media (min-width: 640px) {
+  .tm-promo-title { font-size: 28px; }
+}
+
+.tm-hero { font-family: var(--tm-font-headline); font-weight: 800; font-size: 30px; line-height: 1.1; color: var(--tm-text); }
+@media (min-width: 640px) {
+  .tm-hero { font-size: 38px; }
+}
+
+/* Section cards. */
+.tm-section { background: var(--tm-white); border-radius: 18px; padding: 24px; box-shadow: 0 2px 20px 3px rgba(65, 65, 65, 0.08); }
+@media (min-width: 640px) {
+  .tm-section { padding: 28px 32px; }
+}
+.tm-h2 { font-family: var(--tm-font-headline); font-weight: 800; font-size: 22px; line-height: 1.15; color: var(--tm-text); }
+
+/* Plan cards: black title band, badge, price, perks. Selected = dark 1.6px outline. */
+.tm-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+  border-radius: 18px;
+  background: var(--tm-gray-100);
+  border: 1.6px solid var(--tm-gray-300);
+  box-shadow: 0 2px 20px 3px rgba(65, 65, 65, 0.11);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.tm-plan[aria-checked="true"] { border-color: var(--tm-gray-1000); }
+@media (hover: hover) {
+  .tm-plan:hover { border-color: var(--tm-gray-700); }
+}
+.tm-plan-head { background: var(--tm-gray-1000); color: #ffffff; padding: 14px 18px; font-family: var(--tm-font-headline); font-weight: 800; font-size: 20px; line-height: 1.15; }
+.tm-badge { display: inline-block; padding: 3px 6px; border-radius: 4px; background: var(--tm-gray-1000); color: var(--tm-gray-200); font-size: 11px; font-weight: 600; }
+.tm-price { font-family: var(--tm-font-headline); font-weight: 800; font-size: 28px; line-height: 1; color: var(--tm-text); }
+.tm-perk { display: flex; gap: 8px; font-size: 14px; line-height: 1.4; color: var(--tm-text-body); }
+.tm-perk-check { flex-shrink: 0; margin-top: 2px; color: #008a00; }
+.tm-radio-dot {
+  display: flex; width: 22px; height: 22px; align-items: center; justify-content: center;
+  border-radius: 999px; border: 2px solid rgba(255, 255, 255, 0.7);
+}
+.tm-plan[aria-checked="true"] .tm-radio-dot { background: var(--tm-magenta-400); border-color: var(--tm-magenta-400); }
+
+/* Selector cards for lines and number transfer. Selected = dark outline and lift. */
+.tm-choice {
+  border-radius: 6px;
+  background: var(--tm-white);
+  border: 1.6px solid var(--tm-gray-300);
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.tm-choice[aria-checked="true"] { border-color: var(--tm-gray-1000); box-shadow: 0 3px 10px rgba(65, 65, 65, 0.19); }
+@media (hover: hover) {
+  .tm-choice:hover { border-color: var(--tm-gray-700); }
+}
+.tm-choice-title { font-weight: 700; color: var(--tm-text); }
+.tm-choice-sub { font-size: 13px; color: var(--tm-text-secondary); }
+
+/* Sticky Continue bar, like their checkout. */
+.tm-sticky { position: sticky; bottom: 0; z-index: 20; background: var(--tm-white); border-top: 1px solid var(--tm-border); box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06); }
+.tm-progress { height: 4px; border-radius: 4px; background: var(--tm-gray-300); overflow: hidden; }
+.tm-progress > span { display: block; height: 100%; background: var(--tm-magenta-400); transition: width 0.3s; }
+
+.tm-footer { background: var(--tm-gray-900); color: rgba(255, 255, 255, 0.72); }
+.tm-choice-center { text-align: center; }
