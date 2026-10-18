@@ -7,7 +7,7 @@
   ],
   "addresses": [{ "type": "home", "formatted": "1840 Skibo Rd, Apt 210, Fayetteville, NC 28314" }],
   "gmail_receipts": [
-    { "from": "Visible", "subject": "Your Visible payment", "summary": "Account for 910-555-0127, Visible+ plan, $45.00 charged" },
+    { "from": "T-Mobile", "subject": "Your T-Mobile bill is ready", "summary": "Account for 910-555-0127, 1 line, Essentials 2.0, iPhone 15 installment $26.25, device protection, $106.29 due, AutoPay on" },
     { "from": "myPay (DFAS)", "subject": "Your LES is available", "summary": "Leave and Earnings Statement, SGT E-5, BAH Fayetteville NC" }
   ]
 }

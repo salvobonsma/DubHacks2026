@@ -7,7 +7,7 @@
   ],
   "addresses": [{ "type": "home", "formatted": "8814 Wildflower Bend, Houston, TX 77084" }],
   "gmail_receipts": [
-    { "from": "AT&T", "subject": "Your AT&T bill is ready", "summary": "Wireless account, 3 lines, Unlimited Extra plan, $187.40 due" },
+    { "from": "T-Mobile", "subject": "Your T-Mobile bill is ready", "summary": "Account for 713-555-0142, 3 lines, Essentials 2.0, Galaxy S25 Edge installment $45.83, $181.40 due, AutoPay on" },
     { "from": "Memorial Hermann", "subject": "Your pay statement is available", "summary": "Pay date 08/15/2026, Registered Nurse, ICU" }
   ]
 }

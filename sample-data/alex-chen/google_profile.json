@@ -6,5 +6,5 @@
     { "name": "Linda Chen", "relationship": "Mother", "phone": "+1 425-555-0122" }
   ],
   "addresses": [{ "type": "home", "formatted": "4521 Brooklyn Ave NE, Apt 3B, Seattle, WA 98105" }],
-  "gmail_receipts": [{ "from": "Verizon Wireless", "subject": "Your bill is ready", "summary": "Account for 206-555-0147, Unlimited Plus plan, $82.00 due" }]
+  "gmail_receipts": [{ "from": "T-Mobile", "subject": "Your T-Mobile bill is ready", "summary": "Account for 206-555-0147, 1 line, Experience More 2.0 with device protection, $106.98 due, AutoPay on" }]
 }

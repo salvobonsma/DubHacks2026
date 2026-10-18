@@ -7,7 +7,7 @@
   ],
   "addresses": [{ "type": "home", "formatted": "412 Prospect Pl, Apt 4R, Brooklyn, NY 11238" }],
   "gmail_receipts": [
-    { "from": "Verizon", "subject": "Your Verizon bill", "summary": "Account for (718) 555-0159, 2 lines, Unlimited Plus, $148.00 due" },
+    { "from": "T-Mobile", "subject": "Your T-Mobile bill is ready", "summary": "Account for (718) 555-0159, 1 line, Experience More 2.0, $90.39 due, AutoPay on" },
     { "from": "Squarespace", "subject": "Your domain renewal", "summary": "priyaraman-studio, annual plan renewed" }
   ]
 }

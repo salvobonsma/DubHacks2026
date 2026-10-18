@@ -12,9 +12,9 @@
   "devices": [
     {
       "name": "Alex's iPhone",
-      "model": "iPhone 14 Pro",
+      "model": "iPhone 14",
       "os": "iOS 26",
-      "carrier": "Verizon"
+      "carrier": "T-Mobile"
     },
     {
       "name": "Alex's MacBook Pro",
@@ -53,7 +53,7 @@
     {
       "from": "Apple",
       "subject": "Your AppleCare+ coverage",
-      "summary": "AppleCare+ for iPhone 14 Pro, $9.99/month, coverage through 09/2027"
+      "summary": "AppleCare+ for iPhone 14, $9.99/month, coverage through 09/2027"
     },
     {
       "from": "Progressive",

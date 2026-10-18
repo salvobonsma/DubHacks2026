@@ -5,7 +5,7 @@
 - DOB: 1992-06-30
 - SSN: 987-65-4323
 - Email: hello@priyaraman-studio.example.com
-- Mobile: (718) 555-0159 (Verizon, 2 lines with Dev; we want to port both)
+- Mobile: (718) 555-0159 (T-Mobile since 2022, Experience More 2.0, just my line; Dev has his own carrier)
 
 ## Home
 - 412 Prospect Pl, Apt 4R, Brooklyn, NY 11238
@@ -21,7 +21,7 @@
 - 2025 income: $112,000 (Schedule C net)
 
 ## Phone plan
-- Go5G Next, 2 lines, iPhone 17 Pro Max for me
+- Go5G Next, add Dev as a 2nd line, iPhone 17 Pro Max for me (trade in my paid-off iPhone 16 Pro)
 - Want to upgrade every year, that's why Next
 
 ## Payment

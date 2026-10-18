@@ -5,7 +5,7 @@ Name: Maria Elena Gonzalez
 Born: March 3, 1974
 SSN: 987-65-4320
 Email: maria.gonzalez.rn@example.com
-Cell: 713-555-0142 (AT&T family plan, 3 lines: me, Roberto, Sofia)
+Cell: 713-555-0142 (T-Mobile family account since 2024, 3 lines on Essentials 2.0: me, Roberto, Sofia)
 
 Home (we own it):
   8814 Wildflower Bend
@@ -20,8 +20,8 @@ Work: Registered Nurse (ICU, night shift) at Memorial Hermann Katy Hospital
   Full time since 2009
   Salary about $98,500/yr
 
-Switching plans: want Go5G Plus, 3 lines, keep all our numbers.
-New phone for me: Samsung Galaxy S26
+Phones: me Galaxy S25 Edge ($45.83/mo, about $458 left), Roberto Galaxy A36 5G (paid off), Sofia iPhone 16 Plus (paid off)
+Want to move all 3 lines to Go5G Plus. Next phone for me: Samsung Galaxy S26
 
 Card for bills: Wells Fargo Visa
   Name on card: Maria E Gonzalez

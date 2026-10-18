@@ -6,7 +6,7 @@
   ],
   "addresses": [{ "type": "home", "formatted": "2918 S Delaware Ave, Milwaukee, WI 53207" }],
   "gmail_receipts": [
-    { "from": "Consumer Cellular", "subject": "Your monthly statement", "summary": "Account for 414-555-0175, 1 line, $52.18 due" },
+    { "from": "T-Mobile", "subject": "Your T-Mobile bill is ready", "summary": "Account for 414-555-0175, 1 line, Essentials 2.0, device protection, $79.63 due, AutoPay on" },
     { "from": "Wisconsin Retirement System", "subject": "Annual benefit statement", "summary": "Retired teacher annuity, Milwaukee Public Schools" }
   ]
 }

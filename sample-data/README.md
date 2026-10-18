@@ -6,6 +6,8 @@ To demo someone, click **Reset demo**, then upload that person's folder with **U
 
 `icloud_profile.json` is each person's Apple side: an `@icloud.com` Apple Account, their Apple devices (people with Android phones have an iPad or Mac), contacts, iCloud Mail receipts, Wallet (cards by last four digits, plus a state ID or license where that state supports IDs in Wallet) and a Health Medical ID that matches their notes.
 
+Everyone is an existing **T-Mobile** customer. The **T-Mobile** connector pulls each person's account from the T-Mobile hackathon sandbox (which account is in `lib/tmobile.ts`), and their own notes, Gmail and iCloud receipts match it: same lines, plan, phones, installments and latest bill.
+
 ## What every persona covers
 
 Each person has enough to fill every demo form (T-Mobile, SpaceXAI, Chase) and the forms we're likely to add next: DMV, passport, medical intake, rental, bank, tax and other job applications. Every person also has one vehicle marked to use on forms, with its VIN, odometer, purchase details, lienholder and insurance term.

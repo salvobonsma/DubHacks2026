@@ -7,15 +7,15 @@ import snapshot from "./tmobile-snapshot.json";
  */
 const API = process.env.TMOBILE_API_URL ?? (process.env.NODE_ENV === "production" ? "" : "http://localhost:8000");
 
-/** sample-data folder → sandbox account, picked so the household roughly matches the person. */
+/** sample-data folder → sandbox account. Each person's own files (notes, Gmail, iCloud) match this account's lines, phones and bills. */
 export const TMOBILE_ACCOUNTS: Record<string, string> = {
   "alex-chen": "ACC-PERSONA-11",
   "maria-gonzalez": "ACC-PERSONA-12",
   "jamal-washington": "ACC-PERSONA-01",
   "dorothy-kowalski": "ACC-PERSONA-30",
-  "hannah-mcallister": "ACC-PERSONA-35",
+  "hannah-mcallister": "ACC-PERSONA-03",
   "luis-ortega": "ACC-PERSONA-37",
-  "priya-raman": "ACC-PERSONA-20",
+  "priya-raman": "ACC-PERSONA-32",
   "tom-nguyen": "ACC-PERSONA-09",
   "aisha-bello": "ACC-PERSONA-25",
 };

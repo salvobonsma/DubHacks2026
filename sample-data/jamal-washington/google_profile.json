@@ -8,6 +8,6 @@
   "addresses": [{ "type": "home", "formatted": "275 Decatur St SE, Unit 1412, Atlanta, GA 30312" }],
   "gmail_receipts": [
     { "from": "Georgia State University", "subject": "Fall 2026 enrollment confirmed", "summary": "Undergraduate, Computer Science, junior standing" },
-    { "from": "Cricket Wireless", "subject": "Payment received", "summary": "Account for 404-555-0136, 4 lines, $160.00 paid" }
+    { "from": "T-Mobile", "subject": "Your T-Mobile bill is ready", "summary": "Account for 404-555-0136, 1 line, Essentials Saver 2.0 (student), bring your own phone, $56.06 due, AutoPay on" }
   ]
 }
