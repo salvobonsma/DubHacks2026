@@ -28,10 +28,14 @@ function sameValue(id, got, want) {
 }
 
 async function visit() {
-  // A fresh visitor: the proxy sets formly_uid on the first response.
-  const res = await fetch(`${BASE}/api/me`);
-  const cookie = (res.headers.getSetCookie?.() ?? []).map((c) => c.split(";")[0]).join("; ");
-  if (!cookie) throw new Error("no formly_uid cookie from /api/me");
+  // A fresh visitor: the proxy sets formly_uid on the first response. Builds without per-visitor data
+  // (single-user main) set no cookie, so start from a clean slate instead.
+  const res = await fetch(`${BASE}/api/me`).catch(() => null);
+  const cookie = (res?.headers.getSetCookie?.() ?? []).map((c) => c.split(";")[0]).join("; ");
+  if (!cookie) {
+    await fetch(`${BASE}/api/sources`, { method: "DELETE" });
+    await fetch(`${BASE}/api/grants`, { method: "DELETE" }).catch(() => null);
+  }
   return cookie;
 }
 
@@ -41,7 +45,9 @@ async function runOne(slug) {
   const cookie = await visit();
   const form = new FormData();
   for (const f of fs.readdirSync(path.join(dir, "inbox"))) {
-    form.append("files", new Blob([fs.readFileSync(path.join(dir, "inbox", f))], { type: "message/rfc822" }), f);
+    // Builds without .eml support (main) take the same email as plain text: EML_AS_TXT=1.
+    const asText = process.env.EML_AS_TXT === "1";
+    form.append("files", new Blob([fs.readFileSync(path.join(dir, "inbox", f))], { type: asText ? "text/plain" : "message/rfc822" }), asText ? f.replace(/\.eml$/, ".txt") : f);
   }
   const t0 = Date.now();
   const up = await fetch(`${BASE}/api/sources`, { method: "POST", body: form, headers: { cookie } });
@@ -65,15 +71,21 @@ async function runOne(slug) {
 
   const traps = truth._traps?.relative ? [truth._traps.relative.name, truth._traps.relative.street, truth._traps.relative.city].map(norm) : [];
   const rows = [];
+  const formIds = new Set(schema.fields.map((f) => f.id));
   for (const [id, t] of Object.entries(truth)) {
-    if (id.startsWith("_")) continue;
+    // Score only the fields this build's T-Mobile form has (main's form differs from the race form).
+    if (id.startsWith("_") || !formIds.has(id)) continue;
     const g = got[id] ?? {};
     const v = g.value ?? null;
     let verdict;
     if (t.kind === "never") verdict = v == null ? "ok" : "LEAK";
     else if (t.kind === "blank-ok") verdict = v == null || v === "" ? "ok" : `extra:${v}`;
     else if (t.kind === "fact") verdict = v == null ? "MISSING" : sameValue(id, v, t.value) ? "ok" : "WRONG";
-    else verdict = t.expect.includes(v) ? (v == null || g.reason || g.suggested || g.source ? "ok" : "no-reason") : v == null ? "MISSING" : "WRONG";
+    else if (id === "device" && !(schema.fields.find((x) => x.id === id)?.options ?? []).includes(t.expect[0])) {
+      // This build asks for the phone model as text instead of bring-your-own vs buy: score the model.
+      const model = (t.note ?? "").replace(/^owns an? /, "");
+      verdict = v == null ? "MISSING" : norm(v).includes(norm(model)) ? "ok" : "WRONG";
+    } else verdict = t.expect.includes(v) ? (v == null || g.reason || g.suggested || g.source ? "ok" : "no-reason") : v == null ? "MISSING" : "WRONG";
     if (v && traps.some((x) => x && norm(v).includes(x))) verdict = "TRAP";
     rows.push({ id, kind: t.kind, want: t.value ?? t.expect ?? null, got: v, verdict, source: g.source ?? null, reason: g.reason ?? null });
   }

@@ -1,6 +1,7 @@
 import { GoogleGenAI, ThinkingLevel, Type, type GenerateContentParameters, type Part } from "@google/genai";
 import type { CriticalFact, FilledField, FormField, FormSchema } from "./types";
 import { trimToWords } from "./words";
+import { claudeConfigured, claudeGenerate } from "./claude";
 
 // Flash-Lite with low thinking: ~3s fills, same accuracy as Flash on these extraction tasks.
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite";
@@ -25,6 +26,8 @@ function ai() {
  * and immediate fallback to the next model when one is overloaded or rate limited.
  */
 async function generate(params: GenerateContentParameters) {
+  // With an Anthropic key, every request runs on Claude instead (same prompts and schemas, no free-tier caps).
+  if (claudeConfigured()) return (await claudeGenerate(params)) as never;
   const models = [...new Set([params.model, ...FALLBACKS, MODEL])];
   const config = { ...params.config, thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } };
   let lastErr: unknown;
