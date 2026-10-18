@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ConnectorLogo } from "./ConnectorLogo";
 import { GoogleConsent } from "./GoogleConsent";
 import type { Twin } from "@/lib/types";
 
@@ -12,11 +13,41 @@ interface SourceRow {
   created_at: number;
 }
 
-const COMING_SOON = [
-  { name: "OneDrive", icon: "☁", color: "#0078D4" },
-  { name: "Gmail", icon: "✉", color: "#EA4335" },
-  { name: "Apple Wallet", icon: "▣", color: "#111827" },
+interface Connector {
+  name: string;
+  /** Simple Icons slug, served from cdn.simpleicons.org. */
+  slug: string;
+  category: string;
+}
+
+const GOOGLE: Connector = { name: "Google Drive", slug: "googledrive", category: "Email & files" };
+
+/** Placeholders for now; only Google Drive and file upload are wired up. */
+const COMING_SOON: Connector[] = [
+  { name: "iCloud", slug: "icloud", category: "Accounts" },
+  { name: "Dropbox", slug: "dropbox", category: "Email & files" },
+  { name: "Apple Wallet", slug: "applepay", category: "Accounts" },
+  { name: "Gmail", slug: "gmail", category: "Email & files" },
+  { name: "Box", slug: "box", category: "Email & files" },
+  { name: "Notion", slug: "notion", category: "Email & files" },
+  { name: "Evernote", slug: "evernote", category: "Email & files" },
+  { name: "Chase", slug: "chase", category: "Banking & finance" },
+  { name: "Bank of America", slug: "bankofamerica", category: "Banking & finance" },
+  { name: "Wells Fargo", slug: "wellsfargo", category: "Banking & finance" },
+  { name: "American Express", slug: "americanexpress", category: "Banking & finance" },
+  { name: "PayPal", slug: "paypal", category: "Banking & finance" },
+  { name: "Venmo", slug: "venmo", category: "Banking & finance" },
+  { name: "Robinhood", slug: "robinhood", category: "Banking & finance" },
+  { name: "Coinbase", slug: "coinbase", category: "Banking & finance" },
+  { name: "Intuit", slug: "intuit", category: "Banking & finance" },
+  { name: "Uber", slug: "uber", category: "Travel & more" },
+  { name: "Airbnb", slug: "airbnb", category: "Travel & more" },
+  { name: "GitHub", slug: "github", category: "Travel & more" },
 ];
+
+/** How many placeholder tiles sit next to Upload and Google before the "+N more" tile. */
+const FEATURED = 1;
+
 
 /** Data-source connectors. Upload is live; the rest are placeholders for now. */
 export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void }) {
@@ -25,6 +56,9 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   const [error, setError] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
   const refresh = useCallback(async () => {
@@ -79,59 +113,144 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setBusy(null);
   }
 
+  const googleSynced = sources.some((s) => s.connector === "google");
+  const tile = "flex flex-col items-center justify-center gap-1.5 rounded-xl border px-1 py-3 transition";
+
   return (
     <div className="space-y-4">
-      <div
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDrag(true);
-        }}
-        onDragLeave={() => setDrag(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDrag(false);
-          upload(e.dataTransfer.files);
-        }}
-        onClick={() => input.current?.click()}
-        className={`cursor-pointer rounded-xl border-2 border-dashed p-6 text-center transition ${
-          drag ? "border-brand bg-brand/10" : "border-line hover:border-brand"
-        }`}
-      >
-        <div className="text-sm font-semibold">Drop files or click to upload</div>
-        <div className="mt-1 text-xs text-muted">PDF, images, DOCX, TXT, CSV, JSON</div>
-        <input
-          ref={input}
-          type="file"
-          multiple
-          hidden
-          accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json"
-          onChange={(e) => e.target.files && upload(e.target.files)}
-        />
-      </div>
+      {uploadOpen && (
+        <Modal title="Upload files" onClose={() => setUploadOpen(false)}>
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDrag(true);
+            }}
+            onDragLeave={() => setDrag(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDrag(false);
+              setUploadOpen(false);
+              upload(e.dataTransfer.files);
+            }}
+            onClick={() => input.current?.click()}
+            className={`flex cursor-pointer flex-col items-center rounded-xl border-2 border-dashed px-6 py-10 text-center transition ${
+              drag ? "border-brand bg-brand/10" : "border-line hover:border-brand hover:bg-brand/5"
+            }`}
+          >
+            <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-brand/15 text-brand-dark">
+              <UploadIcon />
+            </span>
+            <div className="text-sm font-semibold">Drop files or click to upload</div>
+            <div className="mt-1 text-xs text-muted">PDF, images, DOCX, TXT, CSV, JSON</div>
+            <input
+              ref={input}
+              type="file"
+              multiple
+              hidden
+              accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json"
+              onChange={(e) => {
+                setUploadOpen(false);
+                if (e.target.files) upload(e.target.files);
+              }}
+            />
+          </div>
+          <p className="mt-3 text-xs text-muted">Files stay with Formly. Businesses only get the answers you approve.</p>
+        </Modal>
+      )}
 
       {consent && <GoogleConsent onAllow={connectGoogle} onCancel={() => setConsent(false)} />}
-      <div className="grid grid-cols-4 gap-2">
-        <button
-          onClick={() => setConsent(true)}
-          disabled={!!busy}
-          className="flex flex-col items-center gap-1 rounded-lg border border-line p-2 transition hover:border-[#4285F4]"
-        >
-          <span className="text-lg font-bold text-[#4285F4]">G</span>
-          <span className="text-[11px]">{sources.some((s) => s.connector === "google") ? "Synced ✓" : "Google"}</span>
-        </button>
-        {COMING_SOON.slice(0, 3).map((c) => (
-          <div
-            key={c.name}
-            title="Coming soon"
-            className="flex flex-col items-center gap-1 rounded-lg border border-line p-2 opacity-50"
+
+      <div>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Add a source</p>
+        <div className="grid grid-cols-4 gap-2">
+          <button
+            onClick={() => setUploadOpen(true)}
+            disabled={!!busy}
+            className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}
           >
-            <span className="text-lg font-bold" style={{ color: c.color }}>
-              {c.icon}
+            <span className="flex h-6 w-6 items-center justify-center text-navy">
+              <UploadIcon className="h-5 w-5" />
             </span>
-            <span className="text-[11px]">{c.name}</span>
-          </div>
-        ))}
+            <span className="w-full truncate text-[11px] font-medium">Upload</span>
+          </button>
+          <button
+            onClick={() => setConsent(true)}
+            disabled={!!busy}
+            className={`${tile} ${googleSynced ? "border-brand bg-brand/5" : "border-line hover:border-navy/30 hover:shadow-sm"}`}
+          >
+            <ConnectorLogo slug={GOOGLE.slug} />
+            <span className="w-full truncate text-[11px] font-medium">{googleSynced ? "Synced ✓" : GOOGLE.name}</span>
+          </button>
+          {COMING_SOON.slice(0, FEATURED).map((c) => (
+            <button key={c.name} type="button" className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}>
+              <ConnectorLogo slug={c.slug} />
+              <span className="w-full truncate text-center text-[11px] font-medium">{c.name}</span>
+            </button>
+          ))}
+          <button onClick={() => setMoreOpen(true)} className={`${tile} border-line hover:border-navy/30 hover:shadow-sm`}>
+            <span className="flex h-6 items-center text-base font-bold">+{COMING_SOON.length - FEATURED}</span>
+            <span className="w-full truncate text-[11px] text-muted">More</span>
+          </button>
+        </div>
       </div>
+
+      {moreOpen && (
+        <Modal title="Add a source" wide onClose={() => setMoreOpen(false)}>
+          <div className="max-h-[60vh] space-y-4 overflow-y-auto pr-1">
+            <div>
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">Files</p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => {
+                    setMoreOpen(false);
+                    setUploadOpen(true);
+                  }}
+                  disabled={!!busy}
+                  className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+                >
+                  <UploadIcon className="h-5 w-5" />
+                  <span className="flex-1 truncate font-medium">Upload files</span>
+                </button>
+              </div>
+            </div>
+            {[...new Set([GOOGLE, ...COMING_SOON].map((c) => c.category))].map((cat) => (
+              <div key={cat}>
+                <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">{cat}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {[GOOGLE, ...COMING_SOON]
+                    .filter((c) => c.category === cat)
+                    .map((c) =>
+                      c === GOOGLE ? (
+                        <button
+                          key={c.name}
+                          onClick={() => {
+                            setMoreOpen(false);
+                            setConsent(true);
+                          }}
+                          disabled={!!busy}
+                          className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+                        >
+                          <ConnectorLogo slug={c.slug} className="h-5 w-5" />
+                          <span className="flex-1 truncate font-medium">{c.name}</span>
+                          {googleSynced && <span className="text-xs text-brand-dark">Synced</span>}
+                        </button>
+                      ) : (
+                        <button
+                          key={c.name}
+                          type="button"
+                          className="flex items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+                        >
+                          <ConnectorLogo slug={c.slug} className="h-5 w-5" />
+                          <span className="flex-1 truncate font-medium">{c.name}</span>
+                        </button>
+                      ),
+                    )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
 
       {busy && (
         <div className="flex items-center gap-2 rounded-lg bg-brand/10 px-3 py-2 text-sm text-brand-dark">
@@ -141,25 +260,103 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       {error && <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
 
       {sources.length > 0 && (
-        <ul className="divide-y divide-line rounded-xl border border-line">
-          {sources.map((s) => (
-            <li key={s.id} className="flex items-center gap-3 px-3 py-2 text-sm">
-              <span className="rounded bg-bg px-1.5 py-0.5 text-[10px] font-bold uppercase text-muted">
-                {s.connector}
+        <button
+          onClick={() => setSourcesOpen(true)}
+          className="flex w-full items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-left text-sm transition hover:border-navy/30 hover:shadow-sm"
+        >
+          <span className="flex -space-x-1.5">
+            {[...new Set(sources.map((s) => s.connector))].map((c) => (
+              <span key={c} className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-bg">
+                {c === "google" ? <ConnectorLogo slug={GOOGLE.slug} className="h-3 w-3" /> : <FileIcon />}
               </span>
-              <span className="flex-1 truncate">{s.name}</span>
-              <button
-                onClick={() => remove(s.id)}
-                disabled={!!busy}
-                className="text-xs text-muted hover:text-red-600"
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </span>
+          <span className="flex-1 font-medium">
+            {sources.length} source{sources.length === 1 ? "" : "s"} connected
+          </span>
+          <span className="text-xs text-muted">Manage →</span>
+        </button>
+      )}
+
+      {sourcesOpen && (
+        <Modal title="Connected sources" onClose={() => setSourcesOpen(false)}>
+          {sources.length === 0 ? (
+            <p className="text-sm text-muted">No sources yet.</p>
+          ) : (
+            <ul className="max-h-[60vh] divide-y divide-line overflow-y-auto rounded-xl border border-line">
+              {sources.map((s) => (
+                <li key={s.id} className="flex items-center gap-3 px-3 py-2.5 text-sm">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-bg">
+                    {s.connector === "google" ? <ConnectorLogo slug={GOOGLE.slug} className="h-3.5 w-3.5" /> : <FileIcon />}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate">{s.name}</span>
+                    <span className="block text-xs text-muted">
+                      {s.connector === "google" ? GOOGLE.name : "Upload"} · {new Date(s.created_at).toLocaleDateString()}
+                    </span>
+                  </span>
+                  <button
+                    onClick={() => remove(s.id)}
+                    disabled={!!busy}
+                    className="text-xs text-muted hover:text-red-600"
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Modal>
       )}
     </div>
+  );
+}
+
+function Modal({
+  title,
+  wide = false,
+  onClose,
+  children,
+}: {
+  title: string;
+  wide?: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
+      <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-2xl bg-white p-5 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-bold">{title}</h2>
+          <button onClick={onClose} aria-label="Close" className="text-xl leading-none text-muted hover:text-navy">
+            ×
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function FileIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-muted" fill="none" stroke="currentColor" strokeWidth={2} strokeLinejoin="round">
+      <path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z M14 3v5h5" />
+    </svg>
+  );
+}
+
+function UploadIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 16V4M6 10l6-6 6 6M4 20h16" />
+    </svg>
   );
 }
 

@@ -23,6 +23,12 @@
   --font-sans: var(--font-dm-sans);
 }
 
+/* Tailwind v4 dropped the pointer cursor on buttons; bring it back everywhere. */
+button:not(:disabled),
+[role="button"] {
+  cursor: pointer;
+}
+
 body {
   background: var(--bg);
   color: var(--navy);

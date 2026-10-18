@@ -4,8 +4,14 @@ import { db } from "@/lib/db";
 import { extractText } from "@/lib/extract";
 import { listSources, rebuildTwin } from "@/lib/twin";
 
-export async function GET() {
+export async function GET(req: Request) {
   await connection();
+  // ?id= returns one source with its full text, for the source viewer.
+  const id = new URL(req.url).searchParams.get("id");
+  if (id) {
+    const source = listSources().find((s) => s.id === id);
+    return source ? Response.json(source) : Response.json({ error: "Not found" }, { status: 404 });
+  }
   return Response.json(listSources().map(({ text, ...s }) => ({ ...s, chars: text.length })));
 }
 
