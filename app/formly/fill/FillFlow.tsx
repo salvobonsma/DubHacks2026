@@ -239,7 +239,7 @@ export function FillFlow() {
                 {twin && (
                   <div>
                     <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
-                      Sharing
+                      Permissions
                     </p>
                     <div className="space-y-1.5">
                       {MODES.map((m) => (
