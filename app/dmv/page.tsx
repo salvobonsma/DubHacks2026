@@ -92,7 +92,6 @@ export default function DmvApplication() {
 
               <div className="mt-6 max-w-md">
                 <FormlyButton schema={schema} onFilled={applyFormly} />
-                <p className="dmv-helper text-center">Fill this application from your own records, then review it.</p>
               </div>
 
               <form
