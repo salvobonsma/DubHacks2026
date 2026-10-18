@@ -56,7 +56,7 @@ export function PermissionPrompt({
         </span>
       </div>
       <p className="mt-2 text-[15px]">
-        <strong>{business}</strong> is asking for your <strong>{request.title}</strong>
+        <strong>{business}</strong> is asking for <strong>{request.title}</strong>
       </p>
       <ul className="mt-3 space-y-1 rounded-lg bg-bg p-3 font-mono text-[12px]">
         {request.fields.map((f) => (

@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
-import { ProgressStatus } from "@/components/ProgressStatus";
+import { FINISH_MS, ProgressStatus } from "@/components/ProgressStatus";
 import { CheckIcon, LockIcon, SyncIcon, WarningIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
@@ -17,6 +17,9 @@ interface Session {
   returnUrl: string | null;
   schema: FormSchema;
 }
+
+/** "Google (Profile, Contacts, Gmail, Drive)" → "Google": the scopes are noise on a small chip. */
+const sourceName = (source: string) => source.replace(/\s*\(.*\)\s*$/, "");
 
 interface Row {
   fieldId: string;
@@ -48,6 +51,7 @@ export function FillFlow() {
   const [queue, setQueue] = useState<PromptRequest[]>([]);
   const [promptIdx, setPromptIdx] = useState(0);
   const [reviewTab, setReviewTab] = useState<"filled" | "missing">("filled");
+  const [fillDone, setFillDone] = useState(false);
 
   useEffect(() => {
     if (!sessionId) return;
@@ -70,6 +74,7 @@ export function FillFlow() {
   async function fill() {
     if (!session) return;
     setStep("filling");
+    setFillDone(false);
     setError(null);
     const res = await fetch("/api/fill", {
       method: "POST",
@@ -116,10 +121,13 @@ export function FillFlow() {
         sources: [],
       };
       g.fields.push({ label: f.label, value: row.value, sensitive: f.category === "sensitive" });
-      if (row.source && !g.sources.includes(row.source)) g.sources.push(row.source);
+      const source = row.source && sourceName(row.source);
+      if (source && !g.sources.includes(source)) g.sources.push(source);
       groups.set(key, g);
     }
     const q = [...groups.values()];
+    setFillDone(true);
+    await new Promise((r) => setTimeout(r, FINISH_MS));
     setQueue(q);
     setPromptIdx(0);
     setStep(q.length ? "permissions" : "review");
@@ -316,7 +324,8 @@ export function FillFlow() {
                       "Formatting dates, phone numbers and IDs…",
                       "Almost done…",
                     ],
-                    expectedMs: 9000 + 6000 * essayCount,
+                    expectedMs: 4000 + 4000 * essayCount,
+                    done: fillDone,
                   }}
                 />
                 <p className="mt-3 text-xs text-muted">
@@ -339,8 +348,11 @@ export function FillFlow() {
 
             {step === "review" && (
               <div className="mt-5">
-                <p className="mb-2 text-sm font-semibold">
-                  Review what you&apos;ll share ({filled}/{rows.length})
+                <p className="mb-2 flex items-baseline justify-between text-sm font-semibold">
+                  Review what you&apos;ll share
+                  <span className="text-xs font-medium tabular-nums text-muted">
+                    {filled}/{rows.length}
+                  </span>
                 </p>
                 <div className="mb-2 flex gap-1 rounded-xl bg-bg p-1 text-sm">
                   {(
@@ -389,7 +401,7 @@ export function FillFlow() {
                           </span>
                         ) : r.source && (
                           <span className="max-w-[40%] truncate rounded-full bg-brand/15 px-2 py-0.5 text-[10px] text-brand-dark">
-                            {r.source}
+                            {sourceName(r.source)}
                           </span>
                         )}
                       </div>
