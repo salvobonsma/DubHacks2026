@@ -63,7 +63,6 @@ export default function ChaseApplication() {
 
       <div className="mt-6">
         <FormlyButton schema={schema} onFilled={applyFormly} />
-        <p className="ch-note mt-2 text-center">Fill this application from your own data, then review it here.</p>
       </div>
 
       <form
