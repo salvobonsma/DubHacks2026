@@ -61,11 +61,13 @@ export default function TMobileSignup() {
         </div>
         <div className="tm-secondary my-6 flex items-center gap-3 text-sm">
           <div className="tm-divider" />
-          <span>
-            Or fill it in yourself. Fields marked <span className="tm-required">*</span> are required.
-          </span>
+          <span>Or fill it in yourself</span>
           <div className="tm-divider" />
         </div>
+
+        <p className="tm-secondary mb-6 text-sm">
+          Fields marked <span className="tm-required">*</span> are required.
+        </p>
 
         <form
           onSubmit={(e) => {
