@@ -41,9 +41,6 @@ export default function Home() {
                   My Formly
                 </Link>
               </div>
-              <p className="mt-5 text-sm text-[var(--home-muted)]">
-                No account needed. The demo runs on made-up people, so try anything.
-              </p>
             </div>
 
             <HeroMockup />
@@ -83,7 +80,7 @@ export default function Home() {
         <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8">
           <h2 className="home-h2">
             Try it on a real-looking form.
-            <span className="home-soft block">Four businesses, nine made-up people.</span>
+            <span className="home-soft block">Four businesses, filled from your own data.</span>
           </h2>
           <ul className="home-surface mt-10 divide-y divide-[var(--home-line)] overflow-hidden rounded-2xl">
             {DEMOS.map((d) => (
