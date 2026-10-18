@@ -76,25 +76,28 @@ for sid_box, sid_rect, sid_link, url in ((72, 71, 73, QR_A), (79, 78, 80, QR_B))
 # Slide 5: "By hand" confused people
 set_text(shape_by_id(S[4], 29), "Manually")
 
-# Slide 8: same layout, plainer words
+# Slide 8: same layout, four facts that each stand alone (no chained calculation)
 s8 = S[7]
 set_text(shape_by_id(s8, 250), "Put the button on your switch page for one month. We count how many more people finish.")
+set_text(shape_by_id(s8, 252), "50%")
 set_text(shape_by_id(s8, 253), "of Americans say the hassle of switching puts them off.")
 set_text(shape_by_id(s8, 254), "YouGov, 2023")
-set_text(shape_by_id(s8, 257), "new accounts a year at T‑Mobile.")
-set_text(shape_by_id(s8, 258), "Your filings: churn + 2026 net adds")
-set_text(shape_by_id(s8, 261), "more of them finishing the form.")
-set_text(shape_by_id(s8, 262), "The pilot's target")
-set_text(shape_by_id(s8, 265), "a year, from one button.")
-set_text(shape_by_id(s8, 266), "10% of 5M accounts at $1,835 each")
+set_text(shape_by_id(s8, 256), "30")
+set_text(shape_by_id(s8, 257), "fields on T\u2011Mobile's switch form. Autofill covers 13.")
+set_text(shape_by_id(s8, 258), "t-mobile.com, October 2026")
+set_text(shape_by_id(s8, 260), "~5M")
+set_text(shape_by_id(s8, 261), "accounts open at T\u2011Mobile every year.")
+set_text(shape_by_id(s8, 262), "Your filings: churn + 2026 net adds")
+set_text(shape_by_id(s8, 264), "$1,835")
+set_text(shape_by_id(s8, 265), "a year, from every account that finishes.")
+set_text(shape_by_id(s8, 266), "Postpaid ARPA, Q2 2026")
 set_notes(s8,
-    "Bring Formly to T-Mobile. Half the people who'd switch say the hassle stops them. T-Mobile still opens "
-    "about 5M accounts a year. If one in ten more of those people finish the form, that is about $940M a year. "
-    "So: put the button on the switch page for one month and count completions and port-in errors against the "
-    "month before.\n"
-    "If asked about the math: 34.7M postpaid accounts x 0.99% monthly churn x 12 = about 4.1M a year, plus about "
-    "1M net adds (2026 guidance 950K to 1.05M) = about 5.1M sign-ups; 10% = about 512K accounts x $152.91 x 12 = "
-    "about $940M. T-Mobile's public Q2 2026 numbers.\n"
+    "Bring Formly to T-Mobile. Four facts, no story to argue with. Half of Americans say the hassle of switching puts "
+    "them off. Your switch form is 30 fields and autofill covers 13 of them. You open about 5M accounts a year. Each one "
+    "is worth $1,835 a year. The pilot: put the button on the switch page for one month and count completions and "
+    "port-in errors against the month before. If asked for the upside: every extra 1% of 5M finishing is about $90M a "
+    "year; 10% is about $940M. 34.7M postpaid accounts x 0.99% monthly churn x 12 = about 4.1M, plus about 1M net adds "
+    "(2026 guidance 950K to 1.05M) = about 5.1M sign-ups. $152.91 postpaid ARPA x 12 = $1,835. T-Mobile's public Q2 2026 numbers.\n"
     "Q&A jump list (type the number, press Enter): 9 how it works, 10 how T-Mobile adds it, 11 wrong answers, "
     "12 what T-Mobile sees, 13 vs autofill and Plaid, 14 business model, 15 what works today, 16 stack, "
     "17 why not build it.")
