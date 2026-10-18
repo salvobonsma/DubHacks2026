@@ -47,9 +47,10 @@ export default function DemoPicker() {
 
           <Link
             href="/spacexai"
-            className="group flex flex-col rounded-2xl border border-white/10 bg-black p-6 text-white shadow-surface transition hover:border-white/25"
+            className="group flex flex-col rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 text-white shadow-surface transition hover:border-white/25"
           >
-            <span className="flex h-7 items-center text-[17px] font-semibold tracking-[0.34em]">SPACEXAI</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/spacexai/logo-white.png" alt="SpaceXAI" className="h-7 w-fit" />
             <h2 className="mt-6 text-xl">{spacexai.title}</h2>
             <p className="mt-1 text-sm text-white/60">
               {spacexai.fields.length} fields · education, experience, 2 short answers

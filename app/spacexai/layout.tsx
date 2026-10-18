@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Barlow } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./spacexai.css";
 
-// Barlow stands in for a DIN-style grotesk: wide, plain and good in tracked uppercase.
-const barlow = Barlow({
-  variable: "--font-barlow",
+// SpaceXAI's job board sets everything in Untitled Sans; Inter is the closest free stand-in.
+const inter = Inter({
+  variable: "--font-inter-sx",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Software Engineer, AI Infrastructure | SpaceXAI Careers",
+  title: "Job Application for Software Engineer, AI Infrastructure at SpaceXAI",
 };
 
 export default function SpaceXAILayout({ children }: { children: React.ReactNode }) {
-  return <div className={`${barlow.variable} sx-root flex flex-1 flex-col`}>{children}</div>;
+  return <div className={`${inter.variable} sx-root flex flex-1 flex-col`}>{children}</div>;
 }

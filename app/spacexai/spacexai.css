@@ -1,166 +1,102 @@
-/* Look for the /spacexai demo careers page: black, white type, thin rules, uppercase tracked labels.
-   Scoped to .sx-root so the rest of the Formly site keeps its own look. */
+/* Look for the /spacexai demo, modeled on SpaceXAI's Greenhouse job board: near-black page, white type,
+   fields as outlined boxes with the label inside, white pill buttons. Scoped to .sx-root so the rest of
+   the Formly site keeps its own look. */
 
 .sx-root {
-  --sx-black: #000000;
-  --sx-surface: #0b0b0b;
-  --sx-input: #050505;
-  --sx-line: #262626;
-  --sx-line-strong: #3d3d3d;
+  --sx-bg: #0a0a0a;
   --sx-text: #ffffff;
-  --sx-text-body: #d4d4d4;
-  --sx-text-secondary: #8f8f8f;
-  --sx-focus: #ffffff;
-  --sx-error: #ff5a4e;
+  --sx-text-secondary: #a3a3a3;
+  --sx-muted-btn: #d9d9d9;
+  --sx-outline: rgba(255, 255, 255, 0.3);
+  --sx-rule: rgba(255, 255, 255, 0.2);
+  --sx-required: #d8372a;
 
-  --sx-font: var(--font-barlow), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Their board uses Untitled Sans (licensed); Inter is the closest free neutral grotesk. */
+  --sx-font: var(--font-inter-sx), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   min-height: 100vh;
-  background: var(--sx-black);
-  color: var(--sx-text-body);
+  background: var(--sx-bg);
+  color: var(--sx-text);
   font-family: var(--sx-font);
+  font-size: 16px;
   line-height: 1.6;
   color-scheme: dark;
 }
 
-.sx-header { border-bottom: 1px solid var(--sx-line); }
-.sx-wordmark {
-  font-family: var(--sx-font);
-  font-weight: 600;
-  font-size: 20px;
-  letter-spacing: 0.34em;
-  color: var(--sx-text);
-}
-.sx-nav { font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sx-text); }
+/* Formly's global h1/h2 use Sora SemiBold; the job board sets headings in its body face at regular weight. */
+.sx-root h1,
+.sx-root h2 { font-family: var(--sx-font); font-weight: 400; letter-spacing: normal; }
 
-.sx-eyebrow {
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--sx-text-secondary);
-}
-.sx-h1 {
-  font-family: var(--sx-font);
-  font-weight: 600;
-  font-size: 34px;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--sx-text);
-}
-@media (min-width: 640px) {
-  .sx-h1 { font-size: 44px; }
-}
-.sx-h3 {
-  font-family: var(--sx-font);
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--sx-text);
-}
+.sx-back { display: inline-flex; align-items: center; gap: 6px; color: var(--sx-text); text-decoration: underline; text-underline-offset: 3px; }
+.sx-badge { display: inline-block; padding: 1px 7px; border-radius: 4px; background: #d9d9d9; color: #0a0a0a; font-size: 14px; }
+.sx-title { font-size: 32px; line-height: 1.25; font-weight: 400; letter-spacing: -0.01em; }
+.sx-desc h3 { margin: 28px 0 12px; font-size: 18.72px; font-weight: 700; text-transform: uppercase; }
+.sx-desc ul { list-style: disc; padding-left: 50px; }
+.sx-desc li { margin: 2px 0; }
 .sx-secondary { color: var(--sx-text-secondary); }
-.sx-num { font-weight: 600; color: var(--sx-text); }
+.sx-rule { height: 1px; background: var(--sx-rule); border: 0; }
+.sx-h2 { font-size: 24px; line-height: 1.3; font-weight: 400; }
+.sx-subhead { font-size: 16px; font-weight: 700; }
+.sx-required { color: var(--sx-required); font-size: 13px; font-weight: 700; margin-left: 2px; }
 
-.sx-card {
-  background: var(--sx-surface);
-  border: 1px solid var(--sx-line);
-  padding: 24px;
-}
-@media (min-width: 640px) {
-  .sx-card { padding: 32px; }
-}
-
-.sx-divider { height: 1px; flex: 1; background: var(--sx-line); }
-.sx-required { color: var(--sx-error); }
-
-.sx-label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--sx-text);
-}
-/* Short-answer questions read as sentences, so they skip the uppercase label style. */
-.sx-question {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--sx-text);
-}
-
-.sx-input {
-  width: 100%;
-  min-height: 44px;
-  padding: 9px 12px;
-  font-size: 16px;
-  color: var(--sx-text);
-  background-color: var(--sx-input);
-  border: 1px solid var(--sx-line-strong);
-  border-radius: 0;
-  outline: none;
-}
-.sx-input:focus { border-color: var(--sx-focus); box-shadow: 0 0 0 1px var(--sx-focus); }
-.sx-input::placeholder { color: #5f5f5f; }
-/* Grow to fit a full answer where supported; rows={5} is the fallback elsewhere. */
-textarea.sx-input { display: block; line-height: 1.55; resize: vertical; field-sizing: content; min-height: 8.5em; }
-select.sx-input option { background: var(--sx-surface); color: var(--sx-text); }
-
-.sx-count { margin-top: 6px; font-size: 12px; text-align: right; color: var(--sx-text-secondary); }
-.sx-count-over { color: var(--sx-error); font-weight: 600; }
-
-.sx-btn {
+.sx-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  padding: 0 28px;
+  min-height: 40px;
+  padding: 8px 24px;
+  border-radius: 50px;
   font-family: var(--sx-font);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--sx-text);
-  background: transparent;
-  border: 2px solid var(--sx-text);
-  border-radius: 0;
+  font-size: 16px;
+  background: var(--sx-text);
+  color: #000000;
+  border: 0;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
+  transition: opacity 0.15s;
 }
-/* Hover only where a pointer can hover, so a tap on a phone doesn't latch the hover color. */
 @media (hover: hover) {
-  .sx-btn:hover { background: var(--sx-text); color: var(--sx-black); }
+  .sx-pill:hover { opacity: 0.85; }
 }
-.sx-btn:disabled,
-.sx-btn:disabled:hover {
-  border-color: var(--sx-line-strong);
-  color: #5f5f5f;
-  background: transparent;
-  cursor: not-allowed;
-}
+.sx-pill:disabled { opacity: 0.35; cursor: not-allowed; }
+.sx-pill-outline { background: transparent; color: var(--sx-muted-btn); border: 0.8px solid var(--sx-muted-btn); }
 
-.sx-check {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 16px;
-  border: 2px solid var(--sx-text);
-  border-radius: 1000px;
+/* One field: an outlined box with the label on top and the control borderless underneath. */
+.sx-field {
+  display: block;
+  border-radius: 5px;
+  outline: 0.8px solid var(--sx-outline);
+  background-color: var(--sx-bg);
+  transition: outline-color 0.15s;
+}
+.sx-field:focus-within { outline-color: var(--sx-text); }
+.sx-label { display: block; padding: 8px 16px 0; font-size: 13px; font-weight: 700; letter-spacing: 0.15px; line-height: 1.4; }
+.sx-control {
+  display: block;
+  width: 100%;
+  padding: 2px 16px 8px;
+  font-family: var(--sx-font);
+  font-size: 16px;
+  letter-spacing: 0.15px;
   color: var(--sx-text);
+  background: transparent;
+  border: 0;
+  outline: none;
 }
+.sx-control::placeholder { color: #6b6b6b; }
+select.sx-control { appearance: none; padding-right: 40px; cursor: pointer; }
+select.sx-control option { background: #1a1a1a; color: var(--sx-text); }
+/* Grow to fit a full answer where supported; rows={4} is the fallback elsewhere. */
+textarea.sx-control { line-height: 1.55; resize: vertical; field-sizing: content; min-height: 6.5em; }
+.sx-chevron { position: absolute; right: 16px; bottom: 14px; pointer-events: none; color: var(--sx-text-secondary); }
 
-.sx-legal { font-size: 12px; color: #6b6b6b; }
+.sx-count { margin-top: 6px; font-size: 13px; text-align: right; color: var(--sx-text-secondary); }
+.sx-count-over { color: var(--sx-required); font-weight: 700; }
 
-/* The shared Formly highlight flashes to white, which would blink on these black inputs. */
+.sx-legal { font-size: 13px; color: #737373; }
+
+/* The shared Formly highlight flashes to white, which would blink on these near-black fields. */
 @keyframes sx-formly-fill {
   0% { background-color: rgba(34, 201, 133, 0.28); }
-  100% { background-color: var(--sx-input); }
+  100% { background-color: var(--sx-bg); }
 }
 .sx-root .formly-filled { animation-name: sx-formly-fill; }

@@ -13,7 +13,7 @@ const PAGE_BG: [prefix: string, color: string][] = [
   ["/formly/fill", "#ffffff"],
   ["/formly", "#f3f4f6"],
   ["/tmobile", "#f5f5f5"],
-  ["/spacexai", "#000000"],
+  ["/spacexai", "#0a0a0a"],
   ["/demo", "#f3f4f6"],
   ["/", "#0f1a2a"],
 ];
