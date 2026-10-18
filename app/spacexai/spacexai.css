@@ -1,0 +1,166 @@
+/* Look for the /spacexai demo careers page: black, white type, thin rules, uppercase tracked labels.
+   Scoped to .sx-root so the rest of the Formly site keeps its own look. */
+
+.sx-root {
+  --sx-black: #000000;
+  --sx-surface: #0b0b0b;
+  --sx-input: #050505;
+  --sx-line: #262626;
+  --sx-line-strong: #3d3d3d;
+  --sx-text: #ffffff;
+  --sx-text-body: #d4d4d4;
+  --sx-text-secondary: #8f8f8f;
+  --sx-focus: #ffffff;
+  --sx-error: #ff5a4e;
+
+  --sx-font: var(--font-barlow), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  min-height: 100vh;
+  background: var(--sx-black);
+  color: var(--sx-text-body);
+  font-family: var(--sx-font);
+  line-height: 1.6;
+  color-scheme: dark;
+}
+
+.sx-header { border-bottom: 1px solid var(--sx-line); }
+.sx-wordmark {
+  font-family: var(--sx-font);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.34em;
+  color: var(--sx-text);
+}
+.sx-nav { font-size: 13px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sx-text); }
+
+.sx-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sx-text-secondary);
+}
+.sx-h1 {
+  font-family: var(--sx-font);
+  font-weight: 600;
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--sx-text);
+}
+@media (min-width: 640px) {
+  .sx-h1 { font-size: 44px; }
+}
+.sx-h3 {
+  font-family: var(--sx-font);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sx-text);
+}
+.sx-secondary { color: var(--sx-text-secondary); }
+.sx-num { font-weight: 600; color: var(--sx-text); }
+
+.sx-card {
+  background: var(--sx-surface);
+  border: 1px solid var(--sx-line);
+  padding: 24px;
+}
+@media (min-width: 640px) {
+  .sx-card { padding: 32px; }
+}
+
+.sx-divider { height: 1px; flex: 1; background: var(--sx-line); }
+.sx-required { color: var(--sx-error); }
+
+.sx-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sx-text);
+}
+/* Short-answer questions read as sentences, so they skip the uppercase label style. */
+.sx-question {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--sx-text);
+}
+
+.sx-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 12px;
+  font-size: 16px;
+  color: var(--sx-text);
+  background-color: var(--sx-input);
+  border: 1px solid var(--sx-line-strong);
+  border-radius: 0;
+  outline: none;
+}
+.sx-input:focus { border-color: var(--sx-focus); box-shadow: 0 0 0 1px var(--sx-focus); }
+.sx-input::placeholder { color: #5f5f5f; }
+/* Grow to fit a full answer where supported; rows={5} is the fallback elsewhere. */
+textarea.sx-input { display: block; line-height: 1.55; resize: vertical; field-sizing: content; min-height: 8.5em; }
+select.sx-input option { background: var(--sx-surface); color: var(--sx-text); }
+
+.sx-count { margin-top: 6px; font-size: 12px; text-align: right; color: var(--sx-text-secondary); }
+.sx-count-over { color: var(--sx-error); font-weight: 600; }
+
+.sx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  font-family: var(--sx-font);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sx-text);
+  background: transparent;
+  border: 2px solid var(--sx-text);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+/* Hover only where a pointer can hover, so a tap on a phone doesn't latch the hover color. */
+@media (hover: hover) {
+  .sx-btn:hover { background: var(--sx-text); color: var(--sx-black); }
+}
+.sx-btn:disabled,
+.sx-btn:disabled:hover {
+  border-color: var(--sx-line-strong);
+  color: #5f5f5f;
+  background: transparent;
+  cursor: not-allowed;
+}
+
+.sx-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border: 2px solid var(--sx-text);
+  border-radius: 1000px;
+  color: var(--sx-text);
+}
+
+.sx-legal { font-size: 12px; color: #6b6b6b; }
+
+/* The shared Formly highlight flashes to white, which would blink on these black inputs. */
+@keyframes sx-formly-fill {
+  0% { background-color: rgba(34, 201, 133, 0.28); }
+  100% { background-color: var(--sx-input); }
+}
+.sx-root .formly-filled { animation-name: sx-formly-fill; }

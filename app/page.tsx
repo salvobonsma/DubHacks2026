@@ -10,10 +10,10 @@ export default function Home() {
       </p>
       <div className="flex gap-3">
         <Link
-          href="/tmobile"
+          href="/demo"
           className="rounded-xl bg-brand px-5 py-3 font-display font-semibold text-white transition-colors hover:bg-brand-dark"
         >
-          Try the T-Mobile demo
+          Try a demo form
         </Link>
         <Link
           href="/formly"

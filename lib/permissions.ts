@@ -14,12 +14,16 @@ const GROUPS = {
   payment: { title: "your payment card", protected: true },
   work: { title: "your work & income", protected: false },
   plan: { title: "your plan & device choices", protected: false },
+  career: { title: "your education & work history", protected: false },
+  answers: { title: "short answers written from your resume", protected: false },
 } as const;
 
 type Group = keyof typeof GROUPS;
 
 function groupOf(field: FormField): Group {
   const where = `${field.section} ${field.label}`;
+  if (field.type === "textarea") return "answers";
+  if (/education|experience/i.test(field.section)) return "career";
   if (/payment|card|billing/i.test(where)) return "payment";
   if (field.category === "sensitive" || /identity|license|passport|\bid\b/i.test(where)) return "ids";
   if (/credit|employ|income|job|housing/i.test(where)) return "work";

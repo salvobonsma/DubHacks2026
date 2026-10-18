@@ -1,0 +1,29 @@
+{
+  "business": "SpaceXAI",
+  "formId": "spacexai-swe-ai-infra",
+  "title": "Software Engineer application",
+  "context": "Build the pipelines that move telemetry from thousands of Starlink satellites and every Starship flight into the clusters that train our Grok models. You'll own systems end to end, from the data on the vehicle to the model in production.",
+  "fields": [
+    { "id": "first_name", "label": "First name", "type": "text", "section": "About you", "category": "basic", "required": true },
+    { "id": "last_name", "label": "Last name", "type": "text", "section": "About you", "category": "basic", "required": true },
+    { "id": "age", "label": "Age", "type": "number", "section": "About you", "category": "personal", "required": true },
+    { "id": "email", "label": "Email", "type": "email", "section": "About you", "category": "basic", "required": true },
+    { "id": "phone", "label": "Phone", "type": "tel", "section": "About you", "category": "personal", "required": true },
+    { "id": "location", "label": "Current location", "type": "text", "section": "About you", "category": "basic", "required": true, "placeholder": "City, State" },
+    { "id": "us_person", "label": "U.S. person status (ITAR)", "type": "select", "section": "About you", "category": "personal", "required": true, "options": ["U.S. citizen", "U.S. permanent resident", "Neither"] },
+
+    { "id": "degree", "label": "Highest degree", "type": "select", "section": "Education", "category": "basic", "required": true, "options": ["High school", "Associate's", "Bachelor's (in progress)", "Bachelor's", "Master's", "PhD"] },
+    { "id": "school", "label": "School", "type": "text", "section": "Education", "category": "basic", "required": true },
+    { "id": "major", "label": "Field of study", "type": "text", "section": "Education", "category": "basic", "required": true },
+    { "id": "grad_year", "label": "Graduation year", "type": "number", "section": "Education", "category": "basic", "required": true, "placeholder": "Expected, if still in school" },
+    { "id": "gpa", "label": "GPA", "type": "text", "section": "Education", "category": "personal" },
+
+    { "id": "employer", "label": "Current or most recent employer", "type": "text", "section": "Experience", "category": "basic", "required": true },
+    { "id": "job_title", "label": "Title", "type": "text", "section": "Experience", "category": "basic", "required": true },
+    { "id": "years_experience", "label": "Years of work experience", "type": "number", "section": "Experience", "category": "basic", "required": true },
+    { "id": "skills", "label": "Top technical skills", "type": "text", "section": "Experience", "category": "basic", "required": true, "placeholder": "e.g. C++, Rust, Python" },
+
+    { "id": "hardest_problem", "label": "What's the hardest technical problem you've worked on, and how did you solve it?", "type": "textarea", "section": "Short answers", "category": "personal", "required": true, "maxWords": 50 },
+    { "id": "why_spacexai", "label": "Why SpaceXAI? What would you want to build here?", "type": "textarea", "section": "Short answers", "category": "personal", "required": true, "maxWords": 50 }
+  ]
+}

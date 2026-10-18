@@ -12,7 +12,9 @@ npm run reset     # wipe local SQLite data (sources, twin, permissions)
 
 Local data is stored in `./data/formly.db`, which git ignores. You can also click **Reset demo** on `/formly` between rehearsals.
 
-- `/tmobile`: the demo merchant (a long T-Mobile signup form with the Fill with Formly button)
+- `/demo`: pick which demo merchant form to try
+- `/tmobile`: a long T-Mobile signup form with the Fill with Formly button
+- `/spacexai`: a SpaceXAI job application. Formly fills it from your resume and drafts the two 50-word short answers
 - `/formly`: your connected sources and your live digital twin
 - `/formly/fill?session=…`: the popup that fills, reviews and sends the form
 
@@ -23,6 +25,7 @@ Sample persona files are in `sample-data/alex-chen/`. `Alex Chen - personal info
 1. **Ingest** (`lib/extract.ts`): each upload becomes plain text. Gemini transcribes PDFs and images, and `mammoth` handles DOCX.
 2. **Digital twin** (`lib/twin.ts`, `lib/llm.ts`): every source is merged into one markdown profile, and typed "critical info" facts are extracted from it. Both are rebuilt whenever a source is added or removed.
 3. **Fill** (`/api/fill`): the business's JSON form schema, the critical info and the twin produce field values. The user reviews and approves them in the popup, and `postMessage` sends them back to the merchant page.
+   - **Short answers** (`textarea` fields with `maxWords`): a second call, run in parallel, writes them in the user's voice using Gemini Flash (`GEMINI_WRITE_MODEL`). It must quote the facts it uses from the twin first. An answer is dropped (left blank for the user) if none of its quotes are in the twin, or if it uses a number the twin doesn't have.
 
 ## Permissions
 

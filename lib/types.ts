@@ -1,4 +1,4 @@
-export type FieldType = "text" | "email" | "tel" | "date" | "number" | "select";
+export type FieldType = "text" | "email" | "tel" | "date" | "number" | "select" | "textarea";
 
 export type Sensitivity = "basic" | "personal" | "sensitive";
 
@@ -11,6 +11,8 @@ export interface FormField {
   required?: boolean;
   options?: string[];
   placeholder?: string;
+  /** Word limit for a textarea short answer. Formly writes these from the user's data instead of copying a fact. */
+  maxWords?: number;
 }
 
 export interface FormSchema {
@@ -19,6 +21,8 @@ export interface FormSchema {
   logo?: string;
   formId: string;
   title: string;
+  /** What the business says about itself or the role. Formly uses it to write short answers that fit. */
+  context?: string;
   fields: FormField[];
 }
 

@@ -8,6 +8,7 @@ import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
 import { askKey, groupTitle, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
 import type { FilledField, FormSchema, Twin } from "@/lib/types";
+import { countWords } from "@/lib/words";
 
 interface Session {
   id: string;
@@ -20,6 +21,7 @@ interface Row {
   fieldId: string;
   label: string;
   category: string;
+  maxWords?: number;
   value: string;
   source: string | null;
   include: boolean;
@@ -80,6 +82,7 @@ export function FillFlow() {
         fieldId: f.id,
         label: f.label,
         category: f.category,
+        maxWords: f.maxWords,
         value: hit?.value ?? "",
         source: hit?.source ?? null,
         include: !!hit?.value,
@@ -178,6 +181,7 @@ export function FillFlow() {
     setRows((rs) => rs.map((r) => (r.fieldId === id ? { ...r, ...patch } : r)));
 
   const filled = rows.filter((r) => r.include && r.value).length;
+  const essayCount = session?.schema.fields.filter((f) => f.type === "textarea").length ?? 0;
 
   return (
     <div className="flex flex-1 flex-col bg-white">
@@ -286,7 +290,11 @@ export function FillFlow() {
                   <Spinner />
                 </span>
                 <p className="font-semibold">Filling {session.schema.fields.length} fields…</p>
-                <p className="text-xs text-muted">Matching your digital twin to {session.business}&apos;s form</p>
+                <p className="text-xs text-muted">
+                  Matching your digital twin to {session.business}&apos;s form
+                  {essayCount > 0 &&
+                    ` and drafting ${essayCount === 1 ? "a short answer" : `${essayCount} short answers`} from your resume`}
+                </p>
               </div>
             )}
 
@@ -328,17 +336,40 @@ export function FillFlow() {
                         )}
                       </div>
                       <div className="mt-1 flex gap-2 pl-6">
-                        <input
-                          value={r.value}
-                          type={r.reveal ? "text" : "password"}
-                          placeholder={
-                            r.denied
-                              ? "Denied. Type it yourself or leave it blank."
-                              : "Not found. Type it or leave it blank."
-                          }
-                          onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
-                          className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"
-                        />
+                        {r.maxWords ? (
+                          <div className="w-full">
+                            <textarea
+                              value={r.value}
+                              rows={5}
+                              placeholder={
+                                r.denied
+                                  ? "Denied. Write it yourself or leave it blank."
+                                  : "Nothing in your data fits. Write it or leave it blank."
+                              }
+                              onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
+                              className="block w-full resize-y rounded-md border border-line px-2 py-1.5 text-sm leading-relaxed outline-none focus:border-brand"
+                            />
+                            <p
+                              className={`mt-1 text-right text-[11px] ${
+                                countWords(r.value) > r.maxWords ? "font-semibold text-red-600" : "text-muted"
+                              }`}
+                            >
+                              {countWords(r.value)}/{r.maxWords} words
+                            </p>
+                          </div>
+                        ) : (
+                          <input
+                            value={r.value}
+                            type={r.reveal ? "text" : "password"}
+                            placeholder={
+                              r.denied
+                                ? "Denied. Type it yourself or leave it blank."
+                                : "Not found. Type it or leave it blank."
+                            }
+                            onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
+                            className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"
+                          />
+                        )}
                         {r.category === "sensitive" && (
                           <button
                             onClick={() => update(r.fieldId, { reveal: !r.reveal })}
