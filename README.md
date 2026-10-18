@@ -15,6 +15,7 @@ Local data is stored in `./data/formly.db`, which git ignores. You can also clic
 - `/demo`: pick which demo merchant form to try
 - `/tmobile`: a long T-Mobile signup form with the Fill with Formly button
 - `/spacexai`: a SpaceXAI job application. Formly fills it from your resume and drafts the two 50-word short answers
+- `/chase`: a Chase Freedom Unlimited (Visa) credit card application, styled after Chase's own
 - `/formly`: your connected sources and your live digital twin
 - `/formly/fill?session=…`: the popup that fills, reviews and sends the form
 

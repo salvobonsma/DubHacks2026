@@ -1,0 +1,32 @@
+{
+  "business": "Chase",
+  "logo": "/chase/logo-blue.svg",
+  "formId": "chase-freedom-unlimited",
+  "title": "Chase Freedom Unlimited® application",
+  "fields": [
+    { "id": "first_name", "label": "First name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
+    { "id": "middle_name", "label": "Middle name (optional)", "type": "text", "section": "Personal info", "category": "basic" },
+    { "id": "last_name", "label": "Last name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
+    { "id": "suffix", "label": "Suffix (optional)", "type": "select", "section": "Personal info", "category": "basic", "options": ["Jr.", "Sr.", "II", "III", "IV"] },
+
+    { "id": "dob", "label": "Date of birth", "type": "date", "section": "Identification", "category": "personal", "required": true },
+    { "id": "mothers_maiden_name", "label": "Mother's maiden name", "type": "text", "section": "Identification", "category": "sensitive", "required": true },
+    { "id": "tax_id_type", "label": "Tax ID type", "type": "select", "section": "Identification", "category": "personal", "required": true, "options": ["Social Security number", "Individual Taxpayer ID number"] },
+    { "id": "ssn", "label": "Social Security number", "type": "text", "section": "Identification", "category": "sensitive", "required": true },
+
+    { "id": "address_type", "label": "Address type", "type": "select", "section": "Home address", "category": "basic", "required": true, "options": ["Street address", "Military address"] },
+    { "id": "street", "label": "Street address", "type": "text", "section": "Home address", "category": "basic", "required": true },
+    { "id": "apt", "label": "Suite/apt/other (optional)", "type": "text", "section": "Home address", "category": "basic" },
+    { "id": "city", "label": "City", "type": "text", "section": "Home address", "category": "basic", "required": true },
+    { "id": "state", "label": "State", "type": "text", "section": "Home address", "category": "basic", "required": true },
+    { "id": "zip", "label": "ZIP code", "type": "text", "section": "Home address", "category": "basic", "required": true },
+
+    { "id": "email", "label": "Email address", "type": "email", "section": "Contact info", "category": "basic", "required": true },
+    { "id": "phone", "label": "Phone number (mobile preferred)", "type": "tel", "section": "Contact info", "category": "personal", "required": true },
+
+    { "id": "residence_type", "label": "Type of residence", "type": "select", "section": "Financial info", "category": "personal", "required": true, "options": ["Rent", "Own", "Other"] },
+    { "id": "housing_payment", "label": "Monthly housing payment", "type": "number", "section": "Financial info", "category": "personal", "required": true },
+    { "id": "employment_status", "label": "Employment status", "type": "select", "section": "Financial info", "category": "personal", "required": true, "options": ["Employed", "Self-employed", "Student", "Retired", "Unemployed", "Other"] },
+    { "id": "annual_income", "label": "Total gross annual income", "type": "number", "section": "Financial info", "category": "personal", "required": true }
+  ]
+}

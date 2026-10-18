@@ -1,0 +1,91 @@
+/* Look for the /chase demo, taken from Chase's own credit card application: a blue brand bar, a narrow
+   white column, Open Sans, and fields drawn as a label over a single underline.
+   Scoped to .ch-root so the rest of the Formly site keeps its own look. */
+
+.ch-root {
+  --ch-blue: #005eb8;
+  --ch-blue-dark: #004a91;
+  --ch-link: #0b6efd;
+  --ch-text: #0f171f;
+  --ch-label: #434f5b;
+  --ch-line: #768799;
+  --ch-tint: #f5f7fa;
+  --ch-error: #d0021b;
+
+  --ch-font: var(--font-open-sans), "Helvetica Neue", helvetica, arial, sans-serif;
+
+  min-height: 100vh;
+  background: #ffffff;
+  color: var(--ch-text);
+  font-family: var(--ch-font);
+  font-size: 16px;
+  line-height: 1.5;
+  color-scheme: light;
+}
+
+/* Formly's global h1/h2 use Sora; Chase sets headings in Open Sans SemiBold. */
+.ch-root h1,
+.ch-root h2,
+.ch-root h3 { font-family: var(--ch-font); font-weight: 600; letter-spacing: normal; color: var(--ch-text); }
+
+.ch-bar { background: var(--ch-blue); color: #ffffff; }
+.ch-h1 { font-size: 28px; line-height: 36px; text-align: center; }
+.ch-h2 { font-size: 18px; line-height: 28px; margin-bottom: 4px; }
+.ch-note { font-size: 14px; line-height: 20px; color: var(--ch-label); }
+
+.ch-label { display: block; font-size: 16px; line-height: 24px; color: var(--ch-label); }
+.ch-control {
+  display: block;
+  width: 100%;
+  padding: 2px 0 6px;
+  font-family: var(--ch-font);
+  font-size: 18px;
+  line-height: 26px;
+  color: var(--ch-text);
+  background-color: #ffffff;
+  border: 0;
+  border-bottom: 0.8px solid var(--ch-line);
+  border-radius: 0;
+  outline: none;
+}
+.ch-control:focus { border-bottom: 2px solid var(--ch-blue); padding-bottom: 5px; }
+.ch-control::placeholder { color: var(--ch-label); }
+select.ch-control { appearance: none; padding-right: 32px; cursor: pointer; }
+select.ch-control:invalid { color: var(--ch-label); }
+.ch-chevron { position: absolute; right: 4px; bottom: 12px; pointer-events: none; color: var(--ch-label); }
+.ch-helper { padding-top: 4px; font-size: 12px; line-height: 16px; color: var(--ch-label); }
+.ch-prefix { position: absolute; left: 0; bottom: 7px; font-size: 18px; color: var(--ch-text); }
+
+.ch-know { background: var(--ch-tint); border-radius: 8px; padding: 20px; }
+
+.ch-check { width: 20px; height: 20px; accent-color: var(--ch-blue); flex-shrink: 0; margin-top: 2px; }
+
+.ch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 40px;
+  padding: 0 24px;
+  font-family: var(--ch-font);
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--ch-blue);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .ch-btn:hover { background: var(--ch-blue-dark); }
+}
+.ch-btn:disabled { background: #c4ccd5; color: #ffffff; cursor: not-allowed; }
+
+.ch-legal { font-size: 12px; line-height: 18px; color: var(--ch-label); }
+
+/* Chase fields have no side padding, so Formly's left-edge bar would sit on the text. Underline them green instead. */
+.ch-root .formly-filled {
+  background-image: none;
+  border-bottom: 2px solid var(--green);
+  padding-bottom: 5px;
+}
