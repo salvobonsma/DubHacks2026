@@ -13,7 +13,7 @@ const GROUPS = {
   ids: { title: "your IDs (SSN, driver's license)", protected: true },
   payment: { title: "your payment card", protected: true },
   work: { title: "your work & income", protected: false },
-  plan: { title: "your plan & device choices", protected: false },
+  plan: { title: "your current phone and carrier", protected: false },
   career: { title: "your education & work history", protected: false },
   answers: { title: "short answers written from your resume", protected: false },
 } as const;
