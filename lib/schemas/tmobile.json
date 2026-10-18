@@ -1,5 +1,6 @@
 {
   "business": "T-Mobile",
+  "logo": "/tmobile/logo.png",
   "formId": "tmo-postpaid-signup",
   "title": "Postpaid account signup",
   "fields": [

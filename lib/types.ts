@@ -15,6 +15,8 @@ export interface FormField {
 
 export interface FormSchema {
   business: string;
+  /** Business logo shown in the Formly popup header; falls back to the business name. */
+  logo?: string;
   formId: string;
   title: string;
   fields: FormField[];

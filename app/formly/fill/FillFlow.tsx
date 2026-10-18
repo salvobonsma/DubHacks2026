@@ -196,13 +196,23 @@ export function FillFlow() {
           </div>
         ) : (
           <>
-            <p className="text-sm text-muted">
-              <strong className="text-navy">{session.business}</strong> wants to fill out
+            <p className="text-base text-muted">
+              {session.schema.logo ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={session.schema.logo}
+                  alt={session.business}
+                  className="mr-1.5 inline-block h-6 w-auto align-[-5px]"
+                />
+              ) : (
+                <strong className="text-navy">{session.business}</strong>
+              )}{" "}
+              wants to fill out
             </p>
-            <h1 className="text-xl font-bold">{session.schema.title}</h1>
-            <p className="mt-1 text-xs text-muted">
-              {session.schema.fields.length} fields. {session.business} only receives the answers you approve, never
-              your files.
+            <h1 className="mt-0.5 text-[28px] leading-tight font-bold">{session.schema.title}</h1>
+            <p className="mt-2 text-sm text-muted">
+              {session.schema.fields.length} {session.schema.fields.length === 1 ? "field" : "fields"}. Your source data
+              is never sent to {session.business}.
             </p>
 
             {step === "connect" && (
