@@ -173,7 +173,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
               }}
             />
           </div>
-          <p className="mt-3 text-xs text-muted">Files stay with Formly. Businesses only get the answers you approve.</p>
+          <p className="mt-3 text-center text-xs text-muted">Files stay with Formly.</p>
         </Modal>
       )}
 
