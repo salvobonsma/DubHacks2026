@@ -15,6 +15,7 @@ const PAGE_BG: [prefix: string, color: string][] = [
   ["/tmobile", "#f5f5f5"],
   ["/spacexai", "#0a0a0a"],
   ["/chase", "#ffffff"],
+  ["/dmv", "#f3f7fb"],
   ["/demo", "#f3f4f6"],
   ["/", "#0f1a2a"],
 ];
@@ -22,7 +23,7 @@ const PAGE_BG: [prefix: string, color: string][] = [
 const LINKS = [
   { href: "/", label: "Home", match: ["/"] },
   { href: "/formly", label: "My Formly", match: ["/formly"] },
-  { href: "/demo", label: "Demo forms", match: ["/demo", "/tmobile", "/spacexai", "/chase"] },
+  { href: "/demo", label: "Demo forms", match: ["/demo", "/tmobile", "/spacexai", "/chase", "/dmv"] },
 ];
 
 /** Thin site-wide strip, like the .gov "official website" banner, marking every page as a demo. */

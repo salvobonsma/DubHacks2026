@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import chase from "@/lib/schemas/chase.json";
+import dmv from "@/lib/schemas/dmv.json";
 import spacexai from "@/lib/schemas/spacexai.json";
 import tmobile from "@/lib/schemas/tmobile.json";
 
@@ -24,10 +25,10 @@ export default function DemoPicker() {
       <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="text-[28px] leading-tight">Pick a demo form</h1>
         <p className="mt-2 max-w-xl text-muted">
-          All three use the same Fill with Formly button. Connect your data once, then try any of them.
+          Every one uses the same Fill with Formly button. Connect your data once, then try any of them.
         </p>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
           <Link
             href="/tmobile"
             className="group flex flex-col rounded-2xl border border-transparent bg-white p-6 shadow-surface transition hover:shadow-surface-hover"
@@ -80,6 +81,24 @@ export default function DemoPicker() {
             </p>
             <span className="mt-6 flex items-center gap-1.5 text-sm font-semibold">
               Open the Chase application
+              <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" stroke={2} />
+            </span>
+          </Link>
+
+          <Link
+            href="/dmv"
+            className="group flex flex-col rounded-2xl border border-transparent bg-white p-6 shadow-surface transition hover:shadow-surface-hover"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/dmv/logo-ca-dmv-blue.svg" alt="California DMV" className="h-9 w-fit" />
+            <h2 className="mt-5 text-xl">{dmv.title}</h2>
+            <p className="mt-1 text-sm text-muted">{dmv.fields.length} fields · vehicle, VIN, insurance</p>
+            <p className="mt-4 flex-1 text-[15px]">
+              A California vehicle title and registration. Formly fills your car&apos;s VIN, plate, odometer and
+              insurance along with your license and address.
+            </p>
+            <span className="mt-6 flex items-center gap-1.5 text-sm font-semibold text-[#0b669e]">
+              Open the DMV application
               <ArrowRightIcon className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" stroke={2} />
             </span>
           </Link>
