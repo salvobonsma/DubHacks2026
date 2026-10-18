@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
 import { GoogleConsent, type GoogleScope } from "./GoogleConsent";
-import { ArrowRightIcon, CheckIcon, CloseIcon } from "./Icons";
+import { ArrowRightIcon, CheckIcon, CloseIcon, LockIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
 
 interface SourceRow {
@@ -177,7 +177,9 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
               }}
             />
           </div>
-          <p className="mt-3 text-center text-xs text-muted">Files stay with Formly.</p>
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
+            <LockIcon className="h-3 w-3" /> Secure with Formly
+          </p>
         </Modal>
       )}
 
