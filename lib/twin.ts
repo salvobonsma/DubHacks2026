@@ -26,8 +26,7 @@ export async function rebuildTwin(): Promise<Twin | null> {
     db.prepare("DELETE FROM twin").run();
     return null;
   }
-  const markdown = await buildTwinMarkdown(sources);
-  const critical = await extractCriticalInfo(markdown);
+  const [markdown, critical] = await Promise.all([buildTwinMarkdown(sources), extractCriticalInfo(sources)]);
   const version = (getTwin()?.version ?? 0) + 1;
   const now = Date.now();
   db.prepare(

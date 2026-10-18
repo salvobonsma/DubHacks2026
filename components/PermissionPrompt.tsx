@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export interface PromptRequest {
   key: string;
@@ -27,19 +27,25 @@ export function PermissionPrompt({
   total: number;
   onDecide: (d: "once" | "always" | "deny") => void;
 }) {
+  const decideRef = useRef(onDecide);
+  useEffect(() => {
+    decideRef.current = onDecide;
+  }, [onDecide]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (e.repeat) return;
       const d = ({ "1": "once", "2": "always", "3": "deny", Enter: "once", Escape: "deny" } as const)[
         e.key as "1" | "2" | "3" | "Enter" | "Escape"
       ];
       if (d) {
         e.preventDefault();
-        onDecide(d);
+        decideRef.current(d);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onDecide]);
+  }, []);
 
   return (
     <div className="rounded-2xl border-2 border-navy bg-white p-4 shadow-lg">

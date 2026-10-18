@@ -11,7 +11,7 @@ import type { FilledField, FormSchema, Twin } from "@/lib/types";
 interface Session {
   id: string;
   business: string;
-  origin: string | null;
+  returnUrl: string | null;
   schema: FormSchema;
 }
 
@@ -121,7 +121,9 @@ export function FillFlow() {
     }
     if (d === "deny") {
       const ids = new Set(session.schema.fields.filter((f) => askKey(f) === req.key).map((f) => f.id));
-      setRows((rs) => rs.map((r) => (ids.has(r.fieldId) ? { ...r, value: "", include: false, denied: true } : r)));
+      setRows((rs) =>
+        rs.map((r) => (ids.has(r.fieldId) ? { ...r, value: "", source: null, include: false, denied: true } : r)),
+      );
     }
     if (promptIdx + 1 < queue.length) setPromptIdx(promptIdx + 1);
     else setStep("review");
@@ -137,17 +139,34 @@ export function FillFlow() {
       });
   }
 
-  function approve() {
+  /** Hand the result back: postMessage to the opener popup-style, or redirect back in a same-tab flow. */
+  async function finish(status: "completed" | "cancelled", values?: Record<string, string>) {
     if (!session) return;
+    await fetch("/api/sessions", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ sessionId: session.id, status, values }),
+    });
+    const target = session.returnUrl ? new URL(session.returnUrl).origin : "*";
+    const type = status === "completed" ? "formly:filled" : "formly:cancelled";
+    if (window.opener && !window.opener.closed) {
+      window.opener.postMessage({ type, sessionId: session.id, values }, target);
+      setTimeout(() => window.close(), status === "completed" ? 900 : 0);
+    } else if (session.returnUrl) {
+      const back = new URL(session.returnUrl);
+      back.searchParams.set("formly_session", session.id);
+      setTimeout(() => (window.location.href = back.toString()), status === "completed" ? 900 : 0);
+    }
+  }
+
+  function approve() {
     const values = Object.fromEntries(rows.filter((r) => r.include && r.value).map((r) => [r.fieldId, r.value]));
-    window.opener?.postMessage({ type: "formly:filled", sessionId: session.id, values }, session.origin ?? "*");
     setStep("sent");
-    setTimeout(() => window.close(), 900);
+    finish("completed", values);
   }
 
   function cancel() {
-    if (session) window.opener?.postMessage({ type: "formly:cancelled", sessionId: session.id }, session.origin ?? "*");
-    window.close();
+    finish("cancelled");
   }
 
   const update = (id: string, patch: Partial<Row>) =>
@@ -233,7 +252,6 @@ export function FillFlow() {
             {step === "permissions" && queue[promptIdx] && (
               <div className="mt-6">
                 <PermissionPrompt
-                  key={queue[promptIdx].key}
                   business={session.business}
                   request={queue[promptIdx]}
                   index={promptIdx}

@@ -1,13 +1,37 @@
-import { GoogleGenAI, Type, type Part } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel, Type, type GenerateContentParameters, type Part } from "@google/genai";
 import type { CriticalFact, FilledField, FormSchema } from "./types";
 
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-flash-latest";
+// Flash-Lite with low thinking: ~3s fills, same accuracy as Flash on these extraction tasks.
+const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite";
 const FILL_MODEL = process.env.GEMINI_FILL_MODEL ?? MODEL;
+// Tried in order when the primary model is overloaded (503) or rate limited (429).
+const FALLBACKS = ["gemini-3.5-flash", "gemini-3-flash-preview"];
 
 let client: GoogleGenAI | null = null;
 function ai() {
   if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY is not set");
   return (client ??= new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY }));
+}
+
+/**
+ * generateContent with low thinking (default thinking is ~7x slower for these extraction tasks)
+ * and immediate fallback to the next model when one is overloaded or rate limited.
+ */
+async function generate(params: GenerateContentParameters) {
+  const models = [params.model, ...FALLBACKS.filter((m) => m !== params.model)];
+  const config = { ...params.config, thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } };
+  let lastErr: unknown;
+  for (const model of models) {
+    try {
+      return await ai().models.generateContent({ ...params, model, config });
+    } catch (e) {
+      lastErr = e;
+      const status = (e as { status?: number }).status;
+      if (status !== 503 && status !== 429 && status !== 500) throw e;
+      console.warn(`[formly] ${model} returned ${status}, falling back`);
+    }
+  }
+  throw lastErr;
 }
 
 /** Stage 1 helper: transcribe a PDF or image into plain text. */
@@ -20,14 +44,14 @@ Keep labels next to values (e.g. "Date of birth: 1998-04-12"). Include all names
 addresses, IDs and amounts exactly as written. Output only the transcription.`,
     },
   ];
-  const res = await ai().models.generateContent({ model: MODEL, contents: [{ role: "user", parts }] });
+  const res = await generate({ model: MODEL, contents: [{ role: "user", parts }] });
   return res.text?.trim() ?? "";
 }
 
 /** Stage 2a: merge all raw source texts into the markdown digital twin. */
 export async function buildTwinMarkdown(sources: { name: string; text: string }[]): Promise<string> {
   const corpus = sources.map((s) => `### SOURCE: ${s.name}\n${s.text}`).join("\n\n");
-  const res = await ai().models.generateContent({
+  const res = await generate({
     model: MODEL,
     contents: `You maintain a user's "digital twin": a concise markdown profile of everything known about them.
 Merge the sources below into one profile with these sections (omit empty ones):
@@ -40,17 +64,19 @@ ${corpus}`,
   return res.text?.trim() ?? "";
 }
 
-/** Stage 2b: pull typed critical facts out of the twin. */
-export async function extractCriticalInfo(twinMarkdown: string): Promise<CriticalFact[]> {
-  const res = await ai().models.generateContent({
+/** Stage 2b: pull typed critical facts out of the user's data (runs in parallel with 2a). */
+export async function extractCriticalInfo(sources: { name: string; text: string }[]): Promise<CriticalFact[]> {
+  const corpus = sources.map((s) => `### SOURCE: ${s.name}\n${s.text}`).join("\n\n");
+  const res = await generate({
     model: MODEL,
-    contents: `From this digital twin, extract every discrete fact useful for filling out forms
+    contents: `From the user's data below, extract every discrete fact useful for filling out forms
 (names, DOB, contact, each address part, ID numbers/state/expiry, SSN, employer, title, income, housing cost,
 card details, emergency contacts, current carrier, preferences, etc.).
 key: snake_case identifier. sensitivity: "sensitive" for SSN, full card numbers, CVV, ID numbers, passwords;
 "personal" for DOB, income, employer, phone, family members; "basic" for name, email, address, preferences.
+source: the SOURCE filename the fact came from. Never invent information.
 
-${twinMarkdown}`,
+${corpus}`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -84,7 +110,7 @@ export async function fillForm(
     type: f.type,
     ...(f.options ? { options: f.options } : {}),
   }));
-  const res = await ai().models.generateContent({
+  const res = await generate({
     model: FILL_MODEL,
     contents: `Fill out ${schema.business}'s form "${schema.title}" for the user, using ONLY the user's data below.
 Rules:

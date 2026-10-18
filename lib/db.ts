@@ -39,6 +39,11 @@ db.exec(`
       decision TEXT NOT NULL,
       PRIMARY KEY (business, key)
     );
+    CREATE TABLE IF NOT EXISTS session_results (
+      session_id TEXT PRIMARY KEY,
+      values_json TEXT NOT NULL,
+      completed_at INTEGER NOT NULL
+    );
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,
       business TEXT NOT NULL,

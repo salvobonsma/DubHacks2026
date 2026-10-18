@@ -6,9 +6,15 @@ import type { FormSchema } from "@/lib/types";
 
 export type FormlyValues = Record<string, string>;
 
+interface SessionResult {
+  status: string;
+  values: FormlyValues | null;
+}
+
 /**
- * The embeddable "Fill with Formly" button. Opens the Formly popup (Stripe Checkout style)
- * and resolves with the approved field values via postMessage.
+ * The embeddable "Fill with Formly" button. Opens the Formly popup (Stripe Checkout style) and
+ * resolves with the approved field values. Values arrive by postMessage from the popup, by polling
+ * the session (if the popup lost its opener), or via ?formly_session= after a same-tab redirect.
  */
 export function FormlyButton({
   schema,
@@ -26,18 +32,56 @@ export function FormlyButton({
     onFilledRef.current = onFilled;
   }, [onFilled]);
 
+  // Deliver once per session, whichever channel gets there first.
+  const deliver = useRef((sessionId: string, values: FormlyValues | null) => {
+    if (sessionRef.current !== sessionId) return;
+    sessionRef.current = null;
+    setBusy(false);
+    if (values) onFilledRef.current(values);
+  });
+
+  const fetchSession = (id: string): Promise<SessionResult> =>
+    fetch(`${formlyOrigin}/api/sessions?id=${id}`).then((r) => r.json());
+
+  // Channel 1: postMessage from the popup.
   useEffect(() => {
     const expected = formlyOrigin || window.location.origin;
     function handle(e: MessageEvent) {
       if (e.origin !== expected) return;
       const msg = e.data as { type?: string; sessionId?: string; values?: FormlyValues };
-      if (msg?.sessionId !== sessionRef.current) return;
-      if (msg.type === "formly:filled" && msg.values) onFilledRef.current(msg.values);
-      if (msg.type === "formly:filled" || msg.type === "formly:cancelled") setBusy(false);
+      if (!msg?.sessionId) return;
+      if (msg.type === "formly:filled") deliver.current(msg.sessionId, msg.values ?? null);
+      if (msg.type === "formly:cancelled") deliver.current(msg.sessionId, null);
     }
     window.addEventListener("message", handle);
     return () => window.removeEventListener("message", handle);
   }, [formlyOrigin]);
+
+  // Channel 2: returning from a same-tab flow with ?formly_session=<id>.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get("formly_session");
+    if (!id) return;
+    url.searchParams.delete("formly_session");
+    window.history.replaceState(null, "", url);
+    sessionRef.current = id;
+    fetchSession(id).then((s) => deliver.current(id, s.values));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Channel 3: poll while the popup is open, in case postMessage can't reach us.
+  useEffect(() => {
+    if (!busy) return;
+    const t = setInterval(async () => {
+      const id = sessionRef.current;
+      if (!id) return;
+      const s = await fetchSession(id);
+      if (s.status === "completed") deliver.current(id, s.values);
+      if (s.status === "cancelled") deliver.current(id, null);
+    }, 1500);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [busy]);
 
   async function open() {
     setBusy(true);
@@ -46,19 +90,19 @@ export function FormlyButton({
     const popup = window.open(
       "about:blank",
       "formly",
-      `width=${w},height=${h},left=${window.screenX + (window.outerWidth - w) / 2},top=${window.screenY + 60}`,
+      `popup,width=${w},height=${h},left=${window.screenX + (window.outerWidth - w) / 2},top=${window.screenY + 60}`,
     );
     try {
       const res = await fetch(`${formlyOrigin}/api/sessions`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ schema, origin: window.location.origin }),
+        body: JSON.stringify({ schema, returnUrl: window.location.href }),
       });
       const { sessionId } = await res.json();
       sessionRef.current = sessionId;
       const url = `${formlyOrigin}/formly/fill?session=${sessionId}`;
-      if (popup) popup.location.href = url;
-      else window.open(url, "formly");
+      if (popup && !popup.closed) popup.location.href = url;
+      else window.location.href = url; // popup blocked: same-tab flow, Formly redirects back
     } catch (err) {
       popup?.close();
       setBusy(false);
