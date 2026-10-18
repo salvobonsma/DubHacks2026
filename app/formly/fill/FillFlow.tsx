@@ -253,7 +253,7 @@ export function FillFlow() {
                             mode !== m.id
                               ? "border-line"
                               : m.id === "all"
-                                ? "border-amber-500 bg-amber-50"
+                                ? "border-amber-500 bg-bg"
                                 : "border-navy bg-bg"
                           }`}
                         >
@@ -262,7 +262,7 @@ export function FillFlow() {
                             name="mode"
                             checked={mode === m.id}
                             onChange={() => changeMode(m.id)}
-                            className={`mt-1 ${m.id === "all" ? "accent-amber-500" : "accent-navy"}`}
+                            className="mt-1 accent-navy"
                           />
                           <span>
                             <span className="block text-sm font-semibold">
