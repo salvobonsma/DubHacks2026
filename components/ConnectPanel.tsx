@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
 import { GoogleConsent, type GoogleScope } from "./GoogleConsent";
-import { ProgressStatus, type ProgressTask } from "./ProgressStatus";
+import { FINISH_MS, ProgressStatus, type ProgressTask } from "./ProgressStatus";
 import { ArrowRightIcon, CheckIcon, CloseIcon, LockIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
 
@@ -54,6 +54,13 @@ const FEATURED = 1;
 export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void }) {
   const [sources, setSources] = useState<SourceRow[]>([]);
   const [busy, setBusy] = useState<ProgressTask | null>(null);
+
+  /** Show the bar reaching 100% for a beat, then hide it. */
+  async function finishBusy() {
+    setBusy((b) => b && { ...b, done: true });
+    await new Promise((r) => setTimeout(r, FINISH_MS));
+    setBusy(null);
+  }
   const [error, setError] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -84,7 +91,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
         "Double-checking key facts…",
         "Almost done…",
       ],
-      expectedMs: 20000 + 5000 * files.length,
+      expectedMs: 8000 + 4000 * files.length,
     });
     setError(null);
     const body = new FormData();
@@ -98,7 +105,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       setError((e as Error).message);
     }
     await refresh();
-    setBusy(null);
+    await finishBusy();
   }
 
   async function connectGoogle(scopes: GoogleScope[], account: string) {
@@ -111,7 +118,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
         "Double-checking key facts…",
         "Almost done…",
       ],
-      expectedMs: 10000,
+      expectedMs: 5000,
     });
     setError(null);
     try {
@@ -126,7 +133,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       setError((e as Error).message);
     }
     await refresh();
-    setBusy(null);
+    await finishBusy();
   }
 
   const googleSynced = sources.some((s) => s.connector === "google");
@@ -135,14 +142,14 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setDisconnectOpen(false);
     setBusy({
       steps: [`Disconnecting ${GOOGLE.name}…`, "Rebuilding your digital twin…", "Almost done…"],
-      expectedMs: 9000,
+      expectedMs: 3500,
     });
     setError(null);
     const res = await fetch("/api/sources?connector=google", { method: "DELETE" }).then((r) => r.json());
     if (res.error) setError(res.error);
     else onTwin?.(res.twin ?? null);
     await refresh();
-    setBusy(null);
+    await finishBusy();
   }
 
   /** Google tile/row: connect if not synced, otherwise offer to disconnect. */
@@ -152,12 +159,12 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   }
 
   async function remove(id: string) {
-    setBusy({ steps: ["Removing the source…", "Rebuilding your digital twin…", "Almost done…"], expectedMs: 9000 });
+    setBusy({ steps: ["Removing the source…", "Rebuilding your digital twin…", "Almost done…"], expectedMs: 3500 });
     const res = await fetch(`/api/sources?id=${id}`, { method: "DELETE" }).then((r) => r.json());
     if (res.error) setError(res.error);
     else onTwin?.(res.twin ?? null);
     await refresh();
-    setBusy(null);
+    await finishBusy();
   }
 
   const tile = "flex flex-col items-center justify-center gap-1.5 rounded-xl border px-1 py-3 transition";
