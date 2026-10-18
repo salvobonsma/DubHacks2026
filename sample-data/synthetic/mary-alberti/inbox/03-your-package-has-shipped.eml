@@ -1,0 +1,10 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Mary Alberti <mary.alberti57@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <f4be9016-0963-48d7-a882-1011a0d413d5@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Mary Alberti, good news! Your recent order from Amazon.example has shipped and is on its way. Shipping to Mary Alberti, 7402 Elm St, Madison, WI 53717. Phone on the order (608) 555-0135. Contents include one household item, specifically a stainless steel kitchen timer. Tracking number is 1Z9999999999999999. Estimated delivery is scheduled for Thursday by end of day. Track your package anytime by visiting your orders page.

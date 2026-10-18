@@ -1,0 +1,23 @@
+From: Netflix <billing@example.com>
+To: Tucker Baker <tucker.baker93@example.com>
+Subject: Your Netflix receipt
+Date: Sat, 19 Sep 2026 15:30:00 +0000
+Message-ID: <1ebeef14-76e4-4c69-a462-3c08b71eef76@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Tucker Baker,
+
+Your Netflix subscription payment has gone through. We are writing to confirm your latest monthly statement.
+
+Member: Tucker Baker
+Subscription: Netflix monthly membership
+Amount Charged: $22.99
+Billing Period: Oct 15 - Nov 15, 2024
+Payment Method: Mastercard ending in 8832
+
+Keep watching your favorite series and movies in stunning 4K quality. You can update your plan or billing preferences anytime in your account settings.
+
+Thank you for streaming with us,
+The Netflix Team

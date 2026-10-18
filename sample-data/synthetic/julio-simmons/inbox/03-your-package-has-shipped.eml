@@ -1,0 +1,23 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Julio Simmons <julio.simmons18@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <4ccb2cdd-6f83-4bc4-a977-f45ee1ca3304@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Julio,
+
+Good news! Your Amazon.example order has shipped and is on the way.
+
+Shipping Details:
+Shipping to: Julio Simmons, 3704 Lakeview Dr, Rochester, NY 14618
+Phone on the order: (585) 555-0195
+Items in shipment: one household item (Stainless Steel French Press, Qty: 1)
+Tracking Number: 1Z9999999999999999
+
+You can track the progress of your package by clicking the link in your account dashboard.
+
+Thanks for shopping with us,
+Amazon.example Team

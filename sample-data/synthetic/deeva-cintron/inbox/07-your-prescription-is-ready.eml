@@ -1,0 +1,23 @@
+From: Walgreens.example <rx@example.com>
+To: Deeva Cintron <deeva.cintron75@example.com>
+Subject: Your prescription is ready
+Date: Sun, 27 Sep 2026 15:36:00 +0000
+Message-ID: <9af387f0-3131-4661-99fd-7488170acc18@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Deeva Cintron,
+
+Your prescription is ready for pickup at your local Walgreens.example pharmacy.
+
+Patient Details:
+Patient: Deeva Cintron
+Date of birth on file: 1941-10-14
+Pickup location: Walgreens #1234, 400 E Michigan Ave, Saline, MI 48176
+
+Please bring a valid photo ID and your insurance card when you come to collect your medication. Our pharmacy staff is available if you have any questions regarding your prescription instructions or dosage.
+
+Thank you,
+Walgreens.example Pharmacy Team
+rx@example.com

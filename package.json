@@ -11,6 +11,7 @@
     "reset": "node -e \"require('fs').rmSync('data',{recursive:true,force:true});console.log('Local data wiped')\""
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
     "@google/genai": "^2.30.0",
     "better-sqlite3": "^13.0.3",
     "jszip": "^3.10.2",

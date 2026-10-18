@@ -1,6 +1,7 @@
 import { GoogleGenAI, ThinkingLevel, Type, type GenerateContentParameters, type Part } from "@google/genai";
 import type { CriticalFact, FilledField, FormField, FormSchema } from "./types";
 import { trimToWords } from "./words";
+import { claudeConfigured, claudeGenerate } from "./claude";
 
 // Flash-Lite with low thinking: ~3s fills, same accuracy as Flash on these extraction tasks.
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite";
@@ -21,6 +22,8 @@ function ai() {
  * and immediate fallback to the next model when one is overloaded or rate limited.
  */
 async function generate(params: GenerateContentParameters) {
+  // With an Anthropic key, every request runs on Claude instead (same prompts and schemas, no free-tier caps).
+  if (claudeConfigured()) return (await claudeGenerate(params)) as never;
   const models = [...new Set([params.model, ...FALLBACKS, MODEL])];
   const config = { ...params.config, thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } };
   let lastErr: unknown;
@@ -184,6 +187,8 @@ Rules:
 - Ages and years of experience: work them out from the dates in the data, as of today.
 - If the data explicitly says there is none (no lienholder, no apartment number, no suffix), that is an answer:
   use "None", or "N/A" if the data says N/A. For a select, pick the option that means none if there is one.
+  Only when the data says so in words: an address that simply has no unit leaves the apartment/suite field null,
+  never "None".
 - If the data does not contain the answer, value must be null. Never guess or invent.
 - source: the filename the value came from. confidence: 0-1.
 

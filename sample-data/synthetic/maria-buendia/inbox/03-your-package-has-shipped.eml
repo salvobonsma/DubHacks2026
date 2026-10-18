@@ -1,0 +1,10 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Maria Buendia <maria.buendia66@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <c119a15d-1faf-4ae2-9aa4-39aac40843e8@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hello Maria Buendia, Good news! Your Amazon.example order has shipped and is on its way to you. Shipping to Maria Buendia, 9277 Cedar Ln, Lilburn, GA 30047. The phone on the order is (770) 555-0197. This shipment contains one household item, a silicone garlic peeler. Your tracking number is 1Z9999999999999999. Estimated delivery is this coming Thursday by 7 PM. Thank you for shopping with us.

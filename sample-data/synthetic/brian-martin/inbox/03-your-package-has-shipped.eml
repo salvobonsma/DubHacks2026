@@ -1,0 +1,10 @@
+From: Amazon.example <shipment-tracking@example.com>
+To: Brian Martin <brian.martin38@example.com>
+Subject: Your package has shipped
+Date: Fri, 02 Oct 2026 15:34:00 +0000
+Message-ID: <1dad7900-9f31-413a-a18b-72d26bd4fc27@example.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Hi Brian Martin, Good news! Your recent order from Amazon.example has shipped and is on its way to you. Shipping to Brian Martin, 7808 Ridge Rd, Pompano Beach, FL 33063. The carrier was provided with the phone on the order (954) 555-0194 for delivery updates. This shipment contains one household item. Your tracking number is 1Z9999999999999999. You can click the tracking link above to follow your package's progress in real time. Thank you for shopping with us.
