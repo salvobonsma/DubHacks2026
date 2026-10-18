@@ -230,8 +230,7 @@ export function FillFlow() {
                     <div>
                       <p className="font-semibold">You have no data sources yet</p>
                       <p className="mt-0.5 text-sm text-muted">
-                        Add one below to begin. Formly builds your digital twin from it, then fills {session.business}
-                        &apos;s form for you.
+                        Add one below to begin.
                       </p>
                     </div>
                   </div>
