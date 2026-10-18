@@ -102,9 +102,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <header className="tm-header">
         <div className="mx-auto flex max-w-3xl items-center px-6 py-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/tmobile/logo.png" alt="T-Mobile" className="tm-logo-light h-7 w-auto" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/tmobile/logo-white.png" alt="T-Mobile" className="tm-logo-dark h-7 w-auto" />
+          <img src="/tmobile/logo.png" alt="T-Mobile" className="h-7 w-auto" />
           <span className="tm-caption ml-auto">Secure checkout</span>
         </div>
       </header>

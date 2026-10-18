@@ -39,34 +39,15 @@
   color: var(--tm-text-body);
   font-family: var(--tm-font-body);
   line-height: 1.65;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  .tm-root {
-    --tm-bg: #000000;
-    --tm-header: #000000;
-    --tm-card: var(--tm-gray-900);
-    --tm-input: var(--tm-gray-800);
-    --tm-text: var(--tm-white);
-    --tm-text-body: var(--tm-gray-200);
-    --tm-text-secondary: var(--tm-gray-400);
-    --tm-border: var(--tm-gray-700);
-    --tm-border-input: var(--tm-gray-700);
-    --tm-brand: var(--tm-magenta-300);
-    color-scheme: dark;
-  }
-}
 
 .tm-header {
   background: var(--tm-header);
   border-bottom: 1px solid var(--tm-border);
 }
 
-.tm-logo-dark { display: none; }
-@media (prefers-color-scheme: dark) {
-  .tm-logo-light { display: none; }
-  .tm-logo-dark { display: block; }
-}
 
 .tm-h1 {
   font-family: var(--tm-font-headline);
