@@ -1,70 +1,43 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import { nanoid } from "nanoid";
 import { db } from "@/lib/db";
-import { extractText } from "@/lib/extract";
-import { listGoogleAccounts, SAMPLE_ROOT } from "@/lib/personas";
-import { rebuildTwin } from "@/lib/twin";
-
-const ALL_SCOPES = ["profile", "contacts", "gmail", "drive"] as const;
-type Scope = (typeof ALL_SCOPES)[number];
-const LABELS: Record<Scope, string> = { profile: "Profile", contacts: "Contacts", gmail: "Gmail", drive: "Drive" };
-
-/** Demo accounts the mock Google sign-in can switch between. */
-export async function GET() {
-  return Response.json({ accounts: await listGoogleAccounts() });
-}
+import { GOOGLE_SYNC_SCOPES, googleConfigured, googleConnection, importGoogle, revokeGoogle, type GoogleScope } from "@/lib/google";
+import { getTwin, rebuildTwin } from "@/lib/twin";
+import { currentUser } from "@/lib/user";
 
 /**
- * Mock Google connector: pretends OAuth succeeded and "syncs" the chosen demo persona's Google data
- * from sample-data/ as one source, limited to the scopes the user left checked.
- * Body: { account?: persona folder (default alex-chen), scopes?: Scope[] }.
+ * Sync the visitor's connected Google account (live OAuth only; the sample-data persona lives at
+ * /api/connectors/google/demo and is only offered on /demo). Picker mode only ever imports the profile,
+ * whatever is asked for. Body: { scopes?: ("profile" | "contacts" | "gmail" | "drive")[] }.
  */
 export async function POST(req: Request) {
-  const body = (await req.json().catch(() => ({}))) as { account?: string; scopes?: string[] };
-  const scopes = ALL_SCOPES.filter((s) => (body.scopes ?? ALL_SCOPES).includes(s));
+  const user = currentUser(req);
+  if (!googleConfigured()) return Response.json({ error: "Google sign-in isn't set up on this server" }, { status: 400 });
+  if (!googleConnection(user)) return Response.json({ error: "Connect your Google account first" }, { status: 400 });
+
+  const body = (await req.json().catch(() => ({}))) as { scopes?: string[] };
+  const scopes = GOOGLE_SYNC_SCOPES.filter((s) => (body.scopes ?? GOOGLE_SYNC_SCOPES).includes(s)) as GoogleScope[];
   if (scopes.length === 0) return Response.json({ error: "Pick at least one thing to share" }, { status: 400 });
 
-  // Only accept known persona folders, never a path from the request.
-  const account = (await listGoogleAccounts()).find((a) => a.id === (body.account ?? "alex-chen"));
-  if (!account) return Response.json({ error: "Unknown account" }, { status: 400 });
-  const dir = path.join(SAMPLE_ROOT, account.id);
-
-  const google = JSON.parse(await fs.readFile(path.join(dir, "google_profile.json"), "utf8"));
-  const parts: string[] = [`Google account: ${account.name} <${account.email}>`];
-  const synced: Scope[] = [];
-  if (scopes.includes("profile")) {
-    parts.push(`## Profile\n${JSON.stringify({ ...google.profile, addresses: google.addresses }, null, 2)}`);
-    synced.push("profile");
-  }
-  if (scopes.includes("contacts") && google.contacts?.length) {
-    parts.push(`## Contacts\n${JSON.stringify(google.contacts, null, 2)}`);
-    synced.push("contacts");
-  }
-  if (scopes.includes("gmail") && google.gmail_receipts?.length) {
-    parts.push(`## Gmail receipts\n${JSON.stringify(google.gmail_receipts, null, 2)}`);
-    synced.push("gmail");
-  }
-  if (scopes.includes("drive")) {
-    const resume = await fs.readFile(path.join(dir, "resume.docx")).catch(() => null);
-    if (resume) {
-      parts.push(`## Drive: Resume.docx\n${await extractText("resume.docx", "", resume)}`);
-      synced.push("drive");
-    }
-  }
-  if (synced.length === 0) return Response.json({ error: "Nothing to sync from that account" }, { status: 400 });
-
-  db.prepare("DELETE FROM sources WHERE connector = 'google'").run();
-  db.prepare("INSERT INTO sources (id, connector, name, mime, text, created_at) VALUES (?, 'google', ?, ?, ?, ?)").run(
-    nanoid(),
-    `Google (${synced.map((s) => LABELS[s]).join(", ")})`,
-    "text/plain",
-    parts.join("\n\n"),
-    Date.now(),
-  );
-
+  let errors: string[];
   try {
-    return Response.json({ twin: await rebuildTwin() });
+    ({ errors } = await importGoogle(user, scopes));
+  } catch (e) {
+    return Response.json({ error: `Couldn't sync Google: ${(e as Error).message}` }, { status: 502 });
+  }
+  try {
+    return Response.json({ twin: await rebuildTwin(user, { removed: true }), errors });
+  } catch (e) {
+    return Response.json({ error: `Couldn't update your twin: ${(e as Error).message}`, errors }, { status: 500 });
+  }
+}
+
+/** Disconnect: revoke + forget this visitor's Google tokens and remove every google source of theirs. */
+export async function DELETE(req: Request) {
+  const user = currentUser(req);
+  await revokeGoogle(user);
+  const { changes } = db.prepare("DELETE FROM sources WHERE user_id = ? AND connector = 'google'").run(user);
+  try {
+    // Skip the (LLM-backed) rebuild when there was nothing to remove.
+    return Response.json({ twin: changes ? await rebuildTwin(user, { removed: true }) : getTwin(user) });
   } catch (e) {
     return Response.json({ error: `Couldn't update your twin: ${(e as Error).message}` }, { status: 500 });
   }

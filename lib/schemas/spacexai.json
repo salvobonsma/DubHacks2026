@@ -7,11 +7,11 @@
   "fields": [
     { "id": "first_name", "label": "First Name", "type": "text", "section": "About you", "category": "basic", "required": true },
     { "id": "last_name", "label": "Last Name", "type": "text", "section": "About you", "category": "basic", "required": true },
-    { "id": "age", "label": "Age", "type": "number", "section": "About you", "category": "personal", "required": true },
+    { "id": "over_18", "label": "Are you 18 or older?", "type": "select", "section": "About you", "category": "personal", "required": true, "options": ["Yes", "No"] },
     { "id": "email", "label": "Email", "type": "email", "section": "About you", "category": "basic", "required": true },
     { "id": "phone", "label": "Phone", "type": "tel", "section": "About you", "category": "personal", "required": true },
-    { "id": "location", "label": "Location (City)", "type": "text", "section": "About you", "category": "basic", "required": true, "placeholder": "City, State" },
-    { "id": "us_person", "label": "U.S. person status (ITAR)", "type": "select", "section": "About you", "category": "personal", "required": true, "options": ["U.S. citizen", "U.S. permanent resident", "Neither"] },
+    { "id": "location", "label": "Location", "type": "text", "section": "About you", "category": "basic", "required": true, "placeholder": "Seattle, WA" },
+    { "id": "us_person", "label": "U.S. person status (ITAR)", "type": "select", "section": "About you", "category": "personal", "required": true, "options": ["U.S. citizen", "Lawful permanent resident", "Protected individual", "Not a U.S. person"] },
 
     { "id": "degree", "label": "Degree", "type": "select", "section": "Education", "category": "basic", "required": true, "options": ["High school", "Associate's", "Bachelor's (in progress)", "Bachelor's", "Master's", "PhD"] },
     { "id": "school", "label": "School", "type": "text", "section": "Education", "category": "basic", "required": true },

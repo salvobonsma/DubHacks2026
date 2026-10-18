@@ -31,8 +31,9 @@ function Avatar({ account, index, size = "h-6 w-6 text-xs" }: { account: Account
 }
 
 /**
- * Fake "Sign in with Google" consent sheet for the mock connector. Every scope starts selected, and the
- * account chip switches between the demo personas in sample-data/.
+ * Demo "Sign in with Google" consent sheet for developer testing, offered only on /demo. Every scope
+ * starts selected, and the account chip switches between the demo personas in sample-data/. A strip at
+ * the top says plainly that no real Google account is involved.
  */
 export function GoogleConsent({
   onAllow,
@@ -48,7 +49,7 @@ export function GoogleConsent({
   const account = accounts[accountIdx];
 
   useEffect(() => {
-    fetch("/api/connectors/google")
+    fetch("/api/connectors/google/demo")
       .then((r) => r.json())
       .then((d) => setAccounts(d.accounts ?? []));
   }, []);
@@ -73,6 +74,9 @@ export function GoogleConsent({
           <span className="text-[#34A853]">l</span>
           <span className="text-[#EA4335]">e</span>
         </div>
+        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          Demo sign-in with sample data. No real Google account is used.
+        </p>
         <h2 className="mt-3 text-xl">Formly wants to access your Google Account</h2>
         <div className="relative mt-3">
           <button
@@ -100,7 +104,7 @@ export function GoogleConsent({
           </button>
           {choosing && (
             <div className="absolute z-10 mt-1 w-full max-w-xs rounded-xl border border-line bg-white py-1 shadow-lg">
-              <p className="px-3 pt-1.5 pb-1 text-xs font-medium text-muted">Choose an account</p>
+              <p className="px-3 pt-1.5 pb-1 text-xs font-medium text-muted">Pick a demo person</p>
               <div className="max-h-64 overflow-y-auto">
                 {accounts.map((a, i) => (
                   <button

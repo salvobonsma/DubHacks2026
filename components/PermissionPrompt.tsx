@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 export interface PromptRequest {
   key: string;
+  /** Includes "your", e.g. "your Social Security number and ID" (see groupTitle). */
   title: string;
   fields: { label: string; value: string; sensitive: boolean }[];
   sources: string[];
@@ -56,7 +57,7 @@ export function PermissionPrompt({
         </span>
       </div>
       <p className="mt-2 text-[15px]">
-        <strong>{business}</strong> is asking for your <strong>{request.title}</strong>
+        <strong>{business}</strong> is asking for <strong>{request.title}</strong>
       </p>
       <ul className="mt-3 space-y-1 rounded-lg bg-bg p-3 font-mono text-[12px]">
         {request.fields.map((f) => (
@@ -77,7 +78,7 @@ export function PermissionPrompt({
           Always allow for {business}
         </Choice>
         <Choice n={3} onClick={() => onDecide("deny")}>
-          Deny and type it myself
+          Don&apos;t share
         </Choice>
       </div>
     </div>

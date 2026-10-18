@@ -5,6 +5,10 @@ import { trimToWords } from "./words";
 // Flash-Lite with low thinking: ~3s fills, same accuracy as Flash on these extraction tasks.
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite";
 const FILL_MODEL = process.env.GEMINI_FILL_MODEL ?? MODEL;
+// A form with choice fields (plan, lines, device…) needs suggestions reasoned from evidence, not just copying:
+// Flash-Lite at low thinking flip-flopped on those (a 2-line bill read as 1 line, the phone on the bill missed),
+// so those fills default to Flash.
+const SUGGEST_MODEL = process.env.GEMINI_SUGGEST_MODEL ?? "gemini-3.5-flash";
 // Short answers are writing, not extraction, so they default to the bigger model.
 const WRITE_MODEL = process.env.GEMINI_WRITE_MODEL ?? "gemini-3.5-flash";
 // Tried in order when the primary model is overloaded (503) or rate limited (429).
@@ -36,6 +40,19 @@ async function generate(params: GenerateContentParameters) {
   }
   throw lastErr;
 }
+
+/**
+ * Whose data this is. A shared Apple ID, a family plan or a forwarded booking puts other people's names, addresses
+ * and cards in the account owner's mail; none of that may become the user's identity (spec section 6 dry run).
+ */
+const WHOSE_DATA = `Whose data this is: the user is the account owner, named in the "## Google profile" section or the
+"Google account:" line, or on their own ID, resume or bank account owner record. A different name on an order,
+receipt, subscription, booking or bill is another person (a family member sharing the account): list what it says
+under People & Plans as theirs (e.g. "- **Sam Lee (family, on a shared Apple order):** iPhone 16, shipped to …"),
+and never use it as the user's name, birthday, address, phone, email or payment card.
+Addresses: label each by what its source shows. An address an order shipped or was delivered to is a "Shipping
+address" (add "campus mailbox" when it has a mailbox number such as SMC, Box, CPO or PO Box), not a home address,
+unless a profile, ID, lease, bill or bank record also gives it as home.`;
 
 /** Stage 1 helper: transcribe a PDF or image into plain text. */
 export async function transcribeFile(name: string, mime: string, data: Buffer): Promise<string> {
@@ -76,7 +93,9 @@ majors, GPA, graduation dates, certifications, skills, and every project or acco
 (what it was, the numbers, the tools). People & Plans: parents (names, birth dates, birthplaces, mother's maiden
 name), spouse, children, emergency contacts, references, pets, current services and bills, interests, preferences,
 plans. Keep every fact from the sources, however minor. Use flat bullets only, one fact per bullet.
-Use bullet points "- **Label:** value _(source: filename)_". When sources conflict, prefer the most recent/official
+${WHOSE_DATA}
+Use bullet points "- **Label:** value _(source: label)_", where label is the most specific heading the fact sits
+under inside its SOURCE ("Gmail: Pay stub, Mar 2026", "Drive: Resume.pdf"), else the SOURCE filename. When sources conflict, prefer the most recent/official
 document and note the conflict. Never invent information. Output only markdown.
 
 ${corpus}`,
@@ -98,7 +117,10 @@ contacts, references, allergies, medications, current carrier, preferences, etc.
 key: snake_case identifier. sensitivity: "sensitive" for SSN, full card numbers, CVV, ID numbers, bank account
 numbers, mother's maiden name, insurance member IDs, passwords;
 "personal" for DOB, income, employer, phone, family members; "basic" for name, email, address, preferences.
-source: the SOURCE filename the fact came from. Never invent information.
+source: the most specific label the fact sits under inside its SOURCE (a "### " heading such as
+"Gmail: Pay stub, Mar 2026"), else the SOURCE filename. Never invent information.
+${WHOSE_DATA}
+Facts about other people get a key that says whose they are (e.g. "family_member_1_shipping_address").
 
 ${corpus}`,
     config: {
@@ -122,23 +144,6 @@ ${corpus}`,
   return JSON.parse(res.text ?? "[]");
 }
 
-const FILLED_FIELDS = {
-  responseMimeType: "application/json",
-  responseSchema: {
-    type: Type.ARRAY,
-    items: {
-      type: Type.OBJECT,
-      properties: {
-        fieldId: { type: Type.STRING },
-        value: { type: Type.STRING, nullable: true },
-        source: { type: Type.STRING, nullable: true },
-        confidence: { type: Type.NUMBER },
-      },
-      required: ["fieldId", "value", "source", "confidence"],
-    },
-  },
-};
-
 /** Stage 3: critical info + twin + business form schema -> field values. Short answers are written separately. */
 export async function fillForm(
   schema: FormSchema,
@@ -146,7 +151,7 @@ export async function fillForm(
   twinMarkdown: string,
 ): Promise<FilledField[]> {
   const essays = schema.fields.filter((f) => f.type === "textarea");
-  const facts = schema.fields.filter((f) => f.type !== "textarea");
+  const facts = schema.fields.filter((f) => f.type !== "textarea" && !neverFill(f));
   const [filled, written] = await Promise.all([
     facts.length ? fillFacts(schema, facts, critical, twinMarkdown) : [],
     // A failed draft shouldn't sink the whole fill: the user can still write those answers in review.
@@ -161,6 +166,60 @@ export async function fillForm(
   return [...filled, ...written].filter((f) => valid.has(f.fieldId));
 }
 
+/**
+ * How the fill may treat a field.
+ * copy: an identity fact (SSN, ID number, date of birth, card details). Only ever copied from the data, never
+ *   inferred or suggested; with no evidence the business asks the user for it.
+ * choice: a choice or preference (plan, lines, device, keep my number, autopay…). Copied when the data says,
+ *   otherwise a best suggestion with a one-line reason.
+ * fact: everything else. Copied when stated, inferred as a suggestion only from clear evidence, else blank.
+ */
+export type FieldRule = "copy" | "choice" | "fact";
+
+const IDENTITY =
+  /social security|\bssn\b|\bitin\b|tax id|date of birth|birth ?date|birthday|\bdob\b|\bid (number|no|type|state|expir)|issuing state|licen[cs]e (number|no|state|class|expir)|passport|card number|\bcvv|\bcvc|security code|expiration|expiry|\bpin\b|password|security answer|mother'?s maiden|account number|routing/i;
+const CHOICE =
+  /\bplan\b|number of lines|how many lines|\blines\b|device|phone model|keep (your|my|current)|transfer (your|my)|\bport\b|auto ?pay|paperless|e-?bill|billing (method|preference)|contact (preference|method)|preferred (contact|language|method|store|time)|how (should|may|can|do) we|security question|protection|trade.?in|accessor|storage|capacity|financ|payment option|(delivery|shipping) (method|speed|option)|pickup|newsletter|marketing|how did you hear/i;
+
+/**
+ * Never filled at all, whatever the data says: the business collects it itself. An SSN (the T-Mobile race stops
+ * before it), a PIN or password the user makes up, a legal consent only the user can give.
+ */
+const NEVER_FILL = /social security|\bssn\b|\bitin\b|\bconsent\b|i agree|account pin|create (a|your) (pin|password)/i;
+
+export function neverFill(f: FormField): boolean {
+  return !!f.never || NEVER_FILL.test(f.label) || /^(ssn|ssn4|itin)$/i.test(f.id);
+}
+
+export function fieldRule(f: FormField): FieldRule {
+  if (f.identity || f.category === "sensitive" || IDENTITY.test(f.label)) return "copy";
+  if (f.suggest || CHOICE.test(f.label)) return "choice";
+  return "fact";
+}
+
+const FILL_RESPONSE = {
+  responseMimeType: "application/json",
+  responseSchema: {
+    type: Type.ARRAY,
+    items: {
+      type: Type.OBJECT,
+      properties: {
+        fieldId: { type: Type.STRING },
+        value: { type: Type.STRING, nullable: true },
+        kind: { type: Type.STRING, enum: ["fact", "suggestion"] },
+        evidence: { type: Type.ARRAY, items: { type: Type.STRING } },
+        source: { type: Type.STRING, nullable: true },
+        reason: { type: Type.STRING, nullable: true },
+        confidence: { type: Type.NUMBER },
+      },
+      required: ["fieldId", "value", "kind", "evidence", "source", "reason", "confidence"],
+      // Evidence, where it comes from and why before the value, so the value follows from the data, not the
+      // other way round.
+      propertyOrdering: ["fieldId", "evidence", "kind", "source", "reason", "value", "confidence"],
+    },
+  },
+};
+
 async function fillFacts(
   schema: FormSchema,
   formFields: FormField[],
@@ -171,19 +230,55 @@ async function fillFacts(
     id: f.id,
     label: f.label,
     type: f.type,
+    rule: fieldRule(f),
     ...(f.options ? { options: f.options } : {}),
+    ...(f.hint ? { hint: f.hint } : {}),
   }));
   const res = await generate({
-    model: FILL_MODEL,
-    contents: `Fill out ${schema.business}'s form "${schema.title}" for the user, using ONLY the user's data below.
+    model: fields.some((f) => f.rule === "choice") ? SUGGEST_MODEL : FILL_MODEL,
+    contents: `Fill out ${schema.business}'s form "${schema.title}" for the user from the user's data below.
 Today is ${new Date().toISOString().slice(0, 10)}.
-Rules:
-- Return one entry per form field id.
-- Format values for the field type: date -> YYYY-MM-DD, tel -> (555) 555-5555, number -> digits only,
-  select -> exactly one of the listed options.
+${schema.context ? `\nWhat ${schema.business} offers on this form (for suggestions and their reasons): ${schema.context}\n` : ""}
+${WHOSE_DATA}
+
+Return one entry per form field id. Each field has a rule:
+- "copy": an identity fact (SSN, ID numbers, date of birth, card details). Copy it exactly when the data states
+  it for the user (kind "fact"). Otherwise value null. Never infer, estimate, guess or suggest it.
+- "fact": copy it when the data states it for the user (kind "fact"). If the data doesn't state it but gives
+  clear evidence, you may infer it (kind "suggestion"), e.g. the current carrier from a carrier bill email,
+  employment status from pay stubs or a student email, the emergency contact from a Family-labelled contact.
+  No evidence: null. A carrier is never inferred from a phone purchase, a contact or a family member's mail.
+- "choice": a choice or preference. If the data states it, kind "fact". Otherwise ALWAYS give the best
+  suggestion (kind "suggestion") that fits the evidence and what ${schema.business} offers: plan from how they use
+  their phone and what they pay for (a streaming subscription a plan includes, data use, travel, being a student;
+  the reason names that receipt or bill and what the plan gives them for it, and only perks the business lists
+  for that very plan), number of lines from the lines on their own carrier bill (else 1, just them), keep their number when
+  they have a phone number of their own (name the number, and the carrier when known), bring their own phone when
+  the data shows the phone they have now (name that phone: the one on their own line of a carrier bill or on their
+  own phone receipt), autopay and paperless from how they pay their other bills (a carrier bill saying AutoPay or
+  paper-free is on), delivery to the same address when that is where their orders already go. A select choice with nothing in the data bearing on it:
+  suggest the usual choice and say that nothing in their data points elsewhere. A text choice with no evidence:
+  null.
+Values:
+- Format for the field type: date -> YYYY-MM-DD, tel -> (555) 555-5555, number -> digits only,
+  select -> exactly one of the listed options. A field's "hint", when given, says what belongs in it.
+- Address parts: the street line goes in the street field and the unit (Apt, Suite, Unit, #, or a mailbox number
+  such as SMC 4417) in the apartment/suite field when the form has one. An address known only from a shipping or
+  delivery confirmation is kind "suggestion" for every part, with a reason naming the order it shipped to (and
+  "a campus mailbox" when it is one); from a profile, ID, lease, bill or bank record it is a fact.
 - Ages and years of experience: work them out from the dates in the data, as of today.
-- If the data does not contain the answer, value must be null. Never guess or invent.
-- source: the filename the value came from. confidence: 0-1.
+- Never invent a name, number, date or address that isn't in the data.
+evidence: first, up to 3 short quotes copied word for word from the data that bear on this field (for a plan:
+  every streaming or subscription receipt, data use, travel, student status; for a device: the phone on the
+  user's own line or receipt). [] when nothing in the data bears on it.
+source: the most specific label the value came from (the "### " heading or source note in the data, e.g.
+  "Gmail: Carrier bill, Mar 2026" or "Drive: Resume.pdf"), else the SOURCE filename. null when value is null.
+reason: for a suggestion, one short line (under 16 words) to the user saying why, naming the specific thing in
+  their data it rests on and its date or number, e.g. "your Verizon bill from Sep 2026 lists 2 phone lines" or
+  "your number (412) 555-0187 can move to ${schema.business}". It is shown after the word "because", so start
+  lowercase (unless the first word is a name) and don't repeat "because". It is about the evidence you quoted.
+  Never a vague line such as "it is in your data", and never claim something the data doesn't show; only with
+  evidence [] say "nothing in your data points elsewhere". For a fact, null. confidence: 0-1.
 
 FORM FIELDS:
 ${JSON.stringify(fields)}
@@ -193,9 +288,42 @@ ${JSON.stringify(critical)}
 
 FULL DIGITAL TWIN:
 ${twinMarkdown}`,
-    config: FILLED_FIELDS,
+    config: FILL_RESPONSE,
   });
-  return JSON.parse(res.text ?? "[]");
+  const byId = new Map(formFields.map((f) => [f.id, f]));
+  const out = JSON.parse(res.text ?? "[]") as (FilledField & { kind?: string; evidence?: string[] })[];
+  return out.map(({ kind, evidence, ...f }) =>
+    checkFill(byId.get(f.fieldId), { ...f, suggested: kind === "suggestion" }, evidence?.filter((e) => e.trim()) ?? []),
+  );
+}
+
+/**
+ * The model's answer for one field, held to the rules: identity facts are never suggestions, a select value
+ * must be one of its options, a number is digits, and a suggestion without a reason isn't shown as one. Only a
+ * choice may be suggested with nothing in the data behind it ("the usual choice"); any other field suggested
+ * without evidence (a carrier guessed as "Other") is dropped, so the business asks for it instead.
+ */
+function checkFill(field: FormField | undefined, f: FilledField, evidence: string[] = []): FilledField {
+  const blank = { ...f, value: null, source: null, reason: null, suggested: false };
+  let value = f.value?.trim() || null;
+  if (!field || !value || neverFill(field)) return blank;
+  const rule = fieldRule(field);
+  if (rule === "copy" && f.suggested) return blank;
+  if (rule === "fact" && f.suggested && (!evidence.length || /nothing in your data/i.test(f.reason ?? ""))) return blank;
+  if (field.type === "select" && field.options?.length) {
+    const opt = field.options.find((o) => o.toLowerCase() === value!.toLowerCase());
+    if (!opt) return blank;
+    value = opt;
+  }
+  if (field.type === "number") {
+    value = value.replace(/[^\d.]/g, "");
+    if (!value) return blank;
+  }
+  const reason = f.suggested ? f.reason?.trim().replace(/^because\s+/i, "") || null : null;
+  if (f.suggested && !reason) return blank;
+  // The model sometimes echoes the corpus marker ("SOURCE: Drive: Resume.pdf").
+  const source = f.source?.replace(/^\s*SOURCE:\s*/i, "").trim() || null;
+  return { ...f, value, source, reason, suggested: !!f.suggested };
 }
 
 /**

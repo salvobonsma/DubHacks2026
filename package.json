@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@google/genai": "^2.30.0",
+    "@types/qrcode": "^1.5.5",
     "better-sqlite3": "^13.0.3",
     "mammoth": "^1.13.0",
     "nanoid": "^6.0.2",
     "next": "16.4.2",
+    "qrcode": "^1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },

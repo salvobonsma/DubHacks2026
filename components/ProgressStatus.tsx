@@ -1,43 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 export interface ProgressTask {
-  /** What Formly is doing, in order. The label advances as the bar passes each step's share. */
-  steps: string[];
-  /** Rough time the work usually takes; the bar eases toward 95% around then and keeps creeping after. */
-  expectedMs: number;
+  /** The one honest line shown while the work runs, e.g. "Reading resume.pdf…". */
+  label?: string;
+  /** Older callers pass a list of steps; only the first is shown, since nothing reports real progress. */
+  steps?: string[];
+  /** Ignored. Kept so older callers still compile. */
+  expectedMs?: number;
 }
 
 /**
- * Estimated progress for slow server work (LLM calls) that can't report real progress. The bar
- * always moves, fast at first and slower near the end, so a long wait never looks frozen.
+ * Status for slow server work (LLM calls) that can't report real progress: one label and an
+ * indeterminate bar, so the wait never looks frozen and never shows a made-up percentage.
  */
-export function ProgressStatus({ task, className = "" }: { task: ProgressTask; className?: string }) {
-  const [elapsed, setElapsed] = useState(0);
-
-  useEffect(() => {
-    const start = Date.now();
-    const t = setInterval(() => setElapsed(Date.now() - start), 200);
-    return () => clearInterval(t);
-    // Time from when the bar appears; callers may pass a fresh task object on every render.
-  }, []);
-
-  // 1 - e^(-3t/T): ~95% at the expected time, then slowly approaches 99%.
-  const pct = Math.min(99, 100 * (1 - Math.exp((-3 * elapsed) / task.expectedMs)));
-  const step = task.steps[Math.min(task.steps.length - 1, Math.floor((pct / 100) * task.steps.length))];
+export function ProgressStatus({
+  label,
+  task,
+  className = "",
+}: {
+  label?: string;
+  task?: ProgressTask;
+  className?: string;
+}) {
+  const text = label ?? task?.label ?? task?.steps?.[0] ?? "Working…";
 
   return (
     <div className={className} role="status" aria-live="polite">
-      <div className="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
-        <span className="font-medium text-brand-dark">{step}</span>
-        <span className="text-xs tabular-nums text-muted">{Math.round(pct)}%</span>
-      </div>
+      <style href="formly-progress" precedence="default">
+        {`@keyframes formly-progress { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }`}
+      </style>
+      <p className="mb-1.5 text-sm font-medium text-brand-dark">{text}</p>
       <div className="h-1.5 overflow-hidden rounded-full bg-brand/15">
-        <div
-          className="h-full rounded-full bg-brand transition-[width] duration-200 ease-linear"
-          style={{ width: `${pct}%` }}
-        />
+        <div className="h-full w-2/5 animate-[formly-progress_1.4s_ease-in-out_infinite] rounded-full bg-brand motion-reduce:w-full motion-reduce:animate-none" />
       </div>
     </div>
   );

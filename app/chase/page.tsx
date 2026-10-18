@@ -165,9 +165,6 @@ function Shell({ children }: { children: React.ReactNode }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/chase/octagon-white.svg" alt="Chase" className="h-8 w-8" />
           </div>
-          <Link href="/demo" className="font-semibold">
-            Exit
-          </Link>
         </div>
       </header>
       <main className="mx-auto w-full max-w-[478px] flex-1 px-6 pt-8 pb-12">{children}</main>
@@ -179,6 +176,9 @@ function Shell({ children }: { children: React.ReactNode }) {
             A demo application page for Formly, styled after Chase&apos;s card application. Not affiliated with
             JPMorgan Chase. Nothing you enter here leaves this page.
           </p>
+          <Link href="/demo" className="ch-legal underline underline-offset-2">
+            Back to demo forms
+          </Link>
         </div>
       </footer>
     </div>

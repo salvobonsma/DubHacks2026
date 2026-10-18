@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { TELENEO_FACES } from "./fonts";
 import "./tmobile.css";
 
-// TeleNeo is licensed to T-Mobile only, so headlines fall back to Inter 800 per the brand guide.
+// Headline fallback when TeleNeo isn't on this machine: Inter 800, per the brand guide.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -10,9 +11,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Create your T-Mobile account",
+  title: "Get started with T-Mobile",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
 };
 
 export default function TMobileLayout({ children }: { children: React.ReactNode }) {
-  return <div className={`${inter.variable} tm-root flex flex-1 flex-col`}>{children}</div>;
+  return (
+    <div className={`${inter.variable} tm-root flex flex-1 flex-col`}>
+      <style dangerouslySetInnerHTML={{ __html: TELENEO_FACES }} />
+      {children}
+    </div>
+  );
 }

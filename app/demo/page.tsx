@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/Icons";
-import { Logo } from "@/components/Logo";
+import { FormlyHeader } from "@/components/FormlyHeader";
+import { SampleData } from "@/components/SampleData";
 import chase from "@/lib/schemas/chase.json";
 import spacexai from "@/lib/schemas/spacexai.json";
 import tmobile from "@/lib/schemas/tmobile.json";
@@ -14,13 +15,7 @@ export const metadata: Metadata = {
 export default function DemoPicker() {
   return (
     <div className="flex-1">
-      <header className="bg-navy">
-        <div className="mx-auto flex max-w-5xl items-center px-4 py-4">
-          <Link href="/">
-            <Logo light />
-          </Link>
-        </div>
-      </header>
+      <FormlyHeader />
       <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="text-[28px] leading-tight">Pick a demo form</h1>
         <p className="mt-2 max-w-xl text-muted">
@@ -35,10 +30,10 @@ export default function DemoPicker() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/tmobile/logo.png" alt="T-Mobile" className="h-7 w-fit" />
             <h2 className="mt-6 text-xl">{tmobile.title}</h2>
-            <p className="mt-1 text-sm text-muted">{tmobile.fields.length} fields · ID, payment card, credit check</p>
+            <p className="mt-1 text-sm text-muted">Plan, phone and your info, up to the credit check</p>
             <p className="mt-4 flex-1 text-[15px]">
-              A long carrier signup. Formly fills your contact info, ID and card, and asks before it shares anything
-              sensitive.
+              The carrier signup from the T-Mobile race. Formly suggests a plan and line count with a reason, fills
+              your name, contact info and address, and leaves the SSN, PIN and consents to you.
             </p>
             <span className="mt-6 flex items-center gap-1.5 text-sm font-semibold text-magenta">
               Open the T-Mobile form
@@ -75,8 +70,8 @@ export default function DemoPicker() {
             <h2 className="mt-7 text-xl">{chase.title}</h2>
             <p className="mt-1 text-sm text-white/70">{chase.fields.length} fields · SSN, address, income</p>
             <p className="mt-4 flex-1 text-[15px] text-white/90">
-              A Visa credit card application. Formly fills your identity, address and income, and asks before it
-              shares your SSN.
+              A Visa credit card application. Formly fills your identity, address and income. Your SSN is never
+              filled: you type it on Chase&apos;s form.
             </p>
             <span className="mt-6 flex items-center gap-1.5 text-sm font-semibold">
               Open the Chase application
@@ -84,6 +79,7 @@ export default function DemoPicker() {
             </span>
           </Link>
         </div>
+        <SampleData />
       </main>
     </div>
   );

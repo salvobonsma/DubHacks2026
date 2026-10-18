@@ -1,14 +1,14 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
 import { ProgressStatus } from "@/components/ProgressStatus";
 import { CheckIcon, LockIcon, WarningIcon } from "@/components/Icons";
-import { Logo } from "@/components/Logo";
+import { Logo, Mark } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
 import { askKey, groupTitle, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
-import type { FilledField, FormSchema, Twin } from "@/lib/types";
+import type { FilledField, FormSchema, MerchantTheme, Twin } from "@/lib/types";
 import { countWords } from "@/lib/words";
 
 interface Session {
@@ -16,6 +16,11 @@ interface Session {
   business: string;
   returnUrl: string | null;
   schema: FormSchema;
+}
+
+interface SourceRow {
+  connector: string;
+  name: string;
 }
 
 interface Row {
@@ -30,9 +35,82 @@ interface Row {
   denied: boolean;
   /** Formly found a value for it; decides the Filled / Not filled tab without moving rows as you type. */
   found: boolean;
+  /** Formly's suggestion (a choice or an inference) rather than a fact copied from the data. */
+  suggested: boolean;
+  /** Why, for a suggestion: one line drawn from the user's data. */
+  reason: string | null;
 }
 
 type Step = "connect" | "filling" | "permissions" | "review" | "sent";
+
+const CONNECTOR_NAMES: Record<string, string> = {
+  google: "Google",
+  microsoft: "Microsoft",
+  plaid: "your bank",
+  scan: "your phone",
+  sample: "sample data",
+};
+/** Set when this window was opened as the Formly popup, so a lost opener (after Google's sign-in) is noticed. */
+const POPUP_KEY = "formly:popup";
+
+/** "Google, your phone and resume.docx": one line naming where the twin's data came from. */
+function sourceSummary(sources: SourceRow[]) {
+  const parts = [
+    ...new Set(sources.filter((s) => s.connector !== "upload").map((s) => CONNECTOR_NAMES[s.connector] ?? s.connector)),
+  ];
+  const files = sources.filter((s) => s.connector === "upload");
+  if (files.length === 1) parts.push(files[0].name);
+  else if (files.length > 1) parts.push(`${files.length} files`);
+  return parts.length < 2 ? (parts[0] ?? "your digital twin") : `${parts.slice(0, -1).join(", ")} and ${parts.at(-1)}`;
+}
+
+/** The one definition of "will be sent", used by the header count, the tabs and the Send button. */
+const willSend = (r: Row) => r.include && !!r.value && !r.denied;
+
+/**
+ * The merchant's theme as CSS variables on the popup's root. The Formly components inside use Tailwind colors
+ * that read --navy, --green, --border, --muted and --bg, and radii that read --radius-*, so they take the
+ * merchant's look without a second set of styles. --fy-* are the popup's own primary button.
+ */
+function themeStyle(t: MerchantTheme): CSSProperties {
+  return {
+    "--navy": t.colors.text,
+    "--green": t.colors.primary,
+    "--green-dark": t.colors.primary,
+    "--border": t.colors.border,
+    "--muted": t.colors.muted,
+    "--bg": t.colors.surface,
+    "--font-dm-sans": t.font,
+    "--font-sora": t.font,
+    "--radius-md": `${t.radius.input}px`,
+    "--radius-lg": `${t.radius.button}px`,
+    "--radius-xl": `${t.radius.button}px`,
+    "--radius-2xl": `${t.radius.card}px`,
+    "--fy-primary": t.colors.primary,
+    "--fy-primary-hover": t.colors.primaryHover,
+    "--fy-primary-text": t.colors.primaryText,
+    fontFamily: t.font,
+    color: t.colors.text,
+  } as CSSProperties;
+}
+
+function fontFaces(t: MerchantTheme) {
+  return (t.fontFaces ?? [])
+    .map((f) => `@font-face{font-family:"${f.family}";font-weight:${f.weight};font-display:swap;src:url("${f.src}") format("woff2")}`)
+    .join("");
+}
+
+/** "Fill your T-Mobile signup" when the form's title already names the business, else "Fill your Chase form". */
+function heading(schema: FormSchema) {
+  return schema.title.toLowerCase().startsWith(schema.business.toLowerCase())
+    ? { title: `Fill your ${schema.title}`, subtitle: null }
+    : { title: `Fill your ${schema.business} form`, subtitle: schema.title };
+}
+
+/** Show only the last four characters of a sensitive value until the user reveals it. */
+function maskValue(v: string) {
+  return v.length <= 4 ? "••••" : `${"•".repeat(Math.min(v.length - 4, 8))}${v.slice(-4)}`;
+}
 
 export function FillFlow() {
   const sessionId = useSearchParams().get("session");
@@ -45,11 +123,27 @@ export function FillFlow() {
   const [mode, setMode] = useState<SharingMode>("auto");
   const [queue, setQueue] = useState<PromptRequest[]>([]);
   const [promptIdx, setPromptIdx] = useState(0);
-  const [reviewTab, setReviewTab] = useState<"filled" | "missing">("filled");
+  const [reviewTab, setReviewTab] = useState<"send" | "skip">("send");
+  /** Rows toggled in the open tab stay put until the tab changes, so a row never jumps away mid-click. */
+  const [pinned, setPinned] = useState<Set<string>>(new Set());
+  const [sources, setSources] = useState<SourceRow[]>([]);
+  /** With a twin already built, the popup shows a one-line source summary until "Change sources". */
+  const [panelOpen, setPanelOpen] = useState(false);
+  /** A source was just added (or Google came back from sign-in): run the fill as soon as the session is loaded. */
+  const [autoFill, setAutoFill] = useState(false);
+  /** The approved answers went out but this window can't hand them back itself (no opener, can't close). */
+  const [orphaned, setOrphaned] = useState(false);
 
   useEffect(() => {
     if (!sessionId) return;
-    fetch(`/api/sessions?id=${sessionId}`)
+    // Take the session if a merchant on another origin made it without a cookie (no-op when it's ours), then read it.
+    fetch("/api/sessions", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ sessionId, claim: true }),
+    })
+      .catch(() => undefined)
+      .then(() => fetch(`/api/sessions?id=${sessionId}`))
       .then((r) => r.json())
       .then((s: Session) => {
         setSession(s);
@@ -62,8 +156,32 @@ export function FillFlow() {
       .then((d) => {
         setTwin(d.twin);
         setTwinLoaded(true);
+        // Coming back from a connector's OAuth page: open the panel so it can show the result.
+        const q = new URLSearchParams(window.location.search);
+        if (!d.twin || q.has("connected") || q.has("connect_error")) setPanelOpen(true);
+      })
+      // If the profile can't load, still show the ways to add data rather than an empty screen.
+      .catch(() => {
+        setTwinLoaded(true);
+        setPanelOpen(true);
       });
+    fetch("/api/sources")
+      .then((r) => r.json())
+      .then((s: SourceRow[]) => setSources(Array.isArray(s) ? s : []));
+    try {
+      if (window.opener) sessionStorage.setItem(POPUP_KEY, sessionId);
+    } catch {}
   }, [sessionId]);
+
+  // Straight from "source added" to the fill: no extra tap on Fill my form.
+  useEffect(() => {
+    if (!autoFill || !session || !twin || step !== "connect") return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAutoFill(false);
+    fill();
+    // fill reads the current session and mode; it only needs to run when these change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoFill, session, twin, step]);
 
   async function fill() {
     if (!session) return;
@@ -93,6 +211,8 @@ export function FillFlow() {
         reveal: f.category !== "sensitive",
         denied: false,
         found: !!hit?.value,
+        suggested: !!hit?.value && !!hit.suggested,
+        reason: hit?.value && hit.suggested ? (hit.reason ?? null) : null,
       };
     });
     setRows(newRows);
@@ -108,7 +228,7 @@ export function FillFlow() {
       const key = askKey(f);
       const g = groups.get(key) ?? {
         key,
-        title: groupTitle(key),
+        title: "",
         fields: [],
         sources: [],
       };
@@ -116,9 +236,12 @@ export function FillFlow() {
       if (row.source && !g.sources.includes(row.source)) g.sources.push(row.source);
       groups.set(key, g);
     }
-    const q = [...groups.values()];
+    // Name each prompt from the fields it actually covers on this form.
+    const q = [...groups.values()].map((g) => ({ ...g, title: groupTitle(g.key, g.fields.map((f) => f.label)) }));
     setQueue(q);
     setPromptIdx(0);
+    setReviewTab("send");
+    setPinned(new Set());
     setStep(q.length ? "permissions" : "review");
   }
 
@@ -135,7 +258,9 @@ export function FillFlow() {
     if (d === "deny") {
       const ids = new Set(session.schema.fields.filter((f) => askKey(f) === req.key).map((f) => f.id));
       setRows((rs) =>
-        rs.map((r) => (ids.has(r.fieldId) ? { ...r, value: "", source: null, include: false, denied: true } : r)),
+        rs.map((r) =>
+          ids.has(r.fieldId) ? { ...r, value: "", source: null, include: false, denied: true, suggested: false, reason: null } : r,
+        ),
       );
     }
     if (promptIdx + 1 < queue.length) setPromptIdx(promptIdx + 1);
@@ -152,19 +277,36 @@ export function FillFlow() {
       });
   }
 
-  /** Hand the result back: postMessage to the opener popup-style, or redirect back in a same-tab flow. */
-  async function finish(status: "completed" | "cancelled", values?: Record<string, string>) {
+  /**
+   * Hand the result back: postMessage to the opener popup-style, or redirect back in a same-tab flow.
+   * A popup that went through Google's sign-in has lost its opener (Google's pages cut the link), but the
+   * merchant tab is still polling the session: close this window, or say where to go if it can't close.
+   */
+  async function finish(status: "completed" | "cancelled", values?: Record<string, string>, suggested: string[] = []) {
     if (!session) return;
     await fetch("/api/sessions", {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ sessionId: session.id, status, values }),
+      body: JSON.stringify({ sessionId: session.id, status, values, suggested }),
     });
-    const target = session.returnUrl ? new URL(session.returnUrl).origin : "*";
+    // Never "*": the answers only go to the merchant page that asked (the server checked its origin).
+    const target = session.returnUrl ? new URL(session.returnUrl).origin : window.location.origin;
     const type = status === "completed" ? "formly:filled" : "formly:cancelled";
+    let wasPopup = false;
+    try {
+      wasPopup = sessionStorage.getItem(POPUP_KEY) === session.id;
+    } catch {}
     if (window.opener && !window.opener.closed) {
-      window.opener.postMessage({ type, sessionId: session.id, values }, target);
+      window.opener.postMessage({ type, sessionId: session.id, values, suggested }, target);
       setTimeout(() => window.close(), status === "completed" ? 900 : 0);
+    } else if (wasPopup) {
+      setTimeout(
+        () => {
+          window.close();
+          setTimeout(() => setOrphaned(true), 300);
+        },
+        status === "completed" ? 900 : 0,
+      );
     } else if (session.returnUrl) {
       const back = new URL(session.returnUrl);
       back.searchParams.set("formly_session", session.id);
@@ -173,9 +315,14 @@ export function FillFlow() {
   }
 
   function approve() {
-    const values = Object.fromEntries(rows.filter((r) => r.include && r.value).map((r) => [r.fieldId, r.value]));
+    const sending = rows.filter(willSend);
+    const values = Object.fromEntries(sending.map((r) => [r.fieldId, r.value]));
     setStep("sent");
-    finish("completed", values);
+    finish(
+      "completed",
+      values,
+      sending.filter((r) => r.suggested).map((r) => r.fieldId),
+    );
   }
 
   function cancel() {
@@ -185,105 +332,92 @@ export function FillFlow() {
   const update = (id: string, patch: Partial<Row>) =>
     setRows((rs) => rs.map((r) => (r.fieldId === id ? { ...r, ...patch } : r)));
 
-  const filled = rows.filter((r) => r.include && r.value).length;
-  const essayCount = session?.schema.fields.filter((f) => f.type === "textarea").length ?? 0;
+  function toggle(r: Row, include: boolean) {
+    setPinned((p) => new Set(p).add(r.fieldId));
+    update(r.fieldId, { include });
+  }
+
+  function switchTab(tab: "send" | "skip") {
+    setReviewTab(tab);
+    setPinned(new Set());
+  }
+
+  const sendCount = rows.filter(willSend).length;
   const isFound = (r: Row) => r.found && !r.denied;
-  const foundCount = rows.filter(isFound).length;
+  const tabRows = rows.filter((r) => pinned.has(r.fieldId) || willSend(r) === (reviewTab === "send"));
+  /** What the business will still ask for on its own page: never filled (SSN, PIN, consent) or not in the data. */
+  const askLater = rows.filter((r) => !isFound(r) && !r.denied);
+  const theme = session?.schema.theme;
+  const head = session ? heading(session.schema) : null;
+  const fillable = session?.schema.fields.filter((f) => !f.never).length ?? 0;
+  const progress = step === "connect" ? 1 : step === "filling" || step === "permissions" ? 2 : 3;
+  const primary = theme
+    ? "bg-[var(--fy-primary)] text-[var(--fy-primary-text)] enabled:hover:bg-[var(--fy-primary-hover)]"
+    : null;
 
   return (
-    <div className="flex flex-1 flex-col bg-white">
-      <header className="flex items-center justify-between bg-navy px-5 py-4">
-        <Logo light />
-        <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 ring-1 ring-white/10">
-          <LockIcon className="h-3.5 w-3.5 text-[#22C985]" />
-          Secure session
-        </span>
-      </header>
+    <div className="flex flex-1 flex-col bg-white" style={theme ? themeStyle(theme) : undefined}>
+      {theme?.fontFaces?.length ? <style dangerouslySetInnerHTML={{ __html: fontFaces(theme) }} /> : null}
+      {theme ? (
+        // The merchant's transactional header: its logo and the step title, a thin progress bar under it.
+        <header className="sticky top-0 z-10 bg-white">
+          <div className="flex h-14 items-center gap-3 border-b border-line px-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={theme.logo} alt={session!.business} className="h-6 w-auto" />
+            <span className="text-base leading-5 font-semibold">{theme.headerTitle}</span>
+          </div>
+          <div className="h-1 bg-bg" aria-hidden>
+            <div className="h-full bg-[var(--fy-primary)] transition-[width]" style={{ width: `${(progress / 3) * 100}%` }} />
+          </div>
+        </header>
+      ) : (
+        <header className="flex items-center bg-navy px-5 py-4">
+          <Logo light />
+        </header>
+      )}
 
-      <div className="flex-1 px-5 py-5">
-        {!session ? (
+      <div className="flex-1 px-4 py-5 sm:px-5">
+        {!session || !head ? (
           <div className="flex items-center gap-2 text-muted">
             <Spinner /> Loading…
           </div>
         ) : (
           <>
-            <p className="flex items-end gap-2 text-base text-muted">
-              {session.schema.logo ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={session.schema.logo} alt={session.business} className="h-6 w-auto" />
-              ) : (
-                <strong className="text-navy">{session.business}</strong>
-              )}
-              <span className="leading-none">wants to fill out</span>
-            </p>
-            <h1 className="mt-0.5 text-[28px] leading-tight font-bold">{session.schema.title}</h1>
-            <p className="mt-0.5 text-sm text-muted">
-              Your source data never leaves Formly.
-            </p>
+            {!theme && session.schema.logo && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={session.schema.logo} alt={session.business} className="mb-2 h-6 w-auto" />
+            )}
+            {/* The global h1 rule (Sora 600) is unlayered, so the merchant's headline weight goes inline. */}
+            <h1
+              className={theme ? "text-2xl leading-8 tracking-normal" : "text-[28px] leading-tight font-bold"}
+              style={theme ? { fontWeight: 800 } : undefined}
+            >
+              {head.title}
+            </h1>
+            {head.subtitle && <p className="mt-0.5 text-base text-muted">{head.subtitle}</p>}
+            <p className="mt-1 text-sm text-muted">{session.business} only gets the answers you approve.</p>
 
             {step === "connect" && (
               <div className="mt-5 space-y-5">
-                {twinLoaded && !twin && (
-                  <div className="flex items-center gap-3 rounded-2xl border border-brand/30 bg-brand/5 p-4">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand-dark">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                        strokeLinecap="round"
-                        aria-hidden
-                      >
-                        <path d="M12 5v14M5 12h14" />
-                      </svg>
-                    </span>
-                    <div>
-                      <p className="font-semibold">You have no data sources yet</p>
-                      <p className="mt-0.5 text-sm text-muted">
-                        Add one below to begin.
-                      </p>
-                    </div>
+                {twinLoaded && !panelOpen && twin && (
+                  <div className="flex min-h-12 items-center gap-3 rounded-xl border border-line px-3 py-2.5 text-sm">
+                    <CheckIcon className="h-4 w-4 shrink-0 text-brand-dark" stroke={2} />
+                    <span className="min-w-0 flex-1 truncate">Using your data from {sourceSummary(sources)}</span>
+                    <button
+                      onClick={() => setPanelOpen(true)}
+                      className="-my-2 min-h-11 shrink-0 text-sm font-semibold text-brand-dark hover:underline"
+                    >
+                      Change sources
+                    </button>
                   </div>
                 )}
-                <ConnectPanel onTwin={setTwin} />
-                {twin && (
-                  <div>
-                    <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
-                      Permissions
-                    </p>
-                    <div className="space-y-1.5">
-                      {MODES.map((m) => (
-                        <label
-                          key={m.id}
-                          className={`flex cursor-pointer items-start gap-2.5 rounded-lg border px-3 py-2 ${
-                            mode !== m.id
-                              ? "border-line"
-                              : m.id === "all"
-                                ? "border-amber-500 bg-bg"
-                                : "border-navy bg-bg"
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="mode"
-                            checked={mode === m.id}
-                            onChange={() => changeMode(m.id)}
-                            className="mt-1 accent-navy"
-                          />
-                          <span>
-                            <span className="block text-sm font-semibold">
-                              {m.label}
-                              {m.id === "all" && (
-                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" stroke={1.25} />
-                              )}
-                            </span>
-                            <span className="block text-xs text-muted">{m.hint}</span>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
+                {panelOpen && (
+                  <ConnectPanel
+                    layout="list"
+                    onTwin={setTwin}
+                    onSources={setSources}
+                    onAdded={() => setAutoFill(true)}
+                  />
                 )}
                 {error && <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
               </div>
@@ -291,20 +425,7 @@ export function FillFlow() {
 
             {step === "filling" && (
               <div className="mt-12">
-                <ProgressStatus
-                  task={{
-                    steps: [
-                      `Reading ${session.business}'s form…`,
-                      `Matching your digital twin to ${session.schema.fields.length} fields…`,
-                      ...(essayCount > 0
-                        ? [`Drafting ${essayCount === 1 ? "a short answer" : `${essayCount} short answers`} from your resume…`]
-                        : []),
-                      "Formatting dates, phone numbers and IDs…",
-                      "Almost done…",
-                    ],
-                    expectedMs: 9000 + 6000 * essayCount,
-                  }}
-                />
+                <ProgressStatus label={`Reading your data and filling ${fillable} fields…`} />
                 <p className="mt-3 text-xs text-muted">
                   {session.business} won&apos;t see anything until you review and approve it.
                 </p>
@@ -326,19 +447,19 @@ export function FillFlow() {
             {step === "review" && (
               <div className="mt-5">
                 <p className="mb-2 text-sm font-semibold">
-                  Review what you&apos;ll share ({filled}/{rows.length})
+                  Review what you&apos;ll send ({sendCount} of {rows.length})
                 </p>
                 <div className="mb-2 flex gap-1 rounded-xl bg-bg p-1 text-sm">
                   {(
                     [
-                      ["filled", "Filled", foundCount],
-                      ["missing", "Not filled", rows.length - foundCount],
+                      ["send", "Sending", sendCount],
+                      ["skip", "Not sending", rows.length - sendCount],
                     ] as const
                   ).map(([id, label, count]) => (
                     <button
                       key={id}
-                      onClick={() => setReviewTab(id)}
-                      className={`flex-1 rounded-lg px-3 py-1.5 font-medium transition-colors ${
+                      onClick={() => switchTab(id)}
+                      className={`min-h-10 flex-1 rounded-lg px-3 py-1.5 font-medium transition-colors ${
                         reviewTab === id ? "bg-white text-navy shadow-sm" : "text-muted hover:text-navy"
                       }`}
                     >
@@ -346,78 +467,85 @@ export function FillFlow() {
                     </button>
                   ))}
                 </div>
-                {rows.filter((r) => isFound(r) === (reviewTab === "filled")).length === 0 && (
+                {tabRows.length === 0 && (
                   <p className="rounded-xl border border-line px-3 py-6 text-center text-sm text-muted">
-                    {reviewTab === "filled" ? "Nothing was filled." : "Every field was filled."}
+                    {reviewTab === "send" ? "Nothing will be sent." : "Every field will be sent."}
+                  </p>
+                )}
+                {reviewTab === "skip" && tabRows.some((r) => !isFound(r)) && (
+                  <p className="mb-2 text-sm text-muted">
+                    {session.business} will ask you for the ones Formly couldn&apos;t find.
                   </p>
                 )}
                 <ul className="divide-y divide-line rounded-xl border border-line empty:hidden">
-                  {rows.filter((r) => isFound(r) === (reviewTab === "filled")).map((r) => (
-                    <li key={r.fieldId} className={`px-3 py-2 ${r.include ? "" : "opacity-50"}`}>
+                  {tabRows.map((r) => (
+                    <li key={r.fieldId} className={`px-3 py-2 ${!isFound(r) || willSend(r) ? "" : "opacity-50"}`}>
                       <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={r.include}
-                          onChange={(e) => update(r.fieldId, { include: e.target.checked })}
-                          className="accent-brand"
-                        />
+                        {isFound(r) && (
+                          <input
+                            type="checkbox"
+                            checked={r.include}
+                            onChange={(e) => toggle(r, e.target.checked)}
+                            aria-label={`Send ${r.label}`}
+                            className="h-4 w-4 accent-brand"
+                          />
+                        )}
                         <span className="flex-1 text-xs font-medium text-muted">
                           {r.label}
                           {r.category === "sensitive" && <LockIcon className="ml-1 inline h-3 w-3 align-[-1px]" />}
                         </span>
-                        {r.source && (
-                          <span className="max-w-[40%] truncate rounded-full bg-brand/15 px-2 py-0.5 text-[10px] text-brand-dark">
+                        {isFound(r) && r.suggested && (
+                          <span
+                            className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+                              theme ? "border-navy text-navy" : "border-amber-300 bg-amber-50 text-amber-800"
+                            }`}
+                          >
+                            Suggested
+                          </span>
+                        )}
+                        {isFound(r) && r.source && (
+                          <span className="max-w-[40%] truncate rounded-full bg-bg px-2 py-0.5 text-[10px] text-muted">
                             {r.source}
                           </span>
                         )}
+                        {r.denied && <span className="text-xs text-muted">Not shared</span>}
                       </div>
-                      <div className="mt-1 flex gap-2 pl-6">
-                        {r.maxWords ? (
-                          <div className="w-full">
-                            <textarea
-                              value={r.value}
-                              rows={5}
-                              placeholder={
-                                r.denied
-                                  ? "Denied. Write it yourself or leave it blank."
-                                  : "Nothing in your data fits. Write it or leave it blank."
-                              }
-                              onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
-                              className="block w-full resize-y rounded-md border border-line px-2 py-1.5 text-sm leading-relaxed outline-none focus:border-brand"
-                            />
-                            <p
-                              className={`mt-1 text-right text-[11px] ${
-                                countWords(r.value) > r.maxWords ? "font-semibold text-red-600" : "text-muted"
-                              }`}
+                      {!isFound(r) && !r.denied && (
+                        <p className="mt-0.5 text-xs text-muted">{session.business} will ask you for this</p>
+                      )}
+                      {isFound(r) && (
+                        <div className="mt-1 flex items-start gap-2 pl-6">
+                          <p className="flex-1 text-sm whitespace-pre-wrap break-words">
+                            {r.suggested && <span className="text-muted">Suggested: </span>}
+                            {r.reveal ? r.value : maskValue(r.value)}
+                          </p>
+                          {r.category === "sensitive" && (
+                            <button
+                              onClick={() => update(r.fieldId, { reveal: !r.reveal })}
+                              className="text-xs text-muted"
                             >
-                              {countWords(r.value)}/{r.maxWords} words
-                            </p>
-                          </div>
-                        ) : (
-                          <input
-                            value={r.value}
-                            type={r.reveal ? "text" : "password"}
-                            placeholder={
-                              r.denied
-                                ? "Denied. Type it yourself or leave it blank."
-                                : "Not found. Type it or leave it blank."
-                            }
-                            onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
-                            className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"
-                          />
-                        )}
-                        {r.category === "sensitive" && (
-                          <button
-                            onClick={() => update(r.fieldId, { reveal: !r.reveal })}
-                            className="text-xs text-muted"
-                          >
-                            {r.reveal ? "Hide" : "Show"}
-                          </button>
-                        )}
-                      </div>
+                              {r.reveal ? "Hide" : "Show"}
+                            </button>
+                          )}
+                        </div>
+                      )}
+                      {isFound(r) && r.suggested && r.reason && (
+                        <p className="mt-0.5 pl-6 text-xs text-muted">because {r.reason}</p>
+                      )}
+                      {isFound(r) && r.maxWords && (
+                        <p className="mt-1 pl-6 text-[11px] text-muted">
+                          {countWords(r.value)}/{r.maxWords} words
+                        </p>
+                      )}
                     </li>
                   ))}
                 </ul>
+                {reviewTab === "send" && askLater.length > 0 && (
+                  <div className="mt-3 rounded-xl bg-bg px-3 py-2.5">
+                    <p className="text-sm font-semibold">{session.business} will ask you for these</p>
+                    <p className="mt-0.5 text-xs text-muted">{askLater.map((r) => r.label).join(", ")}</p>
+                  </div>
+                )}
               </div>
             )}
 
@@ -426,7 +554,12 @@ export function FillFlow() {
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white">
                   <CheckIcon className="h-6 w-6" stroke={2} />
                 </div>
-                <p className="font-semibold">Sent to {session.business}</p>
+                <p className="font-semibold">{orphaned ? `Sent to ${session.business}` : `Returning to ${session.business}`}</p>
+                {orphaned && (
+                  <p className="mt-2 text-sm text-muted">
+                    Your {session.business} form is filled in the other window. You can close this one.
+                  </p>
+                )}
               </div>
             )}
           </>
@@ -434,28 +567,62 @@ export function FillFlow() {
       </div>
 
       {session && (step === "connect" || step === "review") && (
-        <footer className="sticky bottom-0 flex gap-2 border-t border-line bg-white px-5 py-4">
-          <button
-            onClick={cancel}
-            className="rounded-xl px-4 py-3 text-sm font-semibold text-muted transition-colors hover:bg-bg"
-          >
-            Cancel
-          </button>
-          {step === "connect" ? (
+        <footer className="sticky bottom-0 border-t border-line bg-white px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] sm:px-5">
+          {step === "review" && (
+            <label className="mb-2 flex min-h-8 items-center gap-1 text-xs text-muted">
+              Sharing:
+              <select
+                value={mode}
+                onChange={(e) => changeMode(e.target.value as SharingMode)}
+                className="cursor-pointer rounded bg-transparent font-semibold text-navy outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                {MODES.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+              {mode === "all" && <WarningIcon className="h-3 w-3 text-amber-600" stroke={1.25} />}
+            </label>
+          )}
+          <div className="flex gap-2">
             <button
-              onClick={fill}
-              disabled={!twin}
-              className="flex-1 rounded-xl bg-navy py-3 font-semibold text-white transition-colors enabled:hover:bg-black disabled:opacity-40"
+              onClick={cancel}
+              className="min-h-12 rounded-xl px-4 text-base font-semibold text-muted transition-colors hover:bg-bg"
             >
-              {twin || !twinLoaded ? "Fill my form" : "Add a source to continue"}
+              Cancel
             </button>
-          ) : (
-            <button
-              onClick={approve}
-              className="flex-1 rounded-xl bg-brand py-3 font-semibold text-navy transition-colors hover:bg-brand/90"
-            >
-              Approve &amp; send {filled} fields
-            </button>
+            {step === "connect" ? (
+              <button
+                onClick={fill}
+                disabled={!twin}
+                className={`min-h-12 flex-1 rounded-xl text-base font-semibold transition-colors disabled:opacity-40 ${
+                  primary ?? "bg-navy text-white enabled:hover:bg-black"
+                }`}
+              >
+                {twin || !twinLoaded
+                  ? "Fill my form"
+                  : sources.length
+                    ? "Build your twin to continue"
+                    : "Add your info to continue"}
+              </button>
+            ) : (
+              <button
+                onClick={approve}
+                disabled={sendCount === 0}
+                className={`min-h-12 flex-1 rounded-xl text-base font-semibold transition-colors disabled:opacity-40 ${
+                  primary ?? "bg-brand text-navy enabled:hover:bg-brand/90"
+                }`}
+              >
+                Send {sendCount} field{sendCount === 1 ? "" : "s"}
+              </button>
+            )}
+          </div>
+          {theme && (
+            <p className="mt-2 flex items-center justify-center gap-1 text-xs leading-4 text-muted">
+              <Mark className="h-3 w-3" />
+              Powered by Formly
+            </p>
           )}
         </footer>
       )}

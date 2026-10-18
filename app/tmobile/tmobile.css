@@ -1,5 +1,6 @@
-/* T-Mobile brand tokens for the /tmobile demo, from the TDDS values on t-mobile.com.
-   Scoped to .tm-root so the rest of the Formly site keeps its own look. */
+/* T-Mobile brand tokens for the /tmobile demo and the /race frame, copied from brand/tokens.css (TDDS values
+   read off t-mobile.com). Scoped to .tm-root so the rest of the Formly site keeps its own look. No color,
+   radius or font here that tokens.css doesn't define. The real site is light only, so this is too. */
 
 .tm-root {
   --tm-magenta-100: #ffcee7;
@@ -19,11 +20,16 @@
   --tm-gray-800: #2b2b2b;
   --tm-gray-900: #1c1c1c;
   --tm-gray-1000: #141414;
+  --tm-black: #000000;
 
-  --tm-bg: var(--tm-gray-200);
-  --tm-header: var(--tm-white);
+  --tm-positive-100: #e6fce8;
+  --tm-positive-300: #008110;
+  --tm-critical-100: #ffedec;
+  --tm-critical-300: #d20d00;
+
+  --tm-bg: var(--tm-white);
+  --tm-bg-secondary: var(--tm-gray-200);
   --tm-card: var(--tm-white);
-  --tm-input: var(--tm-white);
   --tm-text: var(--tm-gray-1000);
   --tm-text-body: var(--tm-gray-900);
   --tm-text-secondary: var(--tm-gray-600);
@@ -31,41 +37,114 @@
   --tm-border-input: var(--tm-gray-400);
   --tm-brand: var(--tm-magenta-400);
 
+  /* TeleNeo (the real T-Mobile font) for all text, from public/fonts-local (see fonts.ts); then Inter / the system stack. */
   --tm-font-headline: "TeleNeo", var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --tm-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tm-font-body: "TeleNeo", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   min-height: 100vh;
   background: var(--tm-bg);
   color: var(--tm-text-body);
   font-family: var(--tm-font-body);
+  font-weight: 400;
   line-height: 1.65;
   color-scheme: light;
 }
 
+/* ---------- Header and footer ---------- */
 
 .tm-header {
-  background: var(--tm-header);
+  background: var(--tm-white);
   border-bottom: 1px solid var(--tm-border);
 }
+.tm-nav-item { font-size: 14px; font-weight: 600; color: var(--tm-gray-1000); white-space: nowrap; }
+.tm-icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--tm-gray-1000);
+}
+.tm-badge {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 1000px;
+  background: var(--tm-magenta-400);
+  color: var(--tm-gray-100);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
 
+.tm-footer { background: var(--tm-black); color: var(--tm-gray-400); }
+.tm-footer-head { font-size: 14px; font-weight: 700; color: var(--tm-white); }
+.tm-footer-link { font-size: 14px; color: var(--tm-gray-400); }
+.tm-footer-legal { font-size: 12px; color: var(--tm-gray-500); }
+.tm-footer a.tm-footer-link:hover { color: var(--tm-white); }
 
+/* ---------- Type ---------- */
+
+/* Telekom Scale type: page H1 is Heading 4 (24/32) on phones and Heading 3 (32/40) wider; card and plan titles
+   Heading 5 (20/28); section labels Heading 6 (16/22 Bold); body 16/22; captions 14/20; small 12/16. */
 .tm-h1 {
   font-family: var(--tm-font-headline);
   font-weight: 800;
-  font-size: 28px;
-  line-height: 1.1;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--tm-text);
+}
+.tm-h2 {
+  font-family: var(--tm-font-headline);
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 28px;
   color: var(--tm-text);
 }
 .tm-h3 {
   font-family: var(--tm-font-headline);
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 1.1;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
   color: var(--tm-text);
 }
-.tm-num { font-family: var(--tm-font-headline); font-weight: 800; color: var(--tm-text); }
-.tm-caption { font-size: 12px; font-weight: 700; color: var(--tm-text-secondary); }
+@media (min-width: 600px) {
+  .tm-h1 { font-size: 32px; line-height: 40px; }
+}
+.tm-body { font-size: 16px; line-height: 22px; }
+.tm-num { font-family: var(--tm-font-headline); font-weight: 800; color: var(--tm-text); font-variant-numeric: tabular-nums; }
+.tm-caption { font-size: 14px; line-height: 20px; color: var(--tm-text-secondary); }
 .tm-secondary { color: var(--tm-text-secondary); }
+.tm-legal { font-size: 12px; line-height: 16px; color: var(--tm-text-secondary); }
+
+/* ---------- Steps ---------- */
+
+.tm-progress { height: 4px; background: var(--tm-gray-300); border-radius: 1000px; overflow: hidden; }
+.tm-progress > div { height: 100%; background: var(--tm-magenta-400); border-radius: 1000px; transition: width 0.25s ease; }
+.tm-step { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--tm-text-secondary); white-space: nowrap; }
+.tm-step[data-state="current"] { color: var(--tm-text); font-weight: 700; }
+.tm-step[data-state="done"] { color: var(--tm-text); }
+.tm-step-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 1000px;
+  border: 1px solid var(--tm-gray-400);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tm-text-secondary);
+}
+.tm-step[data-state="current"] .tm-step-dot { border-color: var(--tm-gray-1000); color: var(--tm-text); }
+.tm-step[data-state="done"] .tm-step-dot { border-color: var(--tm-magenta-400); background: var(--tm-magenta-400); color: var(--tm-gray-100); }
+
+/* ---------- Cards and choices ---------- */
 
 .tm-card {
   background: var(--tm-card);
@@ -73,62 +152,240 @@
   border-radius: 12px;
   padding: 24px;
 }
-@media (min-width: 640px) {
-  .tm-card { padding: 32px; }
-}
-
+.tm-surface { background: var(--tm-bg-secondary); border-radius: 12px; padding: 24px; }
 .tm-divider { height: 1px; flex: 1; background: var(--tm-border); }
 
-.tm-required { color: #e8200d; }
-.tm-label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; color: var(--tm-text); }
+/* A selectable card (plan, phone, number). Selected = magenta border and check, the site's selected state. */
+.tm-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+  background: var(--tm-card);
+  border: 1px solid var(--tm-gray-400);
+  border-radius: 12px;
+  padding: 16px 16px 16px 48px;
+  cursor: pointer;
+  color: var(--tm-text-body);
+}
+.tm-option::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  width: 20px;
+  height: 20px;
+  border-radius: 1000px;
+  border: 1px solid var(--tm-gray-500);
+  background: var(--tm-white);
+}
+.tm-option[aria-checked="true"] { border: 2px solid var(--tm-magenta-400); padding: 15px 15px 15px 47px; }
+.tm-option[aria-checked="true"]::before { left: 15px; top: 17px; border: 6px solid var(--tm-magenta-400); }
+.tm-option:focus-visible { outline: 2px solid var(--tm-magenta-400); outline-offset: 2px; }
+.tm-option-error { border-color: var(--tm-critical-300); }
 
+.tm-seg { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.tm-seg button {
+  min-height: 48px;
+  border: 1px solid var(--tm-gray-400);
+  border-radius: 4px;
+  background: var(--tm-card);
+  font-family: var(--tm-font-headline);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--tm-text);
+  cursor: pointer;
+}
+.tm-seg button[aria-checked="true"] { border: 2px solid var(--tm-magenta-400); }
+.tm-seg button:focus-visible { outline: 2px solid var(--tm-magenta-400); outline-offset: 2px; }
+
+.tm-chip {
+  display: inline-block;
+  border-radius: 24px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--tm-gray-200);
+  color: var(--tm-gray-900);
+}
+.tm-chip-magenta { background: var(--tm-magenta-100); color: var(--tm-magenta-600); }
+
+/* ---------- Inputs ---------- */
+
+.tm-label { display: block; margin-bottom: 4px; font-size: 16px; line-height: 22px; font-weight: 700; color: var(--tm-text); }
 .tm-input {
   width: 100%;
-  min-height: 44px;
-  padding: 8px 12px;
+  min-height: 48px;
+  padding: 10px 12px 10px 16px;
   font-size: 16px;
+  font-weight: 600;
   color: var(--tm-text);
-  background-color: var(--tm-input);
-  border: 1px solid var(--tm-border-input);
+  background-color: var(--tm-white);
+  border: 1px solid var(--tm-gray-600);
   border-radius: 2px;
   outline: none;
+  appearance: none;
+}
+
+/* Floating label, the site's input: the label sits in the box and moves up once there's a value or focus. */
+.tm-float { position: relative; }
+.tm-float .tm-input { min-height: 56px; padding: 22px 12px 6px 16px; }
+.tm-float select.tm-input { padding-top: 22px; }
+.tm-float > label {
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  right: 40px;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 400;
+  color: var(--tm-gray-600);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left top;
+  transition: transform 0.12s ease, top 0.12s ease;
+}
+.tm-float .tm-input:focus + label,
+.tm-float .tm-input:not(:placeholder-shown) + label,
+.tm-float[data-filled="true"] > label {
+  top: 7px;
+  transform: scale(0.75);
+}
+.tm-float-action {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tm-gray-1000);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.tm-help { margin-top: 4px; font-size: 14px; line-height: 20px; color: var(--tm-text-secondary); }
+
+/* Line-count tiles (scroll sideways on a phone) and plan cards with the black name strip, as on the plans page. */
+.tm-tiles { display: flex; gap: 8px; overflow-x: auto; padding: 2px; margin: -2px; scrollbar-width: none; }
+.tm-tiles::-webkit-scrollbar { display: none; }
+.tm-tile {
+  flex: none;
+  min-width: 112px;
+  min-height: 72px;
+  padding: 10px 12px;
+  text-align: left;
+  background: var(--tm-white);
+  border: 1px solid var(--tm-gray-400);
+  border-radius: 12px;
+  color: var(--tm-text);
+  cursor: pointer;
+}
+.tm-tile[aria-checked="true"] { border: 2px solid var(--tm-gray-1000); padding: 9px 11px; }
+.tm-tile:focus-visible { outline: 2px solid var(--tm-magenta-400); outline-offset: 2px; }
+.tm-plan { background: var(--tm-gray-100); border: 2px solid var(--tm-gray-1000); border-radius: 18px; overflow: hidden; }
+.tm-plan-head { background: var(--tm-black); color: var(--tm-white); font-size: 20px; line-height: 28px; font-weight: 600; padding: 12px 16px; }
+.tm-plan-badge {
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: var(--tm-gray-1000);
+  color: var(--tm-gray-200);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+}
+.tm-plan-error { border-color: var(--tm-critical-300); }
+
+/* Checkbox rows (delivery address, consents). */
+.tm-checkrow { display: flex; gap: 12px; align-items: flex-start; min-height: 44px; padding: 10px 0; cursor: pointer; font-size: 14px; line-height: 20px; }
+.tm-checkrow input { flex: none; width: 20px; height: 20px; margin-top: 1px; accent-color: var(--tm-gray-1000); }
+
+/* Browse steps sit on the site's light gray; the checkout page is white, as on the real site. */
+.tm-page-gray { background: var(--tm-gray-200); }
+select.tm-input {
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23141414' stroke-width='1.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
 }
 .tm-input:focus {
   border-color: var(--tm-brand);
-  box-shadow: 0 0 0 2px var(--tm-brand);
+  box-shadow: 0 0 0 1px var(--tm-brand);
 }
+.tm-input:disabled { background-color: var(--tm-gray-200); color: var(--tm-text-secondary); }
 .tm-input::placeholder { color: var(--tm-gray-500); }
+.tm-input[aria-invalid="true"] { border-color: var(--tm-critical-300); }
+.tm-error { margin-top: 4px; font-size: 12px; line-height: 16px; font-weight: 700; color: var(--tm-critical-300); }
 
+/* "Filled by Formly" / "Suggested by Formly": a quiet gray caption with the site's magenta check, nothing louder. */
+.tm-filled { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 12px; line-height: 16px; font-weight: 600; color: var(--tm-text-secondary); }
+.tm-filled svg { color: var(--tm-magenta-400); flex: none; }
+
+/* ---------- Buttons ---------- */
+
+/* Buttons as measured on t-mobile.com at 390 wide (plan/TMOBILE-REVERSED.md): 48px, 16/600, 4px radius. */
 .tm-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  gap: 4px;
+  font-family: var(--tm-font-body);
+  font-size: 16px;
+  line-height: 20px;
   font-weight: 600;
-  padding: 7px 16px;
-  min-height: 34px;
+  padding: 12px 16px;
+  min-height: 48px;
   border: 0;
   border-radius: 4px;
   cursor: pointer;
+  text-decoration: none;
 }
-.tm-btn-hero { min-height: 50px; font-size: 16px; }
-.tm-btn-primary { background: var(--tm-magenta-400); color: var(--tm-gray-100); }
+.tm-btn-hero { min-height: 48px; }
+.tm-btn-primary { background: var(--tm-magenta-400); color: var(--tm-white); }
 .tm-btn-secondary {
-  background: var(--tm-gray-100);
+  background: transparent;
   color: var(--tm-gray-1000);
-  border: 1px solid var(--tm-gray-400);
+  border: 2px solid var(--tm-gray-1000);
+  padding: 10px 14px;
 }
+.tm-btn-tertiary { background: transparent; color: var(--tm-gray-1000); padding-left: 0; padding-right: 0; }
+.tm-link { color: var(--tm-gray-1000); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; background: none; border: 0; padding: 0; cursor: pointer; }
 /* Hover only where a pointer can hover, so a tap on a phone doesn't latch the hover color. */
 @media (hover: hover) {
   .tm-btn-primary:hover { background: var(--tm-magenta-500); }
   .tm-btn-secondary:hover { background: var(--tm-gray-200); }
+  .tm-btn-tertiary:hover { color: var(--tm-gray-600); }
 }
 .tm-btn-primary:active { background: var(--tm-magenta-600); }
 .tm-btn:disabled,
 .tm-btn:disabled:hover {
-  background: var(--tm-gray-300);
-  color: var(--tm-gray-600);
+  background: var(--tm-gray-200);
+  color: var(--tm-gray-500);
+  border-color: var(--tm-gray-200);
   cursor: not-allowed;
+}
+/* The real primary looks disabled until the form is valid but stays tappable, so a tap can show what's missing. */
+.tm-btn-primary[aria-disabled="true"] { background: var(--tm-gray-200); color: var(--tm-gray-500); }
+.tm-btn:focus-visible { outline: 2px solid var(--tm-magenta-400); outline-offset: 2px; }
+
+/* The one primary action on a phone stays reachable at the bottom of the screen. */
+.tm-actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  margin: 24px -16px 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: var(--tm-white);
+  border-top: 1px solid var(--tm-border);
+}
+@media (min-width: 768px) {
+  .tm-actionbar { position: static; margin: 32px 0 0; padding: 0; border: 0; background: none; }
 }
 
 .tm-check {
@@ -137,10 +394,24 @@
   justify-content: center;
   width: 56px;
   height: 56px;
-  margin: 0 auto 16px;
   border-radius: 1000px;
   background: var(--tm-magenta-400);
   color: var(--tm-gray-100);
 }
 
-.tm-legal { font-size: 12px; color: var(--tm-text-secondary); }
+.tm-notice { border-radius: 2px; padding: 12px 16px; font-size: 14px; background: var(--tm-gray-200); color: var(--tm-text-body); }
+
+/* While returning from the Formly popup: no empty form, just a calm placeholder until the answers land. */
+.tm-spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 1000px;
+  border: 3px solid var(--tm-gray-300);
+  border-top-color: var(--tm-magenta-400);
+  animation: tm-spin 0.8s linear infinite;
+}
+@keyframes tm-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .tm-spinner { animation-duration: 2.4s; }
+  .tm-progress > div { transition: none; }
+}

@@ -2,46 +2,57 @@
   "business": "T-Mobile",
   "logo": "/tmobile/logo.png",
   "formId": "tmo-postpaid-signup",
-  "title": "Postpaid account signup",
+  "title": "T-Mobile signup",
+  "context": "New-customer phone plan signup on t-mobile.com, up to the credit check. All plans are Unlimited. Experience Beyond 2.0 is the most premium: 5-Year Price Guarantee, Netflix Standard with ads on us, Hulu on us, Apple TV for $3/month, T-Satellite, 250GB hotspot, 30GB in Canada and Mexico, 15GB in 215+ countries, 4K streaming. Experience More 2.0: Netflix Standard with ads on us and the 5-Year Price Guarantee. Essentials 2.0: plain Unlimited at a lower price, no streaming perks. Essentials Saver 2.0: the lowest price, for someone who brings their own phone and needs no extras. Experience Beyond, Experience More and Essentials Saver have a Student Savings version for students. Up to 5 lines online, and the price per line drops as lines are added. Each line brings its own phone or buys a new one, and can keep its current number.",
+  "theme": {
+    "logo": "/tmobile/logo.png",
+    "headerTitle": "Fill your signup",
+    "buttonLabel": "Fill it in for me",
+    "font": "\"TeleNeo\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
+    "fontFaces": [
+      { "family": "TeleNeo", "weight": "400", "src": "/fonts-local/TeleNeoWeb-Regular.woff2" },
+      { "family": "TeleNeo", "weight": "500 600", "src": "/fonts-local/TeleNeoWeb-Medium.woff2" },
+      { "family": "TeleNeo", "weight": "700", "src": "/fonts-local/TeleNeoWeb-Bold.woff2" },
+      { "family": "TeleNeo", "weight": "800", "src": "/fonts-local/TeleNeoWeb-ExtraBold.woff2" }
+    ],
+    "colors": {
+      "text": "#141414",
+      "muted": "#6A6A6A",
+      "primary": "#E20074",
+      "primaryHover": "#A7005A",
+      "primaryText": "#FFFFFF",
+      "border": "#E6E6E6",
+      "input": "#6A6A6A",
+      "surface": "#F5F5F5"
+    },
+    "radius": { "button": 4, "input": 2, "card": 12 }
+  },
   "fields": [
-    { "id": "first_name", "label": "First name", "type": "text", "section": "Personal information", "category": "basic", "required": true },
-    { "id": "last_name", "label": "Last name", "type": "text", "section": "Personal information", "category": "basic", "required": true },
-    { "id": "dob", "label": "Date of birth", "type": "date", "section": "Personal information", "category": "personal", "required": true },
-    { "id": "email", "label": "Email", "type": "email", "section": "Personal information", "category": "basic", "required": true },
-    { "id": "phone", "label": "Contact phone", "type": "tel", "section": "Personal information", "category": "personal", "required": true },
-    { "id": "ssn", "label": "Social Security Number", "type": "text", "section": "Personal information", "category": "sensitive", "required": true, "placeholder": "XXX-XX-XXXX" },
+    { "id": "lines", "label": "Number of lines", "type": "select", "section": "Pick your plan", "category": "basic", "required": true, "suggest": true, "options": ["1", "2", "3", "4", "5"] },
+    { "id": "plan", "label": "Plan", "type": "select", "section": "Pick your plan", "category": "basic", "required": true, "suggest": true, "options": ["Experience Beyond 2.0", "Experience More 2.0", "Essentials 2.0", "Essentials Saver 2.0"] },
 
-    { "id": "street", "label": "Street address", "type": "text", "section": "Service address", "category": "basic", "required": true },
-    { "id": "apt", "label": "Apt / Unit", "type": "text", "section": "Service address", "category": "basic" },
-    { "id": "city", "label": "City", "type": "text", "section": "Service address", "category": "basic", "required": true },
-    { "id": "state", "label": "State", "type": "text", "section": "Service address", "category": "basic", "required": true, "placeholder": "WA" },
-    { "id": "zip", "label": "ZIP code", "type": "text", "section": "Service address", "category": "basic", "required": true },
-    { "id": "years_at_address", "label": "Years at this address", "type": "number", "section": "Service address", "category": "personal" },
+    { "id": "line1_name", "label": "Line 1 name", "type": "text", "section": "Name your lines", "category": "basic", "hint": "the user's own first name, for their line" },
 
-    { "id": "id_type", "label": "ID type", "type": "select", "section": "Identity verification", "category": "personal", "required": true, "options": ["Driver's license", "State ID", "Passport"] },
-    { "id": "id_number", "label": "ID number", "type": "text", "section": "Identity verification", "category": "sensitive", "required": true },
-    { "id": "id_state", "label": "Issuing state", "type": "text", "section": "Identity verification", "category": "personal", "required": true },
-    { "id": "id_expiration", "label": "ID expiration date", "type": "date", "section": "Identity verification", "category": "personal", "required": true },
+    { "id": "device", "label": "Phone for your line", "type": "select", "section": "Shop phones", "category": "basic", "required": true, "suggest": true, "options": ["Bring your own phone", "Buy a new phone"] },
+    { "id": "port_number", "label": "Keep your current number?", "type": "select", "section": "Shop phones", "category": "basic", "required": true, "suggest": true, "options": ["Yes, keep my number", "No, get a new number"] },
+    { "id": "current_carrier", "label": "Current carrier", "type": "select", "section": "Shop phones", "category": "basic", "options": ["AT&T", "Verizon", "Mint Mobile", "Visible", "Google Fi", "US Mobile", "Cricket Wireless", "Metro by T-Mobile", "Boost Mobile", "Xfinity Mobile", "Spectrum Mobile", "Other"] },
 
-    { "id": "employment_status", "label": "Employment status", "type": "select", "section": "Credit check", "category": "personal", "required": true, "options": ["Employed full-time", "Employed part-time", "Self-employed", "Student", "Retired", "Unemployed"] },
-    { "id": "employer", "label": "Employer", "type": "text", "section": "Credit check", "category": "personal" },
-    { "id": "job_title", "label": "Job title", "type": "text", "section": "Credit check", "category": "personal" },
-    { "id": "annual_income", "label": "Annual income (USD)", "type": "number", "section": "Credit check", "category": "personal", "required": true },
-    { "id": "housing_payment", "label": "Monthly rent / mortgage (USD)", "type": "number", "section": "Credit check", "category": "personal" },
+    { "id": "first_name", "label": "First name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
+    { "id": "last_name", "label": "Last name", "type": "text", "section": "Personal info", "category": "basic", "required": true },
+    { "id": "dob", "label": "Date of birth", "type": "date", "section": "Personal info", "category": "personal", "required": true, "identity": true },
+    { "id": "ssn4", "label": "Last 4 digits of SSN", "type": "text", "section": "Personal info", "category": "sensitive", "required": true, "never": true },
+    { "id": "phone", "label": "Phone number", "type": "tel", "section": "Personal info", "category": "personal", "required": true },
+    { "id": "email", "label": "Email", "type": "email", "section": "Personal info", "category": "basic", "required": true },
+    { "id": "account_pin", "label": "Account PIN", "type": "text", "section": "Personal info", "category": "sensitive", "required": true, "never": true },
 
-    { "id": "plan", "label": "Plan", "type": "select", "section": "Plan & device", "category": "basic", "required": true, "options": ["Essentials", "Go5G", "Go5G Plus", "Go5G Next"] },
-    { "id": "lines", "label": "Number of lines", "type": "number", "section": "Plan & device", "category": "basic", "required": true },
-    { "id": "port_number", "label": "Keep your current number?", "type": "select", "section": "Plan & device", "category": "basic", "options": ["Yes, transfer my number", "No, give me a new number"] },
-    { "id": "current_carrier", "label": "Current carrier", "type": "text", "section": "Plan & device", "category": "basic" },
-    { "id": "device", "label": "Device", "type": "text", "section": "Plan & device", "category": "basic" },
+    { "id": "street", "label": "Address", "type": "text", "section": "Residential address", "category": "basic", "required": true },
+    { "id": "apt", "label": "Apt./ Suite", "type": "text", "section": "Residential address", "category": "basic" },
+    { "id": "city", "label": "City", "type": "text", "section": "Residential address", "category": "basic", "required": true },
+    { "id": "state", "label": "State", "type": "select", "section": "Residential address", "category": "basic", "required": true, "options": ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"] },
+    { "id": "zip", "label": "ZIP code", "type": "text", "section": "Residential address", "category": "basic", "required": true },
+    { "id": "delivery_same", "label": "Use as delivery address", "type": "select", "section": "Residential address", "category": "basic", "suggest": true, "options": ["Yes", "No"] },
 
-    { "id": "card_name", "label": "Name on card", "type": "text", "section": "Payment", "category": "basic", "required": true },
-    { "id": "card_number", "label": "Card number", "type": "text", "section": "Payment", "category": "sensitive", "required": true },
-    { "id": "card_exp", "label": "Expiration (MM/YY)", "type": "text", "section": "Payment", "category": "sensitive", "required": true },
-    { "id": "billing_zip", "label": "Billing ZIP", "type": "text", "section": "Payment", "category": "basic", "required": true },
-
-    { "id": "emergency_name", "label": "Emergency contact name", "type": "text", "section": "Emergency contact", "category": "personal" },
-    { "id": "emergency_relationship", "label": "Relationship", "type": "text", "section": "Emergency contact", "category": "personal" },
-    { "id": "emergency_phone", "label": "Emergency contact phone", "type": "tel", "section": "Emergency contact", "category": "personal" }
+    { "id": "esign_consent", "label": "E-SIGN consent", "type": "select", "section": "Consents", "category": "basic", "required": true, "never": true, "options": ["Yes"] },
+    { "id": "credit_consent", "label": "Credit check consent", "type": "select", "section": "Consents", "category": "basic", "required": true, "never": true, "options": ["Yes"] }
   ]
 }

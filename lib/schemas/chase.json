@@ -18,7 +18,7 @@
     { "id": "street", "label": "Street address", "type": "text", "section": "Home address", "category": "basic", "required": true },
     { "id": "apt", "label": "Suite/apt/other (optional)", "type": "text", "section": "Home address", "category": "basic" },
     { "id": "city", "label": "City", "type": "text", "section": "Home address", "category": "basic", "required": true },
-    { "id": "state", "label": "State", "type": "text", "section": "Home address", "category": "basic", "required": true },
+    { "id": "state", "label": "State", "type": "select", "section": "Home address", "category": "basic", "required": true, "options": ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"] },
     { "id": "zip", "label": "ZIP code", "type": "text", "section": "Home address", "category": "basic", "required": true },
 
     { "id": "email", "label": "Email address", "type": "email", "section": "Contact info", "category": "basic", "required": true },

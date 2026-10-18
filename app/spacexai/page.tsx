@@ -38,7 +38,7 @@ export default function SpaceXAIApplication() {
           <h1 className="sx-title">Thank you for applying.</h1>
           <p className="sx-secondary mx-auto mt-4 max-w-md">
             Thanks, {values.first_name || "there"}. Your application for Software Engineer, AI Infrastructure was
-            received. An engineer on the team reads every application, and we&apos;ll reach out if it&apos;s a fit.
+            received. We&apos;ll reach out if it&apos;s a fit.
           </p>
           <button className="sx-pill mt-8" onClick={() => location.reload()}>
             Start over
@@ -50,17 +50,9 @@ export default function SpaceXAIApplication() {
 
   return (
     <Shell>
-      <Link href="/demo" className="sx-back">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-          <path d="M10 3L5 8l5 5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        Back to jobs
-      </Link>
-
-      <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <span className="sx-badge">New</span>
-          <h1 className="sx-title mt-2">Software Engineer, AI Infrastructure</h1>
+          <h1 className="sx-title">Software Engineer, AI Infrastructure</h1>
           <p className="mt-2 flex items-center gap-2">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
               <path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21z" />
@@ -101,7 +93,7 @@ export default function SpaceXAIApplication() {
             </p>
           </div>
           <div className="sm:w-72">
-            <FormlyButton schema={schema} onFilled={applyFormly} />
+            <FormlyButton schema={schema} onFilled={applyFormly} tone="dark" />
             <p className="sx-secondary mt-2 text-center text-[13px]">Fills this from your resume, short answers too</p>
           </div>
         </div>
@@ -154,7 +146,10 @@ function Shell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="sx-legal mx-auto w-full max-w-[760px] px-6 pb-8 sm:px-8">
-        A demo application page for Formly, styled after SpaceXAI&apos;s job board. Not affiliated with SpaceXAI.
+        <p>A demo application page for Formly, styled after SpaceXAI&apos;s job board. Not affiliated with SpaceXAI.</p>
+        <Link href="/demo" className="sx-back mt-3">
+          Back to demo forms
+        </Link>
       </footer>
     </div>
   );
