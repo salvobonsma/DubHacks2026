@@ -4,7 +4,7 @@ import { Logo, Mark } from "@/components/Logo";
 import "./home.css";
 
 const DEMOS = [
-  { href: "/tmobile", logo: "/tmobile/t-mark.svg", w: 32, h: 32, name: "T-Mobile", title: "Switch to T-Mobile" },
+  { href: "/tmobile", logo: "/tmobile/logo.png", w: 720, h: 145, name: "T-Mobile", title: "Switch to T-Mobile" },
   { href: "/spacexai", logo: "/spacexai/logo-black.png", w: 58, h: 22, name: "SpaceXAI", title: "Software Engineer application" },
   { href: "/chase", logo: "/chase/logo-blue.svg", w: 86, h: 16, name: "Chase", title: "Freedom Unlimited card application" },
   { href: "/dmv", logo: "/dmv/logo-ca-dmv-blue.svg", w: 62, h: 24, name: "California DMV", title: "Title or register a vehicle" },
@@ -91,7 +91,7 @@ export default function Home() {
                 <Link href={d.href} className="home-row-link group flex items-center gap-3 px-4 py-4 sm:gap-4 sm:px-6">
                   <span className="flex h-10 w-[72px] shrink-0 items-center justify-center sm:w-24">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={d.logo} alt={d.name} width={d.w} height={d.h} className="max-h-8 w-auto object-contain" />
+                    <img src={d.logo} alt={d.name} width={d.w} height={d.h} className="max-h-8 w-auto max-w-full object-contain" />
                   </span>
                   <span className="min-w-0 flex-1 text-[14px] leading-snug font-medium sm:text-base">{d.title}</span>
                   <ArrowRightIcon className="h-4 w-4 shrink-0 text-[var(--home-muted)] transition-transform motion-safe:group-hover:translate-x-0.5" stroke={1.5} />
