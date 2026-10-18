@@ -6,7 +6,12 @@ import { ConnectorLogo } from "./ConnectorLogo";
 import { CloseIcon } from "./Icons";
 import type { TwinFact } from "./Markdown";
 
-type SourceMeta = Omit<Source, "text">;
+type SourceMeta = Omit<Source, "text"> & { sections?: string[] };
+
+/** Whether the twin's citation names this text as a whole entry, e.g. not "Drive: x" inside "iCloud Drive: x". */
+function cites(cited: string, name: string) {
+  return new RegExp(`(^|[,&]\\s*)${esc(name.toLowerCase())}`).test(cited);
+}
 
 /** Popup showing the documents a twin fact came from, with the matching text highlighted. */
 export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () => void }) {
@@ -26,13 +31,16 @@ export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () =>
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // The twin cites sources by (sometimes shortened) name, e.g. "Google Account".
+  // The twin cites sources by (sometimes shortened) name, e.g. "Google Account", or by a section
+  // inside a connector source, e.g. "Drive: Resume.docx". Remember the section to scroll to it.
   const matched = useMemo(() => {
     if (!all) return [];
-    const cited = fact.sources.toLowerCase();
-    return all.filter((s) => {
+    const cited = fact.sources.toLowerCase().trim();
+    return all.flatMap((s): (SourceMeta & { section?: string })[] => {
       const name = s.name.toLowerCase();
-      return cited.includes(name) || cited.includes(name.replace(/\s*\(.*\)$/, ""));
+      const section = s.sections?.find((h) => cites(cited, h));
+      if (section) return [{ ...s, section }];
+      return cited.includes(name) || cited.includes(name.replace(/\s*\(.*\)?$/, "")) ? [{ ...s, section: undefined }] : [];
     });
   }, [all, fact.sources]);
 
@@ -89,7 +97,11 @@ export function SourceViewer({ fact, onClose }: { fact: TwinFact; onClose: () =>
             {current ? (
               <>
                 <Path source={current} />
-                <Document text={current.text} value={fact.value} />
+                <Document
+                  text={current.text}
+                  value={fact.value}
+                  section={matched.find((s) => s.id === activeId)?.section}
+                />
               </>
             ) : (
               <p className="p-5 text-sm text-muted">Loading…</p>
@@ -128,13 +140,16 @@ function Path({ source }: { source: Source }) {
   );
 }
 
-function Document({ text, value }: { text: string; value: string }) {
+function Document({ text, value, section }: { text: string; value: string; section?: string }) {
   const ref = useRef<HTMLPreElement>(null);
   const ranges = useMemo(() => findMatches(text, value), [text, value]);
+  // Prefer highlights inside the cited section, so a value found in several documents opens on the right one.
+  const sectionAt = section ? text.indexOf(`## ${section}`) : -1;
+  const firstMark = Math.max(0, sectionAt < 0 ? 0 : ranges.findIndex(([a]) => a >= sectionAt));
 
   useEffect(() => {
-    ref.current?.querySelector("mark")?.scrollIntoView({ block: "center" });
-  }, [ranges]);
+    ref.current?.querySelectorAll("mark")[firstMark]?.scrollIntoView({ block: "center" });
+  }, [ranges, firstMark]);
 
   const pieces: React.ReactNode[] = [];
   let at = 0;
