@@ -127,8 +127,7 @@ q.shapes.add_picture(str(PNG / "lockup-dark.png"), Pt(21.6), Pt(50), height=Pt(5
 s2 = S[1]
 for sh in list(s2.shapes):
     drop(sh)
-box(s2, 25.2, 22, 669.6, 40, "Lets have a demo!", 30, "FFFFFF", font="Sora ExtraBold")
-box(s2, 25.2, 62, 669.6, 24, "Same T-Mobile sign-up, two ways. Time yourself on each.", 14, "8A94A3")
+box(s2, 19, 23, 669.6, 40, "Lets have a Race!", 30, "FFFFFF", font="Sora ExtraBold")
 for k, (tag, name, how, accent) in enumerate([
         ("A", "The usual way", "Type every field yourself", "8A94A3"),
         ("B", "Fill with Formly", "One button, your Google account", GREEN_DK)]):
@@ -227,7 +226,7 @@ rv = prs.slides.add_slide(S[4].slide_layout)
 rv.background.fill.solid(); rv.background.fill.fore_color.rgb = rgb(PAPER)
 for ph in list(rv.placeholders):
     drop(ph)
-box(rv, 25.2, 20, 669.6, 46, "Typed forms break. Sourced forms finish.", 27, NAVY, font="Sora ExtraBold")
+box(rv, 25.2, 20, 669.6, 46, "Formly converts.", 27, NAVY, font="Sora ExtraBold")
 # row A: by hand is a tangle, not a line (Arjun's reference: a web of shapes and arrows)
 import math
 from pptx.enum.shapes import MSO_SHAPE as SH
@@ -321,7 +320,7 @@ shape_by_text(wall, "T-Mobile gets answers").top = Pt(24)
 
 # 9. close slide: revenue, not privacy
 ct = shape_by_text(S[12], "Every finished form")
-ct.text_frame.paragraphs[0].runs[0].text = "Less friction. More switchers."
+ct.text_frame.paragraphs[0].runs[0].text = "Bring Formly to T-Mobile."
 for r in ct.text_frame.paragraphs[0].runs[1:]:
     r.text = ""
 cs = shape_by_text(S[12], "to a finished switch form")
@@ -333,6 +332,10 @@ for r in cs.text_frame.paragraphs[0].runs[1:]:
 # 9b. Arjun's PowerPoint edits (2026-10-17): drop the title-field label, autofill footnote
 drop(shape_by_text(S[0], "Full name, address"))
 drop(shape_by_text(S[5], "What each tool fills"))
+_tm = shape_by_text(S[13], "Khangai Sukhbaatar")  # Arjun matched the Q&A team line to the title slide
+_tm.text_frame.paragraphs[0].runs[0].text = "Khangai Sukhbaatar · Salvo Bonsma · Jerry Zheng "
+for r in _tm.text_frame.paragraphs[0].runs[1:]:
+    r.text = ""
 
 # 10. final order: pitch, Q&A, then hidden answer slides (incl. privacy wall)
 by_slide = {id(sl): sid for sl, sid in zip(list(prs.slides), list(prs.slides._sldIdLst))}
@@ -468,7 +471,8 @@ NOTES = {  # booth cues on a 5-minute clock (judges visit the booth, 2:10 talk +
               "phone model from the order receipt, address from the lease on Drive.",
     id(S[6]): "1:45-1:55 · Which was faster? Their time against the teammate's. If the race went "
               "wrong, point at our measured times on screen.",
-    id(S[12]): "1:55-2:10 · Less friction, more switchers. The ask: a one-month pilot on "
+    id(S[12]): "1:55-2:10 · Bring Formly to T-Mobile. Say it out loud: less friction, more "
+               "switchers. The ask: a one-month pilot on "
                "T-Mobile's switch flow, measured on completion rate and port-in errors.",
     id(S[13]): "2:10-4:30 · Questions. Slides 9-12 are hidden; type the number and press Enter to "
                "jump. Isn't this just autofill? 9 · How is it built? 10 · What works today? 11 · "
