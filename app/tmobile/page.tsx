@@ -73,7 +73,7 @@ export default function TMobileSignup() {
 
   if (submitted) {
     return (
-      <Shell title="You're all set">
+      <Shell>
         <div className="tm-section text-center">
           <div className="tm-check" aria-hidden>
             <svg className="icon-line" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -95,7 +95,7 @@ export default function TMobileSignup() {
 
   if (step === 2) {
     return (
-      <Shell title="Pick your plan">
+      <Shell>
         <Steps step={2} onBack={() => go(1)} />
         <h1 className="tm-hero mt-5">Pick your plan.</h1>
         <p className="tm-secondary mt-2">Almost done, {values.first_name || "friend"}. Choose your lines and plan.</p>
@@ -210,7 +210,7 @@ export default function TMobileSignup() {
   }
 
   return (
-    <Shell title="Switch to T-Mobile">
+    <Shell>
       <div className="tm-promo px-6 py-6 text-center sm:py-8">
         <p className="tm-promo-title">Keep your number. Bring the whole family.</p>
         <p className="mt-1.5 text-[13px] text-white/85">Switching takes minutes, and we&apos;ll move your lines over for you.</p>
@@ -300,14 +300,14 @@ function Steps({ step, onBack }: { step: 1 | 2; onBack?: () => void }) {
   );
 }
 
-function Shell({ title, children }: { title: string; children: React.ReactNode }) {
+function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-1 flex-col">
       <header className="tm-header">
         <div className="mx-auto flex max-w-3xl items-center gap-3 px-6 py-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/tmobile/t-mark.svg" alt="T-Mobile" width={44} height={44} className="h-11 w-11 shrink-0 object-contain" />
-          <span className="tm-checkout-title flex-1">{title}</span>
+          <img src="/tmobile/logo.png" alt="T-Mobile" width={720} height={145} className="h-8 w-auto shrink-0 object-contain" />
+          <span className="flex-1" />
           <span className="tm-icon-btn" aria-hidden>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
               <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" strokeLinejoin="round" />

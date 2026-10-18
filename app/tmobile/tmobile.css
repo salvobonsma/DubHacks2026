@@ -147,8 +147,7 @@
 
 /* ---- Checkout look, from t-mobile.com's "Pick your plan" flow ---- */
 
-/* Checkout header: the magenta T square, a page title, and utility icons. */
-.tm-checkout-title { font-family: var(--tm-font-headline); font-weight: 800; font-size: 18px; color: var(--tm-text); }
+/* Checkout header: the T-Mobile logo and utility icons. */
 .tm-icon-btn { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; color: var(--tm-text); }
 
 /* Magenta promo banner with their soft diagonal sheen. */

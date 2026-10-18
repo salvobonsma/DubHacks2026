@@ -89,9 +89,9 @@ export default function Home() {
             {DEMOS.map((d) => (
               <li key={d.href}>
                 <Link href={d.href} className="home-row-link group flex items-center gap-3 px-4 py-4 sm:gap-4 sm:px-6">
-                  <span className="flex h-10 w-[72px] shrink-0 items-center sm:w-24">
+                  <span className="flex h-10 w-[72px] shrink-0 items-center justify-center sm:w-24">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={d.logo} alt={d.name} width={d.w} height={d.h} className="max-h-8 w-auto object-contain object-left" />
+                    <img src={d.logo} alt={d.name} width={d.w} height={d.h} className="max-h-8 w-auto object-contain" />
                   </span>
                   <span className="min-w-0 flex-1 text-[14px] leading-snug font-medium sm:text-base">{d.title}</span>
                   <ArrowRightIcon className="h-4 w-4 shrink-0 text-[var(--home-muted)] transition-transform motion-safe:group-hover:translate-x-0.5" stroke={1.5} />
