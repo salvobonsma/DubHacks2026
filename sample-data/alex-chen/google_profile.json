@@ -1,0 +1,10 @@
+{
+  "connector": "google",
+  "profile": { "name": "Alex Chen", "email": "alex.chen.dev@gmail.com", "birthday": "1999-04-12", "phone": "+1 206-555-0147" },
+  "contacts": [
+    { "name": "Mia Chen", "relationship": "Sister", "phone": "+1 425-555-0193" },
+    { "name": "Linda Chen", "relationship": "Mother", "phone": "+1 425-555-0122" }
+  ],
+  "addresses": [{ "type": "home", "formatted": "4521 Brooklyn Ave NE, Apt 3B, Seattle, WA 98105" }],
+  "gmail_receipts": [{ "from": "Verizon Wireless", "subject": "Your bill is ready", "summary": "Account for 206-555-0147, Unlimited Plus plan, $82.00 due" }]
+}

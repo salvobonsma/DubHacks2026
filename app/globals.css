@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #111827;
+  --green: #5bc48a;
+  --green-dark: #3fa56f;
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --magenta: #e20074;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-brand: var(--green);
+  --color-brand-dark: var(--green-dark);
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-line: var(--border);
+  --color-muted: var(--muted);
+  --color-magenta: var(--magenta);
+  --font-sans: var(--font-dm-sans);
+}
+
+body {
+  background: var(--bg);
+  color: var(--navy);
+}
+
+@keyframes formly-fill {
+  0% { background-color: #d9f3e4; }
+  100% { background-color: #ffffff; }
+}
+.formly-filled {
+  animation: formly-fill 1.2s ease-out;
+}

@@ -1,0 +1,46 @@
+{
+  "business": "T-Mobile",
+  "formId": "tmo-postpaid-signup",
+  "title": "Postpaid account signup",
+  "fields": [
+    { "id": "first_name", "label": "First name", "type": "text", "section": "Personal information", "category": "basic", "required": true },
+    { "id": "last_name", "label": "Last name", "type": "text", "section": "Personal information", "category": "basic", "required": true },
+    { "id": "dob", "label": "Date of birth", "type": "date", "section": "Personal information", "category": "personal", "required": true },
+    { "id": "email", "label": "Email", "type": "email", "section": "Personal information", "category": "basic", "required": true },
+    { "id": "phone", "label": "Contact phone", "type": "tel", "section": "Personal information", "category": "personal", "required": true },
+    { "id": "ssn", "label": "Social Security Number", "type": "text", "section": "Personal information", "category": "sensitive", "required": true, "placeholder": "XXX-XX-XXXX" },
+
+    { "id": "street", "label": "Street address", "type": "text", "section": "Service address", "category": "basic", "required": true },
+    { "id": "apt", "label": "Apt / Unit", "type": "text", "section": "Service address", "category": "basic" },
+    { "id": "city", "label": "City", "type": "text", "section": "Service address", "category": "basic", "required": true },
+    { "id": "state", "label": "State", "type": "text", "section": "Service address", "category": "basic", "required": true, "placeholder": "WA" },
+    { "id": "zip", "label": "ZIP code", "type": "text", "section": "Service address", "category": "basic", "required": true },
+    { "id": "years_at_address", "label": "Years at this address", "type": "number", "section": "Service address", "category": "personal" },
+
+    { "id": "id_type", "label": "ID type", "type": "select", "section": "Identity verification", "category": "personal", "required": true, "options": ["Driver's license", "State ID", "Passport"] },
+    { "id": "id_number", "label": "ID number", "type": "text", "section": "Identity verification", "category": "sensitive", "required": true },
+    { "id": "id_state", "label": "Issuing state", "type": "text", "section": "Identity verification", "category": "personal", "required": true },
+    { "id": "id_expiration", "label": "ID expiration date", "type": "date", "section": "Identity verification", "category": "personal", "required": true },
+
+    { "id": "employment_status", "label": "Employment status", "type": "select", "section": "Credit check", "category": "personal", "required": true, "options": ["Employed full-time", "Employed part-time", "Self-employed", "Student", "Retired", "Unemployed"] },
+    { "id": "employer", "label": "Employer", "type": "text", "section": "Credit check", "category": "personal" },
+    { "id": "job_title", "label": "Job title", "type": "text", "section": "Credit check", "category": "personal" },
+    { "id": "annual_income", "label": "Annual income (USD)", "type": "number", "section": "Credit check", "category": "personal", "required": true },
+    { "id": "housing_payment", "label": "Monthly rent / mortgage (USD)", "type": "number", "section": "Credit check", "category": "personal" },
+
+    { "id": "plan", "label": "Plan", "type": "select", "section": "Plan & device", "category": "basic", "required": true, "options": ["Essentials", "Go5G", "Go5G Plus", "Go5G Next"] },
+    { "id": "lines", "label": "Number of lines", "type": "number", "section": "Plan & device", "category": "basic", "required": true },
+    { "id": "port_number", "label": "Keep your current number?", "type": "select", "section": "Plan & device", "category": "basic", "options": ["Yes, transfer my number", "No, give me a new number"] },
+    { "id": "current_carrier", "label": "Current carrier", "type": "text", "section": "Plan & device", "category": "basic" },
+    { "id": "device", "label": "Device", "type": "text", "section": "Plan & device", "category": "basic" },
+
+    { "id": "card_name", "label": "Name on card", "type": "text", "section": "Payment", "category": "basic", "required": true },
+    { "id": "card_number", "label": "Card number", "type": "text", "section": "Payment", "category": "sensitive", "required": true },
+    { "id": "card_exp", "label": "Expiration (MM/YY)", "type": "text", "section": "Payment", "category": "sensitive", "required": true },
+    { "id": "billing_zip", "label": "Billing ZIP", "type": "text", "section": "Payment", "category": "basic", "required": true },
+
+    { "id": "emergency_name", "label": "Emergency contact name", "type": "text", "section": "Emergency contact", "category": "personal" },
+    { "id": "emergency_relationship", "label": "Relationship", "type": "text", "section": "Emergency contact", "category": "personal" },
+    { "id": "emergency_phone", "label": "Emergency contact phone", "type": "tel", "section": "Emergency contact", "category": "personal" }
+  ]
+}
