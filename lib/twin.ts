@@ -38,6 +38,7 @@ function applyOverrides(markdown: string, critical: CriticalFact[], overrides: F
   const byKey = new Map(overrides.map((o) => [o.label, o]));
   const stale: string[] = [];
   const lines: string[] = [];
+  const applied = new Set<string>();
   for (const line of markdown.split("\n")) {
     const m = line.match(BULLET);
     const o = m && byKey.get(factKey(m[2]));
@@ -46,9 +47,16 @@ function applyOverrides(markdown: string, critical: CriticalFact[], overrides: F
       continue;
     }
     stale.push(m[4]);
+    applied.add(o.label);
     if (o.action === "remove") continue;
     const value = o.action === "censor" ? CENSORED : (o.value ?? "");
     lines.push(m[1] + m[2] + m[3] + value + (m[5] ?? ""));
+  }
+  // Edits to facts the twin didn't have yet (typed into a form on review) become new bullets.
+  const added = overrides.filter((o) => o.action === "edit" && o.value && !applied.has(o.label));
+  if (added.length) {
+    const title = (label: string) => label.charAt(0).toUpperCase() + label.slice(1);
+    lines.push("", "## Added by you", ...added.map((o) => `- **${title(o.label)}:** ${o.value}`));
   }
   return {
     markdown: lines.join("\n"),
