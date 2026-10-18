@@ -864,6 +864,22 @@ function TextField({
 function SecretField({ field, value, error, onChange, help, disabled }: FieldProps & { help?: string; disabled?: boolean }) {
   const [show, setShow] = useState(false);
   const h = INPUT_HINTS[field.id] ?? {};
+  // Race mode: the judge stops before secrets, so show a settled read-only row, not a broken-looking empty input.
+  if (disabled) {
+    return (
+      <div>
+        <div className="tm-skipped" id={`f-${field.id}`} role="group" aria-label={`${field.label}, skipped in the race`}>
+          <span className="tm-skipped-label">{field.label}</span>
+          <span className="tm-skipped-value">Skipped in the race</span>
+          <svg className="tm-skipped-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <rect x="5" y="11" width="14" height="9" rx="2" />
+            <path d="M8 11V8a4 4 0 0 1 8 0v3" strokeLinecap="round" />
+          </svg>
+        </div>
+        <p className="tm-help">You&apos;d set this on t-mobile.com. Both judges skip it.</p>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="tm-float">
@@ -872,9 +888,8 @@ function SecretField({ field, value, error, onChange, help, disabled }: FieldPro
           name={field.id}
           className="tm-input pr-14"
           type={show ? "text" : "password"}
-          value={disabled ? "" : value}
+          value={value}
           placeholder=" "
-          disabled={disabled}
           autoComplete={h.autoComplete}
           inputMode={h.inputMode}
           maxLength={h.maxLength}
@@ -882,17 +897,15 @@ function SecretField({ field, value, error, onChange, help, disabled }: FieldPro
           onChange={(e) => onChange(e.target.value.replace(/\D/g, ""))}
         />
         <label htmlFor={`f-${field.id}`}>{field.label}</label>
-        {!disabled && (
-          <button type="button" className="tm-float-action" aria-label={show ? `Hide ${field.label}` : `Show ${field.label}`} onClick={() => setShow((s) => !s)}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" strokeLinejoin="round" />
-              <circle cx="12" cy="12" r="3" />
-              {show && <path d="M4 4l16 16" strokeLinecap="round" />}
-            </svg>
-          </button>
-        )}
+        <button type="button" className="tm-float-action" aria-label={show ? `Hide ${field.label}` : `Show ${field.label}`} onClick={() => setShow((s) => !s)}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" strokeLinejoin="round" />
+            <circle cx="12" cy="12" r="3" />
+            {show && <path d="M4 4l16 16" strokeLinecap="round" />}
+          </svg>
+        </button>
       </div>
-      <FieldFoot mark={null} error={error} help={disabled ? "Not needed for the race." : help} />
+      <FieldFoot mark={null} error={error} help={help} />
     </div>
   );
 }

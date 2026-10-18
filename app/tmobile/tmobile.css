@@ -415,3 +415,19 @@ select.tm-input {
   .tm-spinner { animation-duration: 2.4s; }
   .tm-progress > div { transition: none; }
 }
+
+/* Race mode: SSN and account PIN are skipped by both judges. Same size as an input, clearly settled, not disabled-grey. */
+.tm-skipped {
+  position: relative;
+  min-height: 56px;
+  padding: 7px 48px 7px 16px;
+  border: 1px solid var(--tm-border);
+  border-radius: 2px;
+  background: var(--tm-gray-200);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.tm-skipped-label { font-size: 12px; line-height: 16px; color: var(--tm-text-secondary); }
+.tm-skipped-value { font-size: 16px; line-height: 22px; font-weight: 500; color: var(--tm-text); }
+.tm-skipped-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--tm-text-secondary); }
