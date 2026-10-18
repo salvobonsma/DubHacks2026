@@ -6,7 +6,7 @@ import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
 import { CheckIcon, LockIcon, WarningIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
-import { askKey, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
+import { askKey, groupTitle, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
 import type { FilledField, FormSchema, Twin } from "@/lib/types";
 
 interface Session {
@@ -33,6 +33,7 @@ export function FillFlow() {
   const sessionId = useSearchParams().get("session");
   const [session, setSession] = useState<Session | null>(null);
   const [twin, setTwin] = useState<Twin | null>(null);
+  const [twinLoaded, setTwinLoaded] = useState(false);
   const [step, setStep] = useState<Step>("connect");
   const [rows, setRows] = useState<Row[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +53,10 @@ export function FillFlow() {
       });
     fetch("/api/twin")
       .then((r) => r.json())
-      .then((d) => setTwin(d.twin));
+      .then((d) => {
+        setTwin(d.twin);
+        setTwinLoaded(true);
+      });
   }, [sessionId]);
 
   async function fill() {
@@ -85,7 +89,7 @@ export function FillFlow() {
     });
     setRows(newRows);
 
-    // Build the permission queue: one prompt per sensitive field / per section, skipping "always allow" grants.
+    // Build the permission queue: one prompt per broad group of info, skipping "always allow" grants.
     const { always } = await fetch(`/api/grants?business=${encodeURIComponent(session.business)}`).then((r) =>
       r.json(),
     );
@@ -96,7 +100,7 @@ export function FillFlow() {
       const key = askKey(f);
       const g = groups.get(key) ?? {
         key,
-        title: f.category === "sensitive" ? f.label : f.section.toLowerCase(),
+        title: groupTitle(key),
         fields: [],
         sources: [],
       };
@@ -203,39 +207,65 @@ export function FillFlow() {
 
             {step === "connect" && (
               <div className="mt-5 space-y-5">
-                <ConnectPanel onTwin={setTwin} />
-                <div>
-                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
-                    Sharing mode for {session.business}
-                  </p>
-                  <div className="space-y-1.5">
-                    {MODES.map((m) => (
-                      <label
-                        key={m.id}
-                        className={`flex cursor-pointer items-start gap-2.5 rounded-lg border px-3 py-2 ${
-                          mode === m.id ? "border-navy bg-bg" : "border-line"
-                        }`}
+                {twinLoaded && !twin && (
+                  <div className="flex items-center gap-3 rounded-2xl border border-brand/30 bg-brand/5 p-4">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand-dark">
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        aria-hidden
                       >
-                        <input
-                          type="radio"
-                          name="mode"
-                          checked={mode === m.id}
-                          onChange={() => changeMode(m.id)}
-                          className="mt-1 accent-navy"
-                        />
-                        <span>
-                          <span className="block text-sm font-semibold">
-                            {m.label}
-                            {m.id === "all" && (
-                              <WarningIcon className="ml-1.5 inline h-3.5 w-3.5 align-[-2px] text-amber-600" />
-                            )}
-                          </span>
-                          <span className="block text-xs text-muted">{m.hint}</span>
-                        </span>
-                      </label>
-                    ))}
+                        <path d="M12 5v14M5 12h14" />
+                      </svg>
+                    </span>
+                    <div>
+                      <p className="font-semibold">You have no data sources yet</p>
+                      <p className="mt-0.5 text-sm text-muted">
+                        Add one below to begin. Formly builds your digital twin from it, then fills {session.business}
+                        &apos;s form for you.
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
+                <ConnectPanel onTwin={setTwin} />
+                {twin && (
+                  <div>
+                    <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
+                      Sharing mode for {session.business}
+                    </p>
+                    <div className="space-y-1.5">
+                      {MODES.map((m) => (
+                        <label
+                          key={m.id}
+                          className={`flex cursor-pointer items-start gap-2.5 rounded-lg border px-3 py-2 ${
+                            mode === m.id ? "border-navy bg-bg" : "border-line"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="mode"
+                            checked={mode === m.id}
+                            onChange={() => changeMode(m.id)}
+                            className="mt-1 accent-navy"
+                          />
+                          <span>
+                            <span className="block text-sm font-semibold">
+                              {m.label}
+                              {m.id === "all" && (
+                                <WarningIcon className="ml-1.5 inline h-3.5 w-3.5 align-[-2px] text-amber-600" />
+                              )}
+                            </span>
+                            <span className="block text-xs text-muted">{m.hint}</span>
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 {twin && (
                   <div className="rounded-xl bg-bg px-3 py-2 text-xs text-muted">
                     {twin.critical.length} facts known
@@ -297,7 +327,9 @@ export function FillFlow() {
                           value={r.value}
                           type={r.reveal ? "text" : "password"}
                           placeholder={
-                            r.denied ? "Denied. Type it yourself or leave it blank." : "Not found. Type it or leave it blank."
+                            r.denied
+                              ? "Denied. Type it yourself or leave it blank."
+                              : "Not found. Type it or leave it blank."
                           }
                           onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
                           className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"
@@ -343,7 +375,7 @@ export function FillFlow() {
               disabled={!twin}
               className="flex-1 rounded-xl bg-navy py-3 font-semibold text-white transition-colors enabled:hover:bg-black disabled:opacity-40"
             >
-              Fill my form
+              {twin || !twinLoaded ? "Fill my form" : "Add a source to continue"}
             </button>
           ) : (
             <button
