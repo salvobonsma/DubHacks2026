@@ -142,10 +142,7 @@ for k, (tag, name, how, accent) in enumerate([
         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
     box(s2, x + 14, 340, 300, 22, f"[short link {tag}]", 13, "FFFFFF",
         font="IBM Plex Mono", align=PP_ALIGN.CENTER)
-box(s2, 25.2 + 342 + 14, 362, 300, 20, "Tap Fill with Formly, connect Google, approve.",
-    10.5, "8A94A3", align=PP_ALIGN.CENTER)
-box(s2, 25.2 + 14, 362, 300, 20, "Name, address, account number, IMEI ...",
-    10.5, "8A94A3", align=PP_ALIGN.CENTER)
+# Arjun removed the two card captions under the short links
 
 # 5. slide 7: the demo is hands-on, so this is the "which was faster" slide
 d = S[6]
