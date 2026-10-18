@@ -9,15 +9,36 @@ fs.mkdirSync(DATA_DIR, { recursive: true });
 const g = globalThis as unknown as { __formlyDb?: Database.Database };
 
 function open() {
-  const db = new Database(path.join(DATA_DIR, "formly.db"));
+  // Wait on locks instead of failing: `next build` opens this from several workers at once.
+  const db = new Database(path.join(DATA_DIR, "formly.db"), { timeout: 15000 });
   db.pragma("journal_mode = WAL");
   return db;
 }
 
-export const db = g.__formlyDb ?? (g.__formlyDb = open());
+let ready: Database.Database | undefined;
+
+/**
+ * Opened on first use, not at import: `next build` imports every route from several workers at once, and
+ * opening a fresh database from all of them races and fails with "database is locked".
+ */
+function conn() {
+  if (ready) return ready;
+  ready = g.__formlyDb ?? (g.__formlyDb = open());
+  migrate(ready);
+  return ready;
+}
+
+export const db = new Proxy({} as Database.Database, {
+  get(_, prop) {
+    const d = conn();
+    const v = Reflect.get(d, prop);
+    return typeof v === "function" ? v.bind(d) : v;
+  },
+});
 
 // Idempotent schema, re-run on every module load so new tables appear without restarting dev.
-db.exec(`
+function migrate(db: Database.Database) {
+  db.exec(`
     CREATE TABLE IF NOT EXISTS sources (
       id TEXT PRIMARY KEY,
       connector TEXT NOT NULL,
@@ -59,3 +80,4 @@ db.exec(`
       created_at INTEGER NOT NULL
     );
 `);
+}
