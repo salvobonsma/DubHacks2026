@@ -27,6 +27,7 @@ export function FormlyButton({
 }) {
   const [busy, setBusy] = useState(false);
   const sessionRef = useRef<string | null>(null);
+  const popupRef = useRef<Window | null>(null);
   const onFilledRef = useRef(onFilled);
   useEffect(() => {
     onFilledRef.current = onFilled;
@@ -36,6 +37,7 @@ export function FormlyButton({
   const deliver = useRef((sessionId: string, values: FormlyValues | null) => {
     if (sessionRef.current !== sessionId) return;
     sessionRef.current = null;
+    popupRef.current = null;
     setBusy(false);
     if (values) onFilledRef.current(values);
   });
@@ -69,16 +71,18 @@ export function FormlyButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Channel 3: poll while the popup is open, in case postMessage can't reach us.
+  // Channel 3: poll while the popup is open, in case postMessage can't reach us. If the user closes
+  // the popup without finishing, stop waiting (after one last check in case it completed on close).
   useEffect(() => {
     if (!busy) return;
     const t = setInterval(async () => {
       const id = sessionRef.current;
       if (!id) return;
+      const closed = popupRef.current?.closed ?? false;
       const s = await fetchSession(id);
       if (s.status === "completed") deliver.current(id, s.values);
-      if (s.status === "cancelled") deliver.current(id, null);
-    }, 1500);
+      else if (s.status === "cancelled" || closed) deliver.current(id, null);
+    }, 1000);
     return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [busy]);
@@ -92,6 +96,7 @@ export function FormlyButton({
       "formly",
       `popup,width=${w},height=${h},left=${window.screenX + (window.outerWidth - w) / 2},top=${window.screenY + 60}`,
     );
+    popupRef.current = popup;
     try {
       const res = await fetch(`${formlyOrigin}/api/sessions`, {
         method: "POST",
@@ -101,8 +106,9 @@ export function FormlyButton({
       const { sessionId } = await res.json();
       sessionRef.current = sessionId;
       const url = `${formlyOrigin}/formly/fill?session=${sessionId}`;
-      if (popup && !popup.closed) popup.location.href = url;
-      else window.location.href = url; // popup blocked: same-tab flow, Formly redirects back
+      if (!popup) window.location.href = url; // popup blocked: same-tab flow, Formly redirects back
+      else if (popup.closed) deliver.current(sessionId, null); // closed before it finished loading
+      else popup.location.href = url;
     } catch (err) {
       popup?.close();
       setBusy(false);
