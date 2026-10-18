@@ -107,11 +107,13 @@ function displayName(s: SourceMeta) {
 
 function Path({ source }: { source: Source }) {
   const parts =
-    source.connector === "upload" ? ["Formly", "Uploads", source.name] : ["Google", ...source.name.split(": ")];
+    source.connector === "upload"
+      ? ["Formly", "Uploads", source.name]
+      : ["Google", source.name.replace(/^Google \((.*)\)$/, "$1")];
   return (
     <div className="flex flex-wrap items-center gap-1.5 px-5 pt-4 text-xs text-muted">
       {source.connector === "google" ? (
-        <ConnectorLogo slug="googledrive" className="h-3.5 w-3.5" />
+        <ConnectorLogo slug="google" className="h-3.5 w-3.5" />
       ) : (
         <FolderIcon />
       )}

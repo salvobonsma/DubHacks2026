@@ -49,7 +49,7 @@ export function FillFlow() {
         setSession(s);
         fetch(`/api/grants?business=${encodeURIComponent(s.business)}`)
           .then((r) => r.json())
-          .then((g) => setMode(g.mode));
+          .then((g) => setMode(g.mode === "all" ? "all" : "auto"));
       });
     fetch("/api/twin")
       .then((r) => r.json())
@@ -245,7 +245,7 @@ export function FillFlow() {
                 {twin && (
                   <div>
                     <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
-                      Sharing mode for {session.business}
+                      Sharing
                     </p>
                     <div className="space-y-1.5">
                       {MODES.map((m) => (
@@ -274,11 +274,6 @@ export function FillFlow() {
                         </label>
                       ))}
                     </div>
-                  </div>
-                )}
-                {twin && (
-                  <div className="rounded-xl bg-bg px-3 py-2 text-xs text-muted">
-                    {twin.critical.length} facts known
                   </div>
                 )}
                 {error && <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}

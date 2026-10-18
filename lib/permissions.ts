@@ -1,11 +1,10 @@
 import type { FormField } from "./types";
 
-export type SharingMode = "ask" | "auto" | "all";
+export type SharingMode = "auto" | "all";
 
 export const MODES: { id: SharingMode; label: string; hint: string }[] = [
-  { id: "ask", label: "Ask every time", hint: "Approve each group of info before it's shared" },
-  { id: "auto", label: "Auto-share basics", hint: "Shares everything except IDs and payment cards, which ask first." },
-  { id: "all", label: "Share everything", hint: "No prompts. You still review everything before it's sent." },
+  { id: "auto", label: "Auto", hint: "Asks before IDs and cards" },
+  { id: "all", label: "Share everything", hint: "Never asks" },
 ];
 
 /** Broad buckets a permission prompt covers, so a long form only asks a handful of times. */
@@ -39,6 +38,5 @@ export function groupTitle(key: string) {
 
 export function needsPrompt(field: FormField, mode: SharingMode) {
   if (mode === "all") return false;
-  if (mode === "ask") return true;
   return GROUPS[groupOf(field)].protected;
 }

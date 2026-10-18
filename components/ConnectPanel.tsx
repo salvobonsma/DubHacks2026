@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
-import { GoogleConsent } from "./GoogleConsent";
+import { GoogleConsent, type GoogleScope } from "./GoogleConsent";
 import { ArrowRightIcon, CheckIcon, CloseIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
 
@@ -21,14 +21,13 @@ interface Connector {
   category: string;
 }
 
-const GOOGLE: Connector = { name: "Google Drive", slug: "googledrive", category: "Email & files" };
+const GOOGLE: Connector = { name: "Google", slug: "google", category: "Accounts" };
 
-/** Placeholders for now; only Google Drive and file upload are wired up. */
+/** Placeholders for now; only Google (profile, contacts, Gmail, Drive) and file upload are wired up. */
 const COMING_SOON: Connector[] = [
   { name: "iCloud", slug: "icloud", category: "Accounts" },
   { name: "Dropbox", slug: "dropbox", category: "Email & files" },
   { name: "Apple Wallet", slug: "applepay", category: "Accounts" },
-  { name: "Gmail", slug: "gmail", category: "Email & files" },
   { name: "Box", slug: "box", category: "Email & files" },
   { name: "Notion", slug: "notion", category: "Email & files" },
   { name: "Evernote", slug: "evernote", category: "Email & files" },
@@ -91,12 +90,16 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setBusy(null);
   }
 
-  async function connectGoogle() {
+  async function connectGoogle(scopes: GoogleScope[]) {
     setConsent(false);
     setBusy("Syncing Google account and updating your twin…");
     setError(null);
     try {
-      const res = await fetch("/api/connectors/google", { method: "POST" }).then((r) => r.json());
+      const res = await fetch("/api/connectors/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scopes }),
+      }).then((r) => r.json());
       if (res.error) setError(res.error);
       else onTwin?.(res.twin ?? null);
     } catch (e) {
@@ -119,7 +122,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setBusy(null);
   }
 
-  /** Google Drive tile/row: connect if not synced, otherwise offer to disconnect. */
+  /** Google tile/row: connect if not synced, otherwise offer to disconnect. */
   function openGoogle() {
     if (googleSynced) setDisconnectOpen(true);
     else setConsent(true);
@@ -185,8 +188,8 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
           <div className="flex items-start gap-3">
             <ConnectorLogo slug={GOOGLE.slug} className="mt-0.5 h-8 w-8 shrink-0" />
             <p className="text-sm text-muted">
-              Formly will remove the {sources.filter((s) => s.connector === "google").length} files it synced from{" "}
-              {GOOGLE.name} and rebuild your digital twin without them. You can reconnect any time.
+              Formly will remove the data it synced from your {GOOGLE.name} account and rebuild your digital twin
+              without it. You can reconnect any time.
             </p>
           </div>
           <div className="mt-6 flex justify-end gap-2">
@@ -232,7 +235,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
                 </span>
               )}
             </span>
-            <span className="w-full truncate text-[11px] font-medium">Drive</span>
+            <span className="w-full truncate text-[11px] font-medium">{GOOGLE.name}</span>
           </button>
           {COMING_SOON.slice(0, FEATURED).map((c) => (
             <button key={c.name} type="button" className={`${tile} border-transparent shadow-surface hover:shadow-surface-hover`}>
