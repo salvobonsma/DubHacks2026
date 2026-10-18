@@ -356,6 +356,25 @@ for sl in S[7:12]:
     sid = by_slide[id(sl)]
     prs.part.drop_rel(sid.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"))
 
+# 9d. slide 5 spacing: labels sit on their fields, dots clear the source text, footer left-aligned
+S5_LABELS = ("Account number", "Phone model", "Billing address", "Number to transfer")
+for lab in S5_LABELS:
+    lb = shape_by_text(S[3], lab)
+    field_top = lb.top + Pt(16.2)
+    lb.left, lb.top, lb.height = Pt(28.8), field_top - Pt(24), Pt(18)
+    for p in lb.text_frame.paragraphs:
+        for r in p.runs:
+            r.font.size = Pt(9.5)
+for sh in S[3].shapes:
+    if sh.shape_type == 9:  # source lines end 10pt before the source text
+        sh.end_x = Pt(420)
+foot5 = shape_by_text(S[3], "Formly reads what you connect")
+foot5.left, foot5.top, foot5.width = Pt(28.8), Pt(334), Pt(660)
+for p in foot5.text_frame.paragraphs:
+    p.alignment = PP_ALIGN.LEFT
+    for r in p.runs:
+        r.font.size = Pt(12)
+
 # 10a. neon highlights: Ink text on Volt, on two moments only
 def highlight(shape, word):
     for p in shape.text_frame.paragraphs:
