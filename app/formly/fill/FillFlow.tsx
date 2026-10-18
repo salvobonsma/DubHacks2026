@@ -224,7 +224,7 @@ export function FillFlow() {
                         className="h-5 w-5"
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                         strokeLinecap="round"
                         aria-hidden
                       >
@@ -264,7 +264,7 @@ export function FillFlow() {
                             <span className="block text-sm font-semibold">
                               {m.label}
                               {m.id === "all" && (
-                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" stroke={1.5} />
+                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" stroke={1.25} />
                               )}
                             </span>
                             <span className="block text-xs text-muted">{m.hint}</span>
@@ -382,7 +382,7 @@ export function FillFlow() {
             {step === "sent" && (
               <div className="mt-16 text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand text-white">
-                  <CheckIcon className="h-6 w-6" stroke={2.5} />
+                  <CheckIcon className="h-6 w-6" stroke={2} />
                 </div>
                 <p className="font-semibold">Sent to {session.business}</p>
               </div>

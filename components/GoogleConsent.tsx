@@ -92,7 +92,7 @@ export function GoogleConsent({
               className="h-4 w-4 text-muted"
               fill="none"
               stroke="currentColor"
-              strokeWidth={2}
+              strokeWidth={1.5}
               aria-hidden
             >
               <path d="m6 9 6 6 6-6" />

@@ -411,7 +411,7 @@ function Modal({
 
 function FileIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="icon-line h-3.5 w-3.5 text-muted" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className="icon-line h-3.5 w-3.5 text-muted" fill="none" stroke="currentColor" strokeWidth={1.25} strokeLinejoin="round">
       <path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z M14 3v5h5" />
     </svg>
   );
@@ -419,7 +419,7 @@ function FileIcon() {
 
 function UploadIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={`icon-line ${className}`} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" className={`icon-line ${className}`} fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 16V4M6 10l6-6 6 6M4 20h16" />
     </svg>
   );
