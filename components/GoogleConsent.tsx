@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LockIcon } from "./Icons";
 
 export type GoogleScope = "profile" | "contacts" | "gmail" | "drive";
 
@@ -143,10 +144,10 @@ export function GoogleConsent({
             </label>
           ))}
         </div>
-        <p className="mt-4 text-xs text-muted">
-          Formly keeps this data in your digital twin. Businesses only get the answers you approve.
-        </p>
-        <div className="mt-6 flex justify-end gap-2">
+        <div className="mt-6 flex items-center justify-end gap-2">
+          <p className="mr-auto flex items-center gap-1.5 text-xs text-muted">
+            <LockIcon className="h-2.5 w-2.5" stroke={1.25} /> Secure with Formly
+          </p>
           <button
             onClick={onCancel}
             className="rounded-full px-4 py-2 text-sm font-medium text-[#1a73e8] hover:bg-blue-50"
