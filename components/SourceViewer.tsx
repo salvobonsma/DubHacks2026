@@ -179,7 +179,7 @@ const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "
 /** Loose matching so "206-555-0147" finds "(206) 555-0147" and "April 12, 1999" finds "04/12/1999". */
 function findMatches(text: string, value: string): [number, number][] {
   const clean = value.replace(/\*\*/g, "");
-  const parts = [clean, clean.replace(/\s*\(.*\)\s*/g, " "), ...clean.split(/[,()]|:\s/)]
+  const parts = [clean, clean.replace(/\s*\(.*\)\s*/g, " "), ...clean.split(/,(?!\d{3})|[()]|:\s/)]
     .map((p) => p.trim())
     .filter((p) => p.length >= 2);
 
@@ -201,7 +201,7 @@ function findMatches(text: string, value: string): [number, number][] {
 }
 
 function variants(p: string): RegExp[] {
-  const out = [new RegExp(esc(p).replace(/\s+/g, "[\\s,]+"), "gi")];
+  const out = [new RegExp(esc(p).replace(/\s+/g, "[\\s,:]+"), "gi")];
   const digits = p.replace(/\D/g, "");
   if (digits.length >= 4 && digits.length >= p.replace(/\s/g, "").length * 0.5) {
     out.push(new RegExp(digits.split("").join("\\D{0,3}"), "g"));
