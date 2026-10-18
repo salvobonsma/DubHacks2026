@@ -72,70 +72,26 @@ body {
   animation: formly-fill 1.2s ease-out;
 }
 
-/* ---- Landing page (app/page.tsx, components/landing/) ---- */
-
-/* Brand neutrals and the dark-surface accent from deck/brand/Formly-Brand-Guidelines.pdf. */
-:root {
-  --paper: #f6f7f9;
-  --mist: #e9ecf1;
-  --line: #cbd1da;
-  --slate: #5b6575;
-  --volt: #22c985;
-  --fill-flash: #d9f3e4;
+/* Progress bar (components/ProgressStatus.tsx): each new step label slides in, and a soft sheen
+   sweeps the filled part so a pause in the estimate still reads as work in progress. */
+@keyframes progress-step-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
 }
-
-@theme inline {
-  --color-paper: var(--paper);
-  --color-mist: var(--mist);
-  /* "Line" in the brand guide; `line` already names the lighter app border, so this one is `rule`. */
-  --color-rule: var(--line);
-  --color-slate: var(--slate);
-  --color-volt: var(--volt);
+.progress-step-in {
+  animation: progress-step-in 0.28s ease-out;
 }
-
-/*
- * Hero mock: fields start empty and fill one by one, no JavaScript needed. Each field sets --fill-delay.
- * Before its delay a field holds the empty look (fill-mode both); at its delay it flashes like .formly-filled
- * and keeps the green left edge. With reduced motion the animations are off, so the finished state shows.
- */
-@keyframes landing-field-fill {
-  0% { background-color: #ffffff; background-size: 0 100%; }
-  1% { background-color: var(--fill-flash); background-size: 3px 100%; }
-  100% { background-color: #ffffff; background-size: 3px 100%; }
+@keyframes progress-sheen {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
 }
-@keyframes landing-show {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.progress-sheen {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  animation: progress-sheen 1.6s ease-in-out infinite;
 }
-@keyframes landing-hide {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-.landing-fill {
-  background-color: #ffffff;
-  background-image: linear-gradient(var(--green), var(--green));
-  background-position: left;
-  background-repeat: no-repeat;
-  background-size: 3px 100%;
-  animation: landing-field-fill 1.2s ease-out both;
-  animation-delay: var(--fill-delay, 0s);
-}
-.landing-fill-value {
-  animation: landing-show 0.25s ease-out both;
-  animation-delay: var(--fill-delay, 0s);
-}
-/* Hidden at rest: the finished state is the base style, and the animation only holds it visible before the delay. */
-.landing-fill-empty {
-  opacity: 0;
-  animation: landing-hide 0.1s linear both;
-  animation-delay: var(--fill-delay, 0s);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .landing-fill,
-  .landing-fill-value,
-  .landing-fill-empty,
-  .landing .formly-filled {
+  .progress-step-in,
+  .progress-sheen {
     animation: none;
   }
 }
