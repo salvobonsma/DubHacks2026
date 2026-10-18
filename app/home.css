@@ -104,7 +104,6 @@
   background-size: 3px 100%;
 }
 .home-chip {
-  display: inline-block;
   max-width: 100%;
   padding: 1px 8px;
   border-radius: 9999px;

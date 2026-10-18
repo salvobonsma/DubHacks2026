@@ -27,7 +27,7 @@ export default function Home() {
             Stop retyping your life
             <span className="home-soft block">into every signup form.</span>
           </h1>
-          <div className="mt-8 grid items-start gap-14 lg:mt-12 lg:grid-cols-[1fr_1.1fr]">
+          <div className="mt-8 grid grid-cols-[minmax(0,1fr)] items-start gap-14 lg:mt-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
             <div className="lg:pt-2">
               <p className="home-lede max-w-[34rem]">
                 Formly reads the documents and accounts you connect, fills out a business&apos;s form, and shows you
@@ -52,7 +52,7 @@ export default function Home() {
 
         {/* How it treats your data, shown with the real twin UI rather than icon cards. */}
         <section className="border-t border-[var(--home-line)] bg-white">
-          <div className="mx-auto grid max-w-6xl gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] gap-14 px-5 py-24 sm:px-8 lg:grid-cols-2">
             <div>
               <h2 className="home-h2">
                 Your files stay with you.
@@ -88,12 +88,12 @@ export default function Home() {
           <ul className="home-surface mt-10 divide-y divide-[var(--home-line)] overflow-hidden rounded-2xl">
             {DEMOS.map((d) => (
               <li key={d.href}>
-                <Link href={d.href} className="home-row-link group flex items-center gap-4 px-5 py-4 sm:px-6">
-                  <span className="flex h-10 w-24 shrink-0 items-center">
+                <Link href={d.href} className="home-row-link group flex items-center gap-3 px-4 py-4 sm:gap-4 sm:px-6">
+                  <span className="flex h-10 w-[72px] shrink-0 items-center sm:w-24">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={d.logo} alt={d.name} width={d.w} height={d.h} className="max-h-8 w-auto object-contain object-left" />
                   </span>
-                  <span className="min-w-0 flex-1 truncate font-medium">{d.title}</span>
+                  <span className="min-w-0 flex-1 text-[14px] leading-snug font-medium sm:text-base">{d.title}</span>
                   <ArrowRightIcon className="h-4 w-4 shrink-0 text-[var(--home-muted)] transition-transform motion-safe:group-hover:translate-x-0.5" stroke={1.5} />
                 </Link>
               </li>
@@ -166,7 +166,7 @@ function HeroMockup() {
                   <span className="block text-[11px] text-[var(--home-muted)]">{r.label}</span>
                   <span className="block truncate text-[13px]">{r.value}</span>
                 </span>
-                <span className="home-chip mt-0.5 max-w-[42%]">{r.source}</span>
+                <span className="home-chip mt-0.5 inline-block max-w-[42%]">{r.source}</span>
               </li>
             ))}
           </ul>
@@ -194,8 +194,8 @@ function TwinMockup() {
       </div>
       <ul className="mt-4 divide-y divide-[var(--home-line)]">
         {facts.map((f) => (
-          <li key={f.label} className="flex items-center gap-3 py-3">
-            <span className="w-28 shrink-0 text-sm text-[var(--home-muted)]">{f.label}</span>
+          <li key={f.label} className="flex items-start gap-3 py-3">
+            <span className="w-24 shrink-0 text-sm text-[var(--home-muted)] sm:w-28">{f.label}</span>
             {f.hidden ? (
               <span className="flex flex-1 items-center gap-2 text-sm">
                 <LockIcon className="h-3.5 w-3.5 text-[var(--home-muted)]" />
@@ -203,7 +203,7 @@ function TwinMockup() {
               </span>
             ) : (
               <>
-                <span className="min-w-0 flex-1 truncate text-sm">{f.value}</span>
+                <span className="min-w-0 flex-1 text-sm break-words">{f.value}</span>
                 <span className="home-chip hidden max-w-[40%] sm:inline-block">{f.source}</span>
               </>
             )}
