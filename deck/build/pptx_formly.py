@@ -30,6 +30,7 @@ REMAP = {  # Google export color -> Formly brand color
 A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
 
 prs = Presentation(SRC)
+ANIM = {}  # id(slide) -> list of steps; a step is (trigger, [(shape_ids, effect, delay_ms)])
 S = list(prs.slides)
 DARK = {2, 7, 8, 9, 10, 11, 12, 13, 14}  # 1-based, from the export
 
@@ -121,7 +122,7 @@ t.shapes.add_picture(str(PNG / "mark-dark.png"), Pt(482), Pt(240.6), height=Pt(2
 # 3. Q&A slide: reversed lockup
 q = S[13]
 drop(shape_by_text(q, "Formly"))
-q.shapes.add_picture(str(PNG / "lockup-dark.png"), Pt(21.6), Pt(50), height=Pt(58))
+q.shapes.add_picture(str(PNG / "lockup-dark.png"), Pt(21.6), Pt(34), height=Pt(40))
 
 # 4. slide 2: try both. Two QR slots, A = by hand, B = Fill with Formly
 s2 = S[1]
@@ -179,16 +180,10 @@ for sh in p3.shapes:  # field labels were 8.25pt, too small on a laptop
                 if r.font.size and r.font.size < Pt(9):
                     r.font.size = Pt(9)
                     sh.top = sh.top - Pt(3)
-box(p3, 459, 94, 240, 70, "1 in 2", 54, NAVY, font="Sora ExtraBold")
-box(p3, 459, 160, 240, 60,
-    "Americans say the hassle of switching puts them off changing carriers.", 12.5, NAVY)
-rect(p3, 463, 230, 220, 1, "CBD1DA")
-box(p3, 459, 240, 240, 40, "18%", 30, NAVY, font="Sora ExtraBold")
-box(p3, 459, 278, 240, 50,
-    "of US shoppers who quit a checkout did it because it was too long or complicated.",
-    11, "5B6575")
-box(p3, 459, 336, 240, 30, "Sources: YouGov, Jan 2023 · Baymard Institute, 2025",
-    8.5, "8A94A3")
+# Arjun: no repeated stats, no weak ones. Numbers live once, on the T-Mobile slide.
+for sh in p3.shapes:
+    if sh.left < Pt(40) and sh.top > Pt(80):  # labels, fields and values span the slide
+        sh.width = sh.width + Pt(246)
 
 # 6b. layout fixes found in the PowerPoint render
 foot = shape_by_text(S[3], "Formly reads")  # was underlined, read as a link
@@ -241,6 +236,9 @@ WEB = {  # name: (shape, cx, cy, w, h, label, fill, text color)
     "signed": (SH.OVAL, 408, 120, 60, 60, "Signed up?", None, "8A94A3"),
     "quit": (SH.OVAL, 408, 250, 50, 50, "Quit", "5B6575", "FFFFFF"),
 }
+SX = 1.6  # the web fills the slide now that the money column moved to the T-Mobile slide
+WEB = {k: (v[0], 25 + (v[1] - 25) * SX, v[2], v[3] * (1 if v[0] == SH.OVAL else 1.2), *v[4:])
+       for k, v in WEB.items()}
 EDGES = [("start", "typo"), ("typo", "pin"), ("pin", "port"), ("port", "call"),
          ("call", "start"), ("typo", "start"), ("start", "lie"), ("lie", "signed"),
          ("port", "quit"), ("pin", "signed")]
@@ -284,54 +282,73 @@ for name, (kind, cx, cy, w, h, label, fill, tc) in WEB.items():
         align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
 box(rv, 25.2, 70, 300, 18, "A · By hand", 11, "5B6575", bold=True)
 
-# row B: Fill with Formly is one straight line
+_n_rowb = len(rv.shapes)
+# row B: Fill with Formly is one long straight line to the same finish
 box(rv, 25.2, 292, 300, 18, "B · Fill with Formly", 11, "5B6575", bold=True)
 st = rv.shapes.add_shape(SH.OVAL, Pt(28), Pt(312), Pt(48), Pt(48))
 st.shadow.inherit = False
 st.fill.solid(); st.fill.fore_color.rgb = rgb(NAVY); st.line.fill.background()
 box(rv, 22, 312, 60, 48, "Start", 9, "FFFFFF", bold=True, align=PP_ALIGN.CENTER,
     anchor=MSO_ANCHOR.MIDDLE)
-arrow(rv, 80, 336, 100, 336)
-rect(rv, 104, 321, 150, 30, NAVY, radius=0.23)
-rv.shapes.add_picture(str(PNG / "mark-dark.png"), Pt(116), Pt(327.5), height=Pt(17))
-box(rv, 132, 321, 120, 30, "Fill with Formly", 11, "FFFFFF", bold=True,
+arrow(rv, 80, 336, 104, 336)
+rect(rv, 108, 319, 178, 34, NAVY, radius=0.23)
+rv.shapes.add_picture(str(PNG / "mark-dark.png"), Pt(122), Pt(326), height=Pt(20))
+box(rv, 142, 319, 140, 34, "Fill with Formly", 12.5, "FFFFFF", bold=True,
     anchor=MSO_ANCHOR.MIDDLE)
-arrow(rv, 258, 336, 300, 336)  # Arjun cut the "Check, approve" step in PowerPoint
-rect(rv, 304, 321, 96, 30, GREEN_DK, radius=0.5)
-box(rv, 304, 321, 96, 30, "✓ Signed up", 11, NAVY, bold=True, align=PP_ALIGN.CENTER,
+arrow(rv, 292, 336, 576, 336)  # Arjun cut the "Check, approve" step in PowerPoint
+rect(rv, 582, 319, 110, 34, GREEN_DK, radius=0.5)
+box(rv, 582, 319, 110, 34, "✓ Signed up", 12.5, NAVY, bold=True, align=PP_ALIGN.CENTER,
     anchor=MSO_ANCHOR.MIDDLE)
-# right: what a finished form is worth
-box(rv, 466, 92, 230, 50, "$1,835", 36, NAVY, font="Sora ExtraBold")
-box(rv, 466, 138, 230, 50,
-    "a year from each new account that finishes signing up ($152.91 a month).", 11, "5B6575")
-rect(rv, 470, 194, 210, 1, "CBD1DA")
-box(rv, 466, 202, 230, 44, "up to 50%", 28, NAVY, font="Sora ExtraBold")
-box(rv, 466, 240, 230, 50,
-    "more checkouts finished when the form is prefilled (Shop Pay vs. guest checkout).",
-    11, "5B6575")
-box(rv, 466, 300, 230, 40,
-    "Sources: T-Mobile Q2 2026 results, postpaid ARPA",  # Arjun cut the Shopify note
-    8.5, "8A94A3")
+ROW_B = [sh.shape_id for sh in list(rv.shapes)[_n_rowb:]]
 
 # 8. the privacy wall becomes an appendix slide for Q&A
 wall = S[4]
 box(wall, 25.2, 12, 200, 16, "Appendix", 8.25, "5B6575", bold=True)
 shape_by_text(wall, "T-Mobile gets answers").top = Pt(24)
 
-# 9. close slide: revenue, not privacy
-ct = shape_by_text(S[12], "Every finished form")
-ct.text_frame.paragraphs[0].runs[0].text = "Bring Formly to T-Mobile."
-for r in ct.text_frame.paragraphs[0].runs[1:]:
-    r.text = ""
-cs = shape_by_text(S[12], "to a finished switch form")
-cs.text_frame.paragraphs[0].runs[0].text = (
-    "to a finished switch form, measured on our replica · fewer people quit halfway")
-for r in cs.text_frame.paragraphs[0].runs[1:]:
-    r.text = ""
+# 9. close slide: Formly x T-Mobile in T-Mobile's style (magenta hero, white cards, Inter Display
+#    as the public stand-in for TeleNeo), showing every real number we have
+TM_MAG, TM_INK, TM_GRAY, TM_LINE = "E20074", "141414", "6A6A6A", "E6E6E6"
+cb = S[12]
+for sh in list(cb.shapes):
+    drop(sh)
+cb.background.fill.solid(); cb.background.fill.fore_color.rgb = rgb("FFFFFF")
+rect(cb, 0, 0, 720, 160, TM_MAG)
+rect(cb, 25.2, 22, 196, 34, "FFFFFF", radius=0.5)
+cb.shapes.add_picture(str(PNG / "lockup-light.png"), Pt(38), Pt(30), height=Pt(18))
+box(cb, 109, 22, 18, 34, "×", 14, TM_INK, font="Inter", align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+cb.shapes.add_picture(str(PNG / "tmobile-logo.png"), Pt(129), Pt(31), height=Pt(16))
+box(cb, 25.2, 62, 670, 50, "Bring Formly to T-Mobile.", 40, "FFFFFF", font="Inter Display", bold=True)
+box(cb, 25.2, 112, 620, 40, "The ask: a one-month pilot of Fill with Formly on T-Mobile's switch flow, "
+    "measured on completion rate and port-in errors.", 13, "FFFFFF", font="Inter")
+STATS = [("33", "fields on T-Mobile's sign-up (our replica). Formly fills them in one tap.",
+          "Our T-Mobile demo form", TM_INK),
+         ("1 in 2", "Americans say the hassle of switching puts them off changing carriers.",
+          "YouGov, 2023", TM_INK),
+         ("up to 50%", "more checkouts finished when the form is prefilled.",
+          "Shopify, Shop Pay study", TM_INK),
+         ("$1,835", "a year from each new T-Mobile postpaid account.",
+          "T-Mobile Q2 2026 results", TM_MAG)]
+CARDS = []
+for k, (num, cap, src, col) in enumerate(STATS):
+    x = 25.2 + k * 170.4
+    ids = [rect(cb, x, 186, 158.4, 190, "FFFFFF", line=TM_LINE, radius=0.07).shape_id]
+    ids.append(box(cb, x + 8, 202, 142, 34, num, 22, col, font="Inter Display", bold=True).shape_id)
+    ids.append(box(cb, x + 8, 244, 142, 90, cap, 10.5, TM_INK, font="Inter").shape_id)
+    ids.append(box(cb, x + 8, 348, 142, 20, src, 7.5, TM_GRAY, font="Inter").shape_id)
+    CARDS.append(ids)
 
 # 9b. Arjun's PowerPoint edits (2026-10-17): drop the title-field label, autofill footnote
 drop(shape_by_text(S[0], "Full name, address"))
 drop(shape_by_text(S[5], "What each tool fills"))
+qq = shape_by_text(S[13], "Stripe for forms.")
+qq.top, qq.height = Pt(86), Pt(76)
+qq.text_frame.paragraphs[0].runs[0].text = "Questions?"
+for r in qq.text_frame.paragraphs[0].runs[1:]:
+    r.text = ""
+for r in qq.text_frame.paragraphs[0].runs:
+    r.font.size = Pt(54); r.font.name = "Sora SemiBold"; r.font.bold = False
+    r.font.color.rgb = rgb("FFFFFF")
 _tm = shape_by_text(S[13], "Khangai Sukhbaatar")  # Arjun matched the Q&A team line to the title slide
 _tm.text_frame.paragraphs[0].runs[0].text = "Khangai Sukhbaatar · Salvo Bonsma · Jerry Zheng "
 for r in _tm.text_frame.paragraphs[0].runs[1:]:
@@ -339,9 +356,9 @@ for r in _tm.text_frame.paragraphs[0].runs[1:]:
 
 # 10. final order: pitch, Q&A, then hidden answer slides (incl. privacy wall)
 by_slide = {id(sl): sid for sl, sid in zip(list(prs.slides), list(prs.slides._sldIdLst))}
-order = [S[0], S[1], S[2], rv, S[3], S[6], S[12], S[13],  # 1-8 shown at the booth
-         S[5], S[14], S[15], wall]                          # 9-12 hidden, jump to when asked
-for sl in order[8:]:
+order = [S[0], S[1], S[2], rv, S[3], S[12], S[13],  # 1-7 shown at the booth
+         S[5], S[14], S[15], wall]                   # 8-11 hidden, jump to when asked
+for sl in order[7:]:
     sl._element.set("show", "0")  # hidden: clicking past Q&A ends the show
 box(S[5], 25.2, 12, 200, 16, "Appendix", 8.25, "5B6575", bold=True)
 shape_by_text(S[5], "Autofill fills your name").top = Pt(24)
@@ -352,7 +369,7 @@ for sid in list(lst):
 for sid in ids:
     lst.append(sid)
 # the five recorded-clip backup slides are cut (Arjun: no Wi-Fi backup)
-for sl in S[7:12]:
+for sl in S[7:12] + [S[6]]:  # backup clips, and "Which was faster?" (Arjun: fill in or delete)
     sid = by_slide[id(sl)]
     prs.part.drop_rel(sid.get("{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id"))
 
@@ -406,12 +423,9 @@ def highlight(shape, word):
 
 # tastefully: only the revenue number (slide 4) and the Formly row (slide 6), per Arjun
 # Volt as visual weight (Arjun: "bring visual weight", not a text highlighter), a few slides only
-rect(rv, 456, 98, 5, 92, GREEN_DK)  # slide 4: accent bar beside the revenue figure
-# slide 3: each stat gets a bar filled to its real share (1 in 2 = 50%, 18%)
-for y, share in ((214, 0.5), (318, 0.18)):
-    rect(p3, 463, y, 210, 7, "E9ECF1", radius=0.5)
-    rect(p3, 463, y, 210 * share, 7, GREEN_DK, radius=0.5)
+
 # slide 5: thicker source lines that land on a Volt dot
+SRC_ROWS = []  # (line id, dot id, source text ids) per field, top to bottom
 for sh in list(S[3].shapes):
     if sh.shape_type == 9:
         sh.line.width = Pt(2.25)
@@ -419,6 +433,10 @@ for sh in list(S[3].shapes):
         d = S[3].shapes.add_shape(SH.OVAL, ex - Pt(4.5), ey - Pt(4.5), Pt(9), Pt(9))
         d.shadow.inherit = False
         d.fill.solid(); d.fill.fore_color.rgb = rgb(GREEN_DK); d.line.fill.background()
+        texts = [t.shape_id for t in S[3].shapes
+                 if t.left > Pt(425) and abs((t.top + t.height / 2) - ey) < Pt(8)]
+        SRC_ROWS.append((sh.top, sh.shape_id, d.shape_id, texts))
+SRC_ROWS.sort()
 # slide 7: the Formly timer box is the winner, filled solid
 for sh in S[6].shapes:
     try:
@@ -470,6 +488,81 @@ for sl in prs.slides:
                 for r in p.runs:
                     r.font.name = "Sora SemiBold"; r.font.bold = False
 
+# 10c. animations: fade between slides; a few builds that carry the story
+for sl in order[:7]:
+    ANIM.setdefault(id(sl), [])
+ANIM[id(rv)] = [("click", [(ROW_B, "fade", 0)])]
+ANIM[id(S[3])] = [("auto", [eff for k, (_, ln, dot, txt) in enumerate(SRC_ROWS)
+                            for eff in (([ln], "wipe", 200 + k * 450),
+                                        ([dot] + txt, "fade", 450 + k * 450))])]
+ANIM[id(cb)] = [("auto", [(ids, "fade", 150 + k * 180) for k, ids in enumerate(CARDS)])]
+P = "{http://schemas.openxmlformats.org/presentationml/2006/main}"
+
+
+def effect_xml(cid, spids, kind, delay, node):
+    tg = "".join(f'<p:tgtEl><p:spTgt spid="{sp}"/></p:tgtEl>' for sp in spids[:1])
+    preset, sub, flt = ("10", "0", "fade") if kind == "fade" else ("22", "8", "wipe(left)")
+    out = []
+    for n, sp in enumerate(spids):
+        c = cid[0]; cid[0] += 3
+        out.append(
+            f'<p:par><p:cTn id="{c}" presetID="{preset}" presetClass="entr" presetSubtype="{sub}" '
+            f'fill="hold" grpId="0" nodeType="{node if n == 0 else "withEffect"}">'
+            f'<p:stCondLst><p:cond delay="{delay}"/></p:stCondLst><p:childTnLst>'
+            f'<p:set><p:cBhvr><p:cTn id="{c+1}" dur="1" fill="hold"><p:stCondLst><p:cond delay="0"/>'
+            f'</p:stCondLst></p:cTn><p:tgtEl><p:spTgt spid="{sp}"/></p:tgtEl><p:attrNameLst>'
+            f'<p:attrName>style.visibility</p:attrName></p:attrNameLst></p:cBhvr>'
+            f'<p:to><p:strVal val="visible"/></p:to></p:set>'
+            f'<p:animEffect transition="in" filter="{flt}"><p:cBhvr><p:cTn id="{c+2}" dur="450"/>'
+            f'<p:tgtEl><p:spTgt spid="{sp}"/></p:tgtEl></p:cBhvr></p:animEffect></p:childTnLst></p:cTn></p:par>')
+    return "".join(out)
+
+
+def timing_xml(steps):
+    cid = [3]
+    groups, spids = [], []
+    for g, (trigger, effects) in enumerate(steps):
+        start = ('<p:cond delay="indefinite"/><p:cond evt="onBegin" delay="0"><p:tn val="2"/></p:cond>'
+                 if trigger == "auto" else '<p:cond delay="indefinite"/>')
+        node = "afterEffect" if trigger == "auto" else "clickEffect"
+        outer = cid[0]; inner = cid[0] + 1; cid[0] += 2
+        body = "".join(effect_xml(cid, ids, kind, delay, node if n == 0 else "withEffect")
+                       for n, (ids, kind, delay) in enumerate(effects))
+        groups.append(f'<p:par><p:cTn id="{outer}" fill="hold"><p:stCondLst>{start}</p:stCondLst>'
+                      f'<p:childTnLst><p:par><p:cTn id="{inner}" fill="hold"><p:stCondLst>'
+                      f'<p:cond delay="0"/></p:stCondLst><p:childTnLst>{body}</p:childTnLst></p:cTn>'
+                      f'</p:par></p:childTnLst></p:cTn></p:par>')
+        for ids, _, _ in effects:
+            spids += ids
+    return (f'<p:timing xmlns:p="{P[1:-1]}"><p:tnLst><p:par><p:cTn id="1" dur="indefinite" '
+            f'restart="never" nodeType="tmRoot"><p:childTnLst><p:seq concurrent="1" nextAc="seek">'
+            f'<p:cTn id="2" dur="indefinite" nodeType="mainSeq"><p:childTnLst>{"".join(groups)}'
+            f'</p:childTnLst></p:cTn><p:prevCondLst><p:cond evt="onPrev" delay="0"><p:tgtEl>'
+            f'<p:sldTgt/></p:tgtEl></p:cond></p:prevCondLst><p:nextCondLst><p:cond evt="onNext" '
+            f'delay="0"><p:tgtEl><p:sldTgt/></p:tgtEl></p:cond></p:nextCondLst></p:seq>'
+            f'</p:childTnLst></p:cTn></p:par></p:tnLst>{{BLD}}</p:timing>'), spids
+
+
+for sl in prs.slides:
+    root = sl._element
+    for old in root.findall(P + "transition") + root.findall(P + "timing"):
+        root.remove(old)
+    anchor = root.find(P + "clrMapOvr")
+    if anchor is None:
+        anchor = root.find(P + "cSld")
+    trans = etree.fromstring(f'<p:transition xmlns:p="{P[1:-1]}" spd="fast"><p:fade/></p:transition>')
+    anchor.addnext(trans)
+    steps = ANIM.get(id(sl))
+    if not steps:
+        continue
+    xml, spids = timing_xml(steps)
+    by_id = {sh.shape_id: sh for sh in sl.shapes}
+    bld = "".join(f'<p:bldP spid="{sp}" grpId="0"{" animBg=\"1\"" if by_id[sp].shape_type == 1 else ""}/>'
+                  for sp in dict.fromkeys(spids)
+                  if sp in by_id and by_id[sp]._element.tag == P + "sp")
+    xml = xml.replace("{BLD}", f"<p:bldLst>{bld}</p:bldLst>" if bld else "")
+    trans.addnext(etree.fromstring(xml))
+
 # 11. speaker notes (laptop pitch, judges try it on their phones; ~2:40 total)
 NOTES = {  # booth cues on a 5-minute clock (judges visit the booth, 2:10 talk + race, rest Q&A)
     id(S[0]): "0:00-0:15 · Hi, we're Formly: Stripe for forms. We are here to making switching to "
@@ -477,25 +570,22 @@ NOTES = {  # booth cues on a 5-minute clock (judges visit the booth, 2:10 talk +
               "Then straight to: want to try it?",
     id(S[1]): "0:15 · Hand the judge the phone on B. A teammate starts A by hand at the same time. "
               "Say go. Cap the race at 60 seconds; nobody has to finish A.",
-    id(S[2]): "0:20-0:50 · Talk while they race. Everyone has typed their address a hundred times. "
-              "Half of Americans say the hassle of switching puts them off changing carriers "
-              "(YouGov). 18% of shoppers who quit a checkout blame a long or complicated one (Baymard).",
+    id(S[2]): "0:20-0:50 · Talk while they race. Everyone has typed their address a hundred "
+              "times: the bank, the landlord, the DMV. T-Mobile's sign-up alone is 33 fields.",
     id(rv): "0:50-1:15 · Still racing. By hand isn't a line: typos, wrong PINs, made-up answers, "
-            "rejected port-ins, start again or quit. Each account that finishes is about $1,835 a "
-            "year to T-Mobile ($152.91 a month, Q2 2026). Shopify says prefilled checkout finishes "
-            "up to 50% more orders; that's their own study, so treat it as a ceiling. Stripe made "
-            "paying one tap. We make signing up one tap.",
-    id(S[3]): "1:15-1:45 · Race over. Have the judge tap a filled field on the phone: it shows the "
+            "rejected port-ins, start again or quit. Click: Formly is one straight line, one tap to "
+            "signed up. Stripe made paying one tap. We make signing up one tap.",
+    id(S[3]): "1:15-1:45 · Race over: who won? Then have the judge tap a filled field: it shows the "
               "email or file the answer came from. Account number from the carrier bill in Gmail, "
               "phone model from the order receipt, address from the lease on Drive.",
-    id(S[6]): "1:45-1:55 · Which was faster? Their time against the teammate's. If the race went "
-              "wrong, point at our measured times on screen.",
-    id(S[12]): "1:55-2:10 · Bring Formly to T-Mobile. Say it out loud: less friction, more "
-               "switchers. The ask: a one-month pilot on "
-               "T-Mobile's switch flow, measured on completion rate and port-in errors.",
-    id(S[13]): "2:10-4:30 · Questions. Slides 9-12 are hidden; type the number and press Enter to "
-               "jump. Isn't this just autofill? 9 · How is it built? 10 · What works today? 11 · "
-               "Is reading my inbox safe? 12. 4:30-5:00 · Leave them with the QR.",
+    id(S[12]): "1:45-2:10 · Bring Formly to T-Mobile. Walk the cards left to right: 33 fields "
+               "become one tap; half of Americans are put off switching; "
+               "prefilled checkouts finish up to 50% more (Shopify's own study, so a ceiling); each "
+               "new account is $1,835 a year. Then the ask: a one-month pilot, measured on "
+               "completion rate and port-in errors. Less friction, more switchers.",
+    id(S[13]): "2:10-4:30 · Questions. Slides 8-11 are hidden; type the number and press Enter to "
+               "jump. Isn't this just autofill? 8 · How is it built? 9 · What works today? 10 · "
+               "Is reading my inbox safe? 11. 4:30-5:00 · Leave them with the QR.",
     id(S[5]): "Answer to: isn't this just autofill? Autofill fills your name, password managers fill "
               "logins, Stripe Link fills payment. Nothing fills the account number, IMEI or the "
               "number you're transferring.",
