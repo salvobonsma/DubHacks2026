@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { connection } from "next/server";
 import { db } from "@/lib/db";
-import { extractText } from "@/lib/extract";
+import { expandZips, extractText } from "@/lib/extract";
 import { listSources, rebuildTwin } from "@/lib/twin";
 
 export async function GET(req: Request) {
@@ -15,20 +15,24 @@ export async function GET(req: Request) {
   return Response.json(listSources().map(({ text, ...s }) => ({ ...s, chars: text.length })));
 }
 
-/** Upload connector: multipart files -> raw text -> rebuild the digital twin. */
+/** Upload connector: multipart files (zips unpacked) -> raw text -> rebuild the digital twin. */
 export async function POST(req: Request) {
   const form = await req.formData();
-  const files = form.getAll("files").filter((f): f is File => f instanceof File);
-  if (files.length === 0) return Response.json({ error: "No files" }, { status: 400 });
+  const uploads = form.getAll("files").filter((f): f is File => f instanceof File);
+  if (uploads.length === 0) return Response.json({ error: "No files" }, { status: 400 });
 
   const insert = db.prepare(
     "INSERT INTO sources (id, connector, name, mime, text, created_at) VALUES (?, ?, ?, ?, ?, ?)",
   );
-  const errors: string[] = [];
+  const { files, errors } = await expandZips(
+    await Promise.all(
+      uploads.map(async (f) => ({ name: f.name, type: f.type, data: Buffer.from(await f.arrayBuffer()) })),
+    ),
+  );
   await Promise.all(
     files.map(async (file) => {
       try {
-        const text = await extractText(file.name, file.type, Buffer.from(await file.arrayBuffer()));
+        const text = await extractText(file.name, file.type, file.data);
         insert.run(nanoid(), "upload", file.name, file.type || null, text, Date.now());
       } catch (e) {
         errors.push(`${file.name}: ${(e as Error).message}`);

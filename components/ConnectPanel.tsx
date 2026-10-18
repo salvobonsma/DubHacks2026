@@ -194,13 +194,13 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
               <UploadIcon />
             </span>
             <div className="text-sm font-semibold">Drop files or click to upload</div>
-            <div className="mt-1 text-xs text-muted">PDF, images, DOCX, TXT, CSV, JSON</div>
+            <div className="mt-1 text-xs text-muted">PDF, images, DOCX, TXT, CSV, JSON, ZIP</div>
             <input
               ref={input}
               type="file"
               multiple
               hidden
-              accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json"
+              accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json,.zip"
               onChange={(e) => {
                 setUploadOpen(false);
                 if (e.target.files) upload(e.target.files);
