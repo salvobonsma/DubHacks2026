@@ -1,0 +1,1383 @@
+{
+ "ACC-PERSONA-01": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-01",
+   "segment": "student",
+   "tenure_months": 8,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "near_prime",
+   "autopay": true,
+   "discount_group": "student",
+   "persona_note": "Budget student with their own phone",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-01-1",
+     "member_label": "Line 1",
+     "member_role": "student",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS-SAVER",
+     "plan_name": "Essentials Saver 2.0",
+     "plan_tier": "basic",
+     "plan_family": "essentials",
+     "plan_variant": "saver",
+     "plan_data_cap_gb": 50,
+     "byod": true,
+     "device": null,
+     "financing": null,
+     "has_protection": false,
+     "tradein_eligible": false,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": null,
+     "usage_3m_avg_gb": 2.36
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 5606,
+    "change_pct_vs_prior_avg": 0.0172,
+    "months_available": 8
+   },
+   "support": {
+    "contacts_90d": 0,
+    "unresolved_90d": 0,
+    "last_contact_date": null,
+    "avg_sentiment": null
+   },
+   "signals": {
+    "competitor_research_score": 0.21,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 11
+   },
+   "eligibility": {
+    "line_count": 1,
+    "upgrade_eligible_lines": 0,
+    "tradein_eligible_lines": 0
+   }
+  },
+  "billing": [
+   {
+    "month": "2026-02",
+    "total_cents": 5446,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 5538,
+    "change_cents": 92,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 5448,
+    "change_cents": -90,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 5532,
+    "change_cents": 84,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 5451,
+    "change_cents": -81,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 5565,
+    "change_cents": 114,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 5600,
+    "change_cents": 35,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 5606,
+    "change_cents": 6,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-09": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-09",
+   "segment": "single",
+   "tenure_months": 18,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Power user who keeps hitting data limits",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-09-1",
+     "member_label": "Line 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0024",
+      "name": "Galaxy Z Fold7",
+      "tier": "flagship",
+      "purchase_date": "2026-04-01",
+      "age_months": 6
+     },
+     "financing": {
+      "balance_cents": 149994,
+      "months_remaining": 18,
+      "monthly_installment_cents": 8333,
+      "paid_off": false
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": 127211,
+     "usage_3m_avg_gb": 76.25
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 14586,
+    "change_pct_vs_prior_avg": 0.4154,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 2,
+    "unresolved_90d": 0,
+    "last_contact_date": "2026-09-27",
+    "avg_sentiment": -0.553
+   },
+   "signals": {
+    "competitor_research_score": 0.35,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 4
+   },
+   "eligibility": {
+    "line_count": 1,
+    "upgrade_eligible_lines": 0,
+    "tradein_eligible_lines": 1
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 6528,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 6626,
+    "change_cents": 98,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 6615,
+    "change_cents": -11,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 6416,
+    "change_cents": -199,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 6430,
+    "change_cents": 14,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 6371,
+    "change_cents": -59,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 15113,
+    "change_cents": 8742,
+    "change_reason": "device_installment"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 14832,
+    "change_cents": -281,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 14705,
+    "change_cents": -127,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 14842,
+    "change_cents": 137,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 14878,
+    "change_cents": 36,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 14586,
+    "change_cents": -292,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-11": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-11",
+   "segment": "single",
+   "tenure_months": 60,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Paid-off upgrader buying a new flagship",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-11-1",
+     "member_label": "Line 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-MORE",
+     "plan_name": "Experience More 2.0",
+     "plan_tier": "premium",
+     "plan_family": "experience_more",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": null,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0049",
+      "name": "iPhone 14",
+      "tier": "flagship",
+      "purchase_date": "2023-02-01",
+      "age_months": 44
+     },
+     "financing": {
+      "balance_cents": 0,
+      "months_remaining": 0,
+      "monthly_installment_cents": 0,
+      "paid_off": true
+     },
+     "has_protection": true,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 18202,
+     "usage_3m_avg_gb": 10.68
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 10698,
+    "change_pct_vs_prior_avg": 0.0098,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 0,
+    "unresolved_90d": 0,
+    "last_contact_date": null,
+    "avg_sentiment": null
+   },
+   "signals": {
+    "competitor_research_score": 0.09,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 11
+   },
+   "eligibility": {
+    "line_count": 1,
+    "upgrade_eligible_lines": 1,
+    "tradein_eligible_lines": 1
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 10790,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 10624,
+    "change_cents": -166,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 10448,
+    "change_cents": -176,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 10488,
+    "change_cents": 40,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 10394,
+    "change_cents": -94,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 10794,
+    "change_cents": 400,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 10610,
+    "change_cents": -184,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 10484,
+    "change_cents": -126,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 10677,
+    "change_cents": 193,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 10798,
+    "change_cents": 121,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 10434,
+    "change_cents": -364,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 10698,
+    "change_cents": 264,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-12": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-12",
+   "segment": "family",
+   "tenure_months": 30,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Family adding a teenager's first phone",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-12-1",
+     "member_label": "Parent 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0030",
+      "name": "Galaxy S25 Edge",
+      "tier": "flagship",
+      "purchase_date": "2025-08-01",
+      "age_months": 14
+     },
+     "financing": {
+      "balance_cents": 45830,
+      "months_remaining": 10,
+      "monthly_installment_cents": 4583,
+      "paid_off": false
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 57975,
+     "usage_3m_avg_gb": 17.37
+    },
+    {
+     "line_id": "LN-PERSONA-12-2",
+     "member_label": "Parent 2",
+     "member_role": "partner",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0035",
+      "name": "Galaxy A36 5G",
+      "tier": "value",
+      "purchase_date": "2025-04-01",
+      "age_months": 18
+     },
+     "financing": {
+      "balance_cents": 0,
+      "months_remaining": 0,
+      "monthly_installment_cents": 0,
+      "paid_off": true
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 16320,
+     "usage_3m_avg_gb": 2.91
+    },
+    {
+     "line_id": "LN-PERSONA-12-3",
+     "member_label": "Younger child",
+     "member_role": "child",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0007",
+      "name": "iPhone 16 Plus",
+      "tier": "flagship",
+      "purchase_date": "2025-12-01",
+      "age_months": 10
+     },
+     "financing": {
+      "balance_cents": 0,
+      "months_remaining": 0,
+      "monthly_installment_cents": 0,
+      "paid_off": true
+     },
+     "has_protection": true,
+     "tradein_eligible": true,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": 48929,
+     "usage_3m_avg_gb": 1.91
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 18140,
+    "change_pct_vs_prior_avg": -0.0052,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 0,
+    "unresolved_90d": 0,
+    "last_contact_date": "2026-05-25",
+    "avg_sentiment": 0.59
+   },
+   "signals": {
+    "competitor_research_score": 0.26,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 11
+   },
+   "eligibility": {
+    "line_count": 3,
+    "upgrade_eligible_lines": 2,
+    "tradein_eligible_lines": 3
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 18376,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 18229,
+    "change_cents": -147,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 18216,
+    "change_cents": -13,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 18208,
+    "change_cents": -8,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 17934,
+    "change_cents": -274,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 18506,
+    "change_cents": 572,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 18155,
+    "change_cents": -351,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 18370,
+    "change_cents": 215,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 18440,
+    "change_cents": 70,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 17872,
+    "change_cents": -568,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 18285,
+    "change_cents": 413,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 18140,
+    "change_cents": -145,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-20": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-20",
+   "segment": "couple",
+   "tenure_months": 18,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Couple who want a smartwatch and home internet",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-20-1",
+     "member_label": "Partner 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0061",
+      "name": "Pixel 8a",
+      "tier": "mid",
+      "purchase_date": "2025-12-01",
+      "age_months": 10
+     },
+     "financing": {
+      "balance_cents": 29162,
+      "months_remaining": 14,
+      "monthly_installment_cents": 2083,
+      "paid_off": false
+     },
+     "has_protection": true,
+     "tradein_eligible": true,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": 28604,
+     "usage_3m_avg_gb": 18.41
+    },
+    {
+     "line_id": "LN-PERSONA-20-2",
+     "member_label": "Partner 2",
+     "member_role": "partner",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0020",
+      "name": "Pixel 9a",
+      "tier": "value",
+      "purchase_date": "2025-10-01",
+      "age_months": 12
+     },
+     "financing": {
+      "balance_cents": 15000,
+      "months_remaining": 12,
+      "monthly_installment_cents": 1250,
+      "paid_off": false
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 15191,
+     "usage_3m_avg_gb": 10.66
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 14455,
+    "change_pct_vs_prior_avg": 0.0162,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 0,
+    "unresolved_90d": 0,
+    "last_contact_date": null,
+    "avg_sentiment": null
+   },
+   "signals": {
+    "competitor_research_score": 0.52,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 7
+   },
+   "eligibility": {
+    "line_count": 2,
+    "upgrade_eligible_lines": 1,
+    "tradein_eligible_lines": 2
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 12354,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 12730,
+    "change_cents": 376,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 14469,
+    "change_cents": 1739,
+    "change_reason": "device_installment"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 14518,
+    "change_cents": 49,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 14739,
+    "change_cents": 221,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 14622,
+    "change_cents": -117,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 14497,
+    "change_cents": -125,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 14773,
+    "change_cents": 276,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 14566,
+    "change_cents": -207,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 14541,
+    "change_cents": -25,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 14663,
+    "change_cents": 122,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 14455,
+    "change_cents": -208,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-25": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-25",
+   "segment": "single",
+   "tenure_months": 5,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "New customer whose usage already exceeds their plan",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-25-1",
+     "member_label": "Line 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0010",
+      "name": "iPhone 15",
+      "tier": "mid",
+      "purchase_date": "2026-06-01",
+      "age_months": 4
+     },
+     "financing": {
+      "balance_cents": 52500,
+      "months_remaining": 20,
+      "monthly_installment_cents": 2625,
+      "paid_off": false
+     },
+     "has_protection": true,
+     "tradein_eligible": true,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": 43409,
+     "usage_3m_avg_gb": 58.95
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 10629,
+    "change_pct_vs_prior_avg": 0.0766,
+    "months_available": 5
+   },
+   "support": {
+    "contacts_90d": 1,
+    "unresolved_90d": 0,
+    "last_contact_date": "2026-09-22",
+    "avg_sentiment": 0.02
+   },
+   "signals": {
+    "competitor_research_score": 0.4,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 9
+   },
+   "eligibility": {
+    "line_count": 1,
+    "upgrade_eligible_lines": 0,
+    "tradein_eligible_lines": 1
+   }
+  },
+  "billing": [
+   {
+    "month": "2026-05",
+    "total_cents": 7900,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 10496,
+    "change_cents": 2596,
+    "change_reason": "device_installment"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 10485,
+    "change_cents": -11,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 10610,
+    "change_cents": 125,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 10629,
+    "change_cents": 19,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-30": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-30",
+   "segment": "single",
+   "tenure_months": 80,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Four-year-old phone showing its age",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-30-1",
+     "member_label": "Line 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS",
+     "plan_name": "Essentials 2.0",
+     "plan_tier": "standard",
+     "plan_family": "essentials",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0051",
+      "name": "iPhone 12",
+      "tier": "flagship",
+      "purchase_date": "2022-10-01",
+      "age_months": 48
+     },
+     "financing": {
+      "balance_cents": 0,
+      "months_remaining": 0,
+      "monthly_installment_cents": 0,
+      "paid_off": true
+     },
+     "has_protection": true,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 16274,
+     "usage_3m_avg_gb": 12.61
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 7963,
+    "change_pct_vs_prior_avg": -0.0185,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 1,
+    "unresolved_90d": 0,
+    "last_contact_date": "2026-09-25",
+    "avg_sentiment": 0.53
+   },
+   "signals": {
+    "competitor_research_score": 0.19,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 13
+   },
+   "eligibility": {
+    "line_count": 1,
+    "upgrade_eligible_lines": 1,
+    "tradein_eligible_lines": 1
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 7980,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 8234,
+    "change_cents": 254,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 8241,
+    "change_cents": 7,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 7980,
+    "change_cents": -261,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 8226,
+    "change_cents": 246,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 8206,
+    "change_cents": -20,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 8122,
+    "change_cents": -84,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 8086,
+    "change_cents": -36,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 7942,
+    "change_cents": -144,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 8064,
+    "change_cents": 122,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 8165,
+    "change_cents": 101,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 7963,
+    "change_cents": -202,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-35": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-35",
+   "segment": "single",
+   "tenure_months": 18,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Budget phone owner with little to trade in",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-35-1",
+     "member_label": "Line 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-ESSENTIALS-SAVER",
+     "plan_name": "Essentials Saver 2.0",
+     "plan_tier": "basic",
+     "plan_family": "essentials",
+     "plan_variant": "saver",
+     "plan_data_cap_gb": 50,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0036",
+      "name": "Galaxy A17 5G",
+      "tier": "value",
+      "purchase_date": "2025-10-01",
+      "age_months": 12
+     },
+     "financing": {
+      "balance_cents": 0,
+      "months_remaining": 0,
+      "monthly_installment_cents": 0,
+      "paid_off": true
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 11646,
+     "usage_3m_avg_gb": 2.27
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 5591,
+    "change_pct_vs_prior_avg": 0.0212,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 0,
+    "unresolved_90d": 0,
+    "last_contact_date": null,
+    "avg_sentiment": null
+   },
+   "signals": {
+    "competitor_research_score": 0.09,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 11
+   },
+   "eligibility": {
+    "line_count": 1,
+    "upgrade_eligible_lines": 1,
+    "tradein_eligible_lines": 1
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 5428,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 5397,
+    "change_cents": -31,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 5605,
+    "change_cents": 208,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 5458,
+    "change_cents": -147,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 5422,
+    "change_cents": -36,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 5494,
+    "change_cents": 72,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 5515,
+    "change_cents": 21,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 5420,
+    "change_cents": -95,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 5393,
+    "change_cents": -27,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 5583,
+    "change_cents": 190,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 5507,
+    "change_cents": -76,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 5591,
+    "change_cents": 84,
+    "change_reason": "stable"
+   }
+  ]
+ },
+ "ACC-PERSONA-37": {
+  "context": {
+   "as_of": "2026-10-01",
+   "account_id": "ACC-PERSONA-37",
+   "segment": "family",
+   "tenure_months": 36,
+   "language": "en",
+   "contact_preference": "app",
+   "credit_tier": "prime",
+   "autopay": true,
+   "discount_group": null,
+   "persona_note": "Family of four on an unlimited plan with light usage",
+   "services": [],
+   "lines": [
+    {
+     "line_id": "LN-PERSONA-37-1",
+     "member_label": "Parent 1",
+     "member_role": "primary",
+     "plan_sku": "TMO-STUB-PLAN-MORE",
+     "plan_name": "Experience More 2.0",
+     "plan_tier": "premium",
+     "plan_family": "experience_more",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": null,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0035",
+      "name": "Galaxy A36 5G",
+      "tier": "value",
+      "purchase_date": "2025-08-01",
+      "age_months": 14
+     },
+     "financing": {
+      "balance_cents": 16670,
+      "months_remaining": 10,
+      "monthly_installment_cents": 1667,
+      "paid_off": false
+     },
+     "has_protection": true,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 18848,
+     "usage_3m_avg_gb": 18.92
+    },
+    {
+     "line_id": "LN-PERSONA-37-2",
+     "member_label": "Parent 2",
+     "member_role": "partner",
+     "plan_sku": "TMO-STUB-PLAN-MORE",
+     "plan_name": "Experience More 2.0",
+     "plan_tier": "premium",
+     "plan_family": "experience_more",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": null,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0035",
+      "name": "Galaxy A36 5G",
+      "tier": "value",
+      "purchase_date": "2025-04-01",
+      "age_months": 18
+     },
+     "financing": {
+      "balance_cents": 10002,
+      "months_remaining": 6,
+      "monthly_installment_cents": 1667,
+      "paid_off": false
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": true,
+     "estimated_tradein_value_cents": 16320,
+     "usage_3m_avg_gb": 3.2
+    },
+    {
+     "line_id": "LN-PERSONA-37-3",
+     "member_label": "Teen",
+     "member_role": "teen",
+     "plan_sku": "TMO-STUB-PLAN-MORE",
+     "plan_name": "Experience More 2.0",
+     "plan_tier": "premium",
+     "plan_family": "experience_more",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": null,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0032",
+      "name": "Galaxy S25 FE",
+      "tier": "mid",
+      "purchase_date": "2025-12-01",
+      "age_months": 10
+     },
+     "financing": {
+      "balance_cents": 37912,
+      "months_remaining": 14,
+      "monthly_installment_cents": 2708,
+      "paid_off": false
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": 37185,
+     "usage_3m_avg_gb": 2.82
+    },
+    {
+     "line_id": "LN-PERSONA-37-4",
+     "member_label": "Child",
+     "member_role": "child",
+     "plan_sku": "TMO-STUB-PLAN-MORE",
+     "plan_name": "Experience More 2.0",
+     "plan_tier": "premium",
+     "plan_family": "experience_more",
+     "plan_variant": "standard",
+     "plan_data_cap_gb": null,
+     "byod": false,
+     "device": {
+      "sku": "TMO-STUB-DEV-0036",
+      "name": "Galaxy A17 5G",
+      "tier": "value",
+      "purchase_date": "2025-12-01",
+      "age_months": 10
+     },
+     "financing": {
+      "balance_cents": 13412,
+      "months_remaining": 14,
+      "monthly_installment_cents": 958,
+      "paid_off": false
+     },
+     "has_protection": false,
+     "tradein_eligible": true,
+     "upgrade_eligible": false,
+     "estimated_tradein_value_cents": 12516,
+     "usage_3m_avg_gb": 2.53
+    }
+   ],
+   "billing": {
+    "latest_total_cents": 30122,
+    "change_pct_vs_prior_avg": 0.0347,
+    "months_available": 12
+   },
+   "support": {
+    "contacts_90d": 0,
+    "unresolved_90d": 0,
+    "last_contact_date": null,
+    "avg_sentiment": null
+   },
+   "signals": {
+    "competitor_research_score": 0.32,
+    "port_out_inquiry": false,
+    "app_sessions_30d": 8
+   },
+   "eligibility": {
+    "line_count": 4,
+    "upgrade_eligible_lines": 2,
+    "tradein_eligible_lines": 4
+   }
+  },
+  "billing": [
+   {
+    "month": "2025-10",
+    "total_cents": 25848,
+    "change_cents": 0,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-11",
+    "total_cents": 26128,
+    "change_cents": 280,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2025-12",
+    "total_cents": 29324,
+    "change_cents": 3196,
+    "change_reason": "device_installment"
+   },
+   {
+    "month": "2026-01",
+    "total_cents": 29430,
+    "change_cents": 106,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-02",
+    "total_cents": 30110,
+    "change_cents": 680,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-03",
+    "total_cents": 29608,
+    "change_cents": -502,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-04",
+    "total_cents": 30449,
+    "change_cents": 841,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-05",
+    "total_cents": 30290,
+    "change_cents": -159,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-06",
+    "total_cents": 29983,
+    "change_cents": -307,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-07",
+    "total_cents": 29315,
+    "change_cents": -668,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-08",
+    "total_cents": 29747,
+    "change_cents": 432,
+    "change_reason": "stable"
+   },
+   {
+    "month": "2026-09",
+    "total_cents": 30122,
+    "change_cents": 375,
+    "change_reason": "stable"
+   }
+  ]
+ }
+}

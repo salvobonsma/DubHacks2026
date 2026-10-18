@@ -38,6 +38,7 @@ There are three sharing modes per business: *Ask every time*, *Auto-share basics
 - **Upload** (live): PDF, images, DOCX, TXT, CSV, JSON
 - **Google** (mock): a fake consent screen with an account switcher for every persona in `sample-data/`. It syncs their `google_profile.json`, and Drive brings in their `personal_info.txt` and `resume.docx`
 - **iCloud** (mock): the same process as Google, behind a fake Sign in with Apple sheet. It syncs the persona's `icloud_profile.json` (Apple Account and devices, contacts, iCloud Mail receipts, Wallet, Health Medical ID), and iCloud Drive brings in the same `personal_info.txt` and `resume.docx` as Google Drive
+- **T-Mobile** (mock sign-in, real API): a fake T-Mobile sign-in sheet. Each persona holds one account in the [T-Mobile hackathon sandbox](https://github.com/mageshkumarj/dubhacks) (mapped in `lib/tmobile.ts`), and Formly pulls its plan, lines, phones, financing and bills from `GET /v1/customers/{id}/context` and `/billing`. Run the sandbox with `./run.sh` in that repo (it listens on `localhost:8000`), or set `TMOBILE_API_URL`. If it isn't reachable, the connector uses `lib/tmobile-snapshot.json`, a saved copy of those accounts
 - Dropbox, Notion, banks and the rest: coming soon
 
 ## Deploy (Dokploy)

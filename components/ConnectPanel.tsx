@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
 import { AppleConsent } from "./AppleConsent";
 import { GoogleConsent } from "./GoogleConsent";
+import { TmobileConsent } from "./TmobileConsent";
 import { FINISH_MS, ProgressStatus, type ProgressTask } from "./ProgressStatus";
 import { ArrowRightIcon, CheckIcon, CloseIcon, LockIcon } from "./Icons";
 import type { Twin } from "@/lib/types";
@@ -25,17 +26,20 @@ interface Connector {
 
 /** Live account connectors: each has a mock sign-in sheet and an /api/connectors/<id> sync route. */
 interface AccountConnector extends Connector {
-  id: "google" | "icloud";
+  id: "google" | "tmobile" | "icloud";
   /** How many scopes the sign-in sheet offers, so "all of them" can read as "your <name> data". */
   scopeCount: number;
 }
 
 const GOOGLE: AccountConnector = { id: "google", name: "Google", slug: "google", category: "Accounts", scopeCount: 4 };
 const ICLOUD: AccountConnector = { id: "icloud", name: "iCloud", slug: "icloud", category: "Accounts", scopeCount: 6 };
-const ACCOUNTS = [GOOGLE, ICLOUD];
+const TMOBILE: AccountConnector = { id: "tmobile", name: "T-Mobile", slug: "tmobile", category: "Accounts", scopeCount: 3 };
+const ACCOUNTS = [GOOGLE, TMOBILE, ICLOUD];
+/** Live accounts with their own tile next to Upload; the rest (iCloud) sit under "More". */
+const FEATURED_ACCOUNTS = [GOOGLE, TMOBILE];
 const accountFor = (connector: string) => ACCOUNTS.find((a) => a.id === connector);
 
-/** Placeholders for now; Upload, Google and iCloud are the live sources. */
+/** Placeholders for now; Upload, Google, T-Mobile and iCloud are the live sources. */
 const COMING_SOON: Connector[] = [
   { name: "Dropbox", slug: "dropbox", category: "Email & files" },
   { name: "Apple Wallet", slug: "applepay", category: "Accounts" },
@@ -56,7 +60,7 @@ const COMING_SOON: Connector[] = [
   { name: "GitHub", slug: "github", category: "Travel & more" },
 ];
 
-/** How many placeholder tiles sit next to Upload, Google and iCloud before the "+N more" tile. */
+/** How many placeholder tiles sit next to Upload, Google and T-Mobile before the "+N more" tile. */
 const FEATURED = 0;
 
 
@@ -226,6 +230,9 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       {consent?.id === "google" && (
         <GoogleConsent onAllow={(scopes, account) => connectAccount(GOOGLE, scopes, account)} onCancel={() => setConsent(null)} />
       )}
+      {consent?.id === "tmobile" && (
+        <TmobileConsent onAllow={(scopes, account) => connectAccount(TMOBILE, scopes, account)} onCancel={() => setConsent(null)} />
+      )}
       {consent?.id === "icloud" && (
         <AppleConsent onAllow={(scopes, account) => connectAccount(ICLOUD, scopes, account)} onCancel={() => setConsent(null)} />
       )}
@@ -269,7 +276,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
             </span>
             <span className="w-full truncate text-[11px] font-medium">Upload</span>
           </button>
-          {ACCOUNTS.map((c) => (
+          {FEATURED_ACCOUNTS.map((c) => (
             <button
               key={c.id}
               onClick={() => openAccount(c)}
@@ -294,7 +301,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
             </button>
           ))}
           <button onClick={() => setMoreOpen(true)} className={`${tile} border-transparent shadow-surface hover:shadow-surface-hover`}>
-            <span className="flex h-6 items-center text-base font-bold">+{COMING_SOON.length - FEATURED}</span>
+            <span className="flex h-6 items-center text-base font-bold">+{ACCOUNTS.length - FEATURED_ACCOUNTS.length + COMING_SOON.length - FEATURED}</span>
             <span className="w-full truncate text-[11px] text-muted">More</span>
           </button>
         </div>
