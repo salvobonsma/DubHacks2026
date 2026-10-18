@@ -23,17 +23,17 @@ export default function Home() {
       <main>
         {/* Hero: what Formly does, then the product doing it. */}
         <section className="mx-auto max-w-6xl px-5 pt-16 pb-24 sm:px-8 lg:pt-24">
-          <h1 className="home-h1 home-enter">
+          <h1 className="home-h1">
             Stop retyping your life
             <span className="home-soft block">into every signup form.</span>
           </h1>
           <div className="mt-8 grid items-start gap-14 lg:mt-12 lg:grid-cols-[1fr_1.1fr]">
             <div className="lg:pt-2">
-              <p className="home-lede home-enter home-enter-1 max-w-[34rem]">
+              <p className="home-lede max-w-[34rem]">
                 Formly reads the documents and accounts you connect, fills out a business&apos;s form, and shows you
                 every answer before it leaves. The business gets what you approve and never sees your files.
               </p>
-              <div className="home-enter home-enter-2 mt-9 flex flex-wrap gap-3">
+              <div className="mt-9 flex flex-wrap gap-3">
                 <Link href="/demo" className="home-btn home-btn-primary">
                   Try a demo form
                 </Link>
@@ -41,7 +41,7 @@ export default function Home() {
                   My Formly
                 </Link>
               </div>
-              <p className="home-enter home-enter-3 mt-5 text-sm text-[var(--home-muted)]">
+              <p className="mt-5 text-sm text-[var(--home-muted)]">
                 No account needed. The demo runs on made-up people, so try anything.
               </p>
             </div>
@@ -130,7 +130,7 @@ function HeroMockup() {
     { label: "Monthly income", value: "$10,666", source: "Personal info.txt" },
   ];
   return (
-    <div className="home-enter home-enter-4" aria-hidden>
+    <div aria-hidden>
       {/* The business's form. */}
       <div className="home-surface rounded-2xl p-5 sm:p-7 lg:mr-10">
         <p className="font-display text-[15px] font-semibold">Cedar &amp; Pine Apartments</p>

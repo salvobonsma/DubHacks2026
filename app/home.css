@@ -117,23 +117,6 @@
   text-overflow: ellipsis;
 }
 
-/* One-time staged entrance for the hero, 100ms apart. The hidden state lives in the keyframe, so content
-   stays visible if animation never runs, and reduced motion keeps only the fade. */
-.home-enter { animation: home-fade 300ms ease-out both; }
-@media (prefers-reduced-motion: no-preference) {
-  .home-enter { animation-name: home-rise; }
-}
-.home-enter-1 { animation-delay: 100ms; }
-.home-enter-2 { animation-delay: 200ms; }
-.home-enter-3 { animation-delay: 300ms; }
-.home-enter-4 { animation-delay: 450ms; }
-@keyframes home-fade {
-  from { opacity: 0; }
-}
-@keyframes home-rise {
-  from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
-}
-
 .home-row-link { transition-property: background-color; transition-duration: 150ms; }
 @media (hover: hover) {
   .home-row-link:hover { background: #fafbfc; }
