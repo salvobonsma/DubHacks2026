@@ -207,7 +207,7 @@ export function FillFlow() {
             </p>
             <h1 className="mt-0.5 text-[28px] leading-tight font-bold">{session.schema.title}</h1>
             <p className="mt-0.5 text-sm text-muted">
-              {session.schema.fields.length} {session.schema.fields.length === 1 ? "field" : "fields"}. Your source data never leaves Formly.
+              Your source data never leaves Formly.
             </p>
 
             {step === "connect" && (
