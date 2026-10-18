@@ -30,11 +30,15 @@ export default function TMobileSignup() {
   if (submitted) {
     return (
       <Shell>
-        <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-magenta text-2xl text-white">✓</div>
-          <h1 className="text-2xl font-bold">Welcome to T-Mobile, {values.first_name || "friend"}!</h1>
-          <p className="mt-2 text-muted">Your application has been received.</p>
-          <button className="mt-6 text-sm font-semibold text-magenta underline" onClick={() => location.reload()}>
+        <div className="tm-card text-center">
+          <div className="tm-check" aria-hidden>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+              <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <h1 className="tm-h1">You&apos;re in, {values.first_name || "friend"}.</h1>
+          <p className="tm-secondary mt-2">We got your application. Next stop, your new line.</p>
+          <button className="tm-btn tm-btn-secondary mt-6" onClick={() => location.reload()}>
             Start over
           </button>
         </div>
@@ -44,19 +48,20 @@ export default function TMobileSignup() {
 
   return (
     <Shell>
-      <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
-        <h1 className="text-2xl font-bold">Create your account</h1>
-        <p className="mt-1 text-sm text-muted">
-          {schema.title} · {done}/{schema.fields.length} fields complete
+      <div className="tm-card">
+        <h1 className="tm-h1">Create your account</h1>
+        <p className="tm-secondary mt-2 text-sm">
+          {schema.title} · <span className="tm-num">{done}</span> of{" "}
+          <span className="tm-num">{schema.fields.length}</span> fields complete
         </p>
 
         <div className="mt-6">
           <FormlyButton schema={schema} onFilled={applyFormly} />
         </div>
-        <div className="my-6 flex items-center gap-3 text-sm text-muted">
-          <div className="h-px flex-1 bg-line" />
+        <div className="tm-secondary my-6 flex items-center gap-3 text-sm">
+          <div className="tm-divider" />
           or fill in manually
-          <div className="h-px flex-1 bg-line" />
+          <div className="tm-divider" />
         </div>
 
         <form
@@ -68,7 +73,7 @@ export default function TMobileSignup() {
         >
           {sections.map(([section, fields]) => (
             <fieldset key={section}>
-              <legend className="mb-3 text-sm font-bold uppercase tracking-wide text-magenta">{section}</legend>
+              <legend className="tm-h3 mb-4">{section}</legend>
               <div className="grid gap-4 sm:grid-cols-2">
                 {fields.map((f) => (
                   <Field
@@ -82,10 +87,7 @@ export default function TMobileSignup() {
               </div>
             </fieldset>
           ))}
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-magenta px-5 py-3.5 font-semibold text-white hover:brightness-110"
-          >
+          <button type="submit" className="tm-btn tm-btn-primary tm-btn-hero w-full">
             Continue to review
           </button>
         </form>
@@ -96,15 +98,20 @@ export default function TMobileSignup() {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#f6f6f6]">
-      <header className="bg-magenta">
-        <div className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-4 text-white">
-          <span className="text-3xl font-black leading-none">T</span>
-          <span className="text-lg font-semibold">T-Mobile</span>
-          <span className="ml-auto text-sm opacity-80">Secure checkout</span>
+    <div className="flex min-h-screen flex-col">
+      <header className="tm-header">
+        <div className="mx-auto flex max-w-3xl items-center px-6 py-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/tmobile/logo.png" alt="T-Mobile" className="tm-logo-light h-7 w-auto" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/tmobile/logo-white.png" alt="T-Mobile" className="tm-logo-dark h-7 w-auto" />
+          <span className="tm-caption ml-auto">Secure checkout</span>
         </div>
       </header>
-      <main className="mx-auto max-w-3xl px-4 py-8">{children}</main>
+      <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">{children}</main>
+      <footer className="tm-legal mx-auto w-full max-w-3xl px-6 pb-8">
+        T-Mobile, the T logo, Magenta and the magenta color are registered trademarks of Deutsche Telekom AG.
+      </footer>
     </div>
   );
 }
@@ -120,14 +127,12 @@ function Field({
   highlight: boolean;
   onChange: (v: string) => void;
 }) {
-  const cls = `w-full rounded-lg border border-line bg-white px-3 py-2.5 text-[15px] outline-none focus:border-magenta focus:ring-2 focus:ring-magenta/20 ${
-    highlight && value ? "formly-filled" : ""
-  }`;
+  const cls = `tm-input ${highlight && value ? "formly-filled" : ""}`;
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium">
+      <span className="tm-label">
         {field.label}
-        {field.required && <span className="text-magenta"> *</span>}
+        {field.required && <span className="tm-secondary"> *</span>}
       </span>
       {field.type === "select" ? (
         <select className={cls} value={value} onChange={(e) => onChange(e.target.value)}>

@@ -1,0 +1,155 @@
+/* T-Mobile brand tokens for the /tmobile demo, from the TDDS values on t-mobile.com.
+   Scoped to .tm-root so the rest of the Formly site keeps its own look. */
+
+.tm-root {
+  --tm-magenta-100: #ffcee7;
+  --tm-magenta-300: #f6288f;
+  --tm-magenta-400: #e20074;
+  --tm-magenta-500: #a7005a;
+  --tm-magenta-600: #770141;
+
+  --tm-white: #ffffff;
+  --tm-gray-100: #fbfbfb;
+  --tm-gray-200: #f5f5f5;
+  --tm-gray-300: #e6e6e6;
+  --tm-gray-400: #cccccc;
+  --tm-gray-500: #8c8c8c;
+  --tm-gray-600: #6a6a6a;
+  --tm-gray-700: #414141;
+  --tm-gray-800: #2b2b2b;
+  --tm-gray-900: #1c1c1c;
+  --tm-gray-1000: #141414;
+
+  --tm-bg: var(--tm-gray-200);
+  --tm-header: var(--tm-white);
+  --tm-card: var(--tm-white);
+  --tm-input: var(--tm-white);
+  --tm-text: var(--tm-gray-1000);
+  --tm-text-body: var(--tm-gray-900);
+  --tm-text-secondary: var(--tm-gray-600);
+  --tm-border: var(--tm-gray-300);
+  --tm-border-input: var(--tm-gray-400);
+  --tm-brand: var(--tm-magenta-400);
+
+  --tm-font-headline: "TeleNeo", var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --tm-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  min-height: 100vh;
+  background: var(--tm-bg);
+  color: var(--tm-text-body);
+  font-family: var(--tm-font-body);
+  line-height: 1.65;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tm-root {
+    --tm-bg: #000000;
+    --tm-header: #000000;
+    --tm-card: var(--tm-gray-900);
+    --tm-input: var(--tm-gray-800);
+    --tm-text: var(--tm-white);
+    --tm-text-body: var(--tm-gray-200);
+    --tm-text-secondary: var(--tm-gray-400);
+    --tm-border: var(--tm-gray-700);
+    --tm-border-input: var(--tm-gray-700);
+    --tm-brand: var(--tm-magenta-300);
+    color-scheme: dark;
+  }
+}
+
+.tm-header {
+  background: var(--tm-header);
+  border-bottom: 1px solid var(--tm-border);
+}
+
+.tm-logo-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  .tm-logo-light { display: none; }
+  .tm-logo-dark { display: block; }
+}
+
+.tm-h1 {
+  font-family: var(--tm-font-headline);
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--tm-text);
+}
+.tm-h3 {
+  font-family: var(--tm-font-headline);
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.1;
+  color: var(--tm-text);
+}
+.tm-num { font-family: var(--tm-font-headline); font-weight: 800; color: var(--tm-text); }
+.tm-caption { font-size: 12px; font-weight: 700; color: var(--tm-text-secondary); }
+.tm-secondary { color: var(--tm-text-secondary); }
+
+.tm-card {
+  background: var(--tm-card);
+  border: 1px solid var(--tm-border);
+  border-radius: 12px;
+  padding: 24px;
+}
+@media (min-width: 640px) {
+  .tm-card { padding: 32px; }
+}
+
+.tm-divider { height: 1px; flex: 1; background: var(--tm-border); }
+
+.tm-label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; color: var(--tm-text); }
+
+.tm-input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 16px;
+  color: var(--tm-text);
+  background: var(--tm-input);
+  border: 1px solid var(--tm-border-input);
+  border-radius: 2px;
+  outline: none;
+}
+.tm-input:focus {
+  border-color: var(--tm-brand);
+  box-shadow: 0 0 0 2px var(--tm-brand);
+}
+.tm-input::placeholder { color: var(--tm-gray-500); }
+
+.tm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 16px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.tm-btn-hero { min-height: 50px; font-size: 16px; }
+.tm-btn-primary { background: var(--tm-magenta-400); color: var(--tm-gray-100); }
+.tm-btn-primary:hover { background: var(--tm-magenta-500); }
+.tm-btn-primary:active { background: var(--tm-magenta-600); }
+.tm-btn-secondary {
+  background: var(--tm-gray-100);
+  color: var(--tm-gray-1000);
+  border: 1px solid var(--tm-gray-400);
+}
+.tm-btn-secondary:hover { background: var(--tm-gray-200); }
+
+.tm-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 1000px;
+  background: var(--tm-magenta-400);
+  color: var(--tm-gray-100);
+}
+
+.tm-legal { font-size: 12px; color: var(--tm-text-secondary); }
