@@ -26,3 +26,61 @@ debit card: Chase debit
   zip 30312
 
 if anything happens call my mom, Denise Washington, 404-555-0198
+
+more stuff (for school forms, doctor, the dmv eventually)
+
+me:
+  male, born in atlanta (grady hospital), fulton county. us citizen
+  single
+  6'1", 175 lb, brown eyes, black hair
+  no glasses
+  organ donor: yes, said yes when i got my state id
+  registered to vote in fulton county, did it on campus in 2024
+  not a veteran
+  english, some spanish from high school
+
+family:
+  mom: Denise Washington, maiden name Carter, born 05/17/1981 in Macon, GA. 404-555-0198
+  dad: Isaiah Washington, born 01/03/1979 in Atlanta, GA. 404-555-0197 (they're divorced)
+  little brother: Malik, born 2010, lives with mom
+
+addresses:
+  county: fulton
+  before this apt: mom's place, 1846 Delowe Dr SW, Atlanta, GA 30311 (2004 to aug 2025)
+  mail still sometimes goes to mom's, but my mailing address is the apartment now
+  landlord: The Lofts at Georgia State, leasing office 404-555-0115. me and Marcus split rent
+  renters insurance: Lemonade, policy LP-GA-7730216
+
+state id: issued 11/22/2022. no license yet. no car, i take marta
+  driving: have my learner's permit study guide, planning to get a license in 2027
+
+health:
+  on mom's insurance: Aetna Open Access, member ID W238117490, group 0884213-10-001
+  doctor: GSU Student Health Clinic, 404-555-0193
+  pharmacy: CVS on Peachtree St
+  allergies: peanuts (carry an epipen)
+  meds: epipen as needed, nothing daily
+  blood type: B+
+
+money:
+  checking: Chase debit account, routing 110000000, account 000444555666
+  paid every 2 weeks from Octane, around $560 each check
+  taxes: single, mom still claims me as a dependent. 2025 income $14,600
+  fafsa: yes, Pell grant + HOPE scholarship
+  student loans: $8,500 federal
+
+school:
+  Benjamin E. Mays High School, Atlanta, class of 2023, GPA 3.6
+  Georgia State University, junior, CS, student ID 002318845, expected May 2028
+
+work:
+  Octane Coffee, 437 Memorial Dr SE, Atlanta, GA 30312, 404-555-0112
+  manager: Kayla Brooks, 404-555-0112
+  started 09/2023, ~20 hrs/week, $14/hr plus tips
+
+references:
+  Dr. Angela Price, my data structures professor, 404-555-0191, aprice@example.edu
+  Kayla Brooks, manager at Octane, 404-555-0112
+
+no pets (lease says no)
+never been arrested

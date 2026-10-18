@@ -57,16 +57,25 @@ export async function buildTwinMarkdown(sources: { name: string; text: string }[
   const res = await generate({
     model: MODEL,
     contents: `You maintain a user's "digital twin": a concise markdown profile of everything known about them.
-Merge the sources below into one profile using exactly these four headings, written as shown (omit empty ones):
+Merge the sources below into one profile using exactly these six headings, written as shown (omit empty ones):
 ## Personal
+## Home & Vehicles
 ## IDs & Money
+## Health
 ## Work & Education
 ## People & Plans
-Personal: name, birthday, sex, email, phone, home address, citizenship. IDs & Money: SSN, driver's license,
-passport, payment cards, bank accounts. Work & Education: each job (employer, title, dates), income, schools,
-degrees, majors, GPA, graduation dates, certifications, skills, and every project or accomplishment with its
-specifics kept (what it was, the numbers, the tools). People & Plans: family, emergency contacts, current services
-and bills, interests, preferences, plans. Use flat bullets only, one fact per bullet.
+Personal: name (legal, preferred, previous names, suffix), birthday, birthplace, sex, citizenship, marital status,
+email, phone, physical description (height, weight, eye and hair color), languages, voter registration, veteran
+status, organ donor. Home & Vehicles: home address, county, mailing address, own or rent, move-in date, monthly
+payment, landlord, previous addresses with dates, each vehicle (year, make, model, color, VIN, plate, registration),
+auto and home or renters insurance. IDs & Money: SSN, driver's license or state ID (number, class, restrictions,
+issue and expiry), passport, payment cards, bank accounts, tax filing status, dependents, income, credit, debts.
+Health: health insurance (carrier, member ID, group number), doctors, pharmacy, allergies, medications, conditions,
+blood type. Work & Education: each job (employer, address, phone, title, manager, dates, pay), schools, degrees,
+majors, GPA, graduation dates, certifications, skills, and every project or accomplishment with its specifics kept
+(what it was, the numbers, the tools). People & Plans: parents (names, birth dates, birthplaces, mother's maiden
+name), spouse, children, emergency contacts, references, pets, current services and bills, interests, preferences,
+plans. Keep every fact from the sources, however minor. Use flat bullets only, one fact per bullet.
 Use bullet points "- **Label:** value _(source: filename)_". When sources conflict, prefer the most recent/official
 document and note the conflict. Never invent information. Output only markdown.
 
@@ -81,10 +90,13 @@ export async function extractCriticalInfo(sources: { name: string; text: string 
   const res = await generate({
     model: MODEL,
     contents: `From the user's data below, extract every discrete fact useful for filling out forms
-(names, DOB, contact, each address part, citizenship, ID numbers/state/expiry, SSN, employer, title, income,
-housing cost, school, degree, major, GPA, graduation year, skills, card details, emergency contacts, current
-carrier, preferences, etc.).
-key: snake_case identifier. sensitivity: "sensitive" for SSN, full card numbers, CVV, ID numbers, passwords;
+(names, DOB, birthplace, sex, contact, each address part, county, previous addresses, citizenship, height, weight,
+eye and hair color, ID numbers/state/class/expiry, passport, SSN, mother's maiden name, parents, marital status,
+vehicles (VIN, plate), insurance policies and member IDs, bank accounts, tax filing status, employer, title,
+income, housing cost, landlord, school, degree, major, GPA, graduation year, skills, card details, emergency
+contacts, references, allergies, medications, current carrier, preferences, etc.).
+key: snake_case identifier. sensitivity: "sensitive" for SSN, full card numbers, CVV, ID numbers, bank account
+numbers, mother's maiden name, insurance member IDs, passwords;
 "personal" for DOB, income, employer, phone, family members; "basic" for name, email, address, preferences.
 source: the SOURCE filename the fact came from. Never invent information.
 

@@ -30,3 +30,75 @@ Payment card (Chase Sapphire):
   Billing ZIP: 98105
 
 Emergency contact: Mia Chen (sister) — 425-555-0193
+
+--- More for forms (DMV, doctor, taxes, leases). Added Oct 2026 ---
+
+About me:
+  Sex: Male
+  Born: Bellevue, Washington, USA
+  Citizenship: U.S. citizen (by birth)
+  Marital status: Single, never married
+  Height 5'10", weight 165 lb, eyes brown, hair black
+  Wear glasses for driving
+  Organ donor: yes (it's on my license)
+  Veteran: no
+  Languages: English, conversational Mandarin
+  Registered to vote in King County, WA since 2017
+
+Family:
+  Mom: Linda Mei Chen, maiden name Wu, born 03/08/1971 in Taipei, Taiwan. 425-555-0122
+  Dad: David Chen, born 11/19/1969 in Vancouver, BC, Canada. 425-555-0123
+  Sister: Mia Chen, born 07/02/2003
+  No spouse, no kids
+
+Address history:
+  County: King
+  Mailing address is the same as home
+  Landlord: Cascadia Property Management, Ana Torres, 206-555-0161
+  Before this: 1220 NE Campus Pkwy, Apt 507, Seattle, WA 98105 (Sept 2019 to May 2022)
+  Before that: my parents' house, 15832 SE 44th Pl, Bellevue, WA 98006 (1999 to 2019)
+
+Driver's license extras:
+  Class C (regular), restriction B (corrective lenses), no endorsements
+Passport: US passport 640118237, issued 05/20/2022, expires 05/19/2032
+
+Car:
+  2019 Subaru Crosstrek Premium, gray
+  VIN JF2GTAEC5KH214807
+  WA plate CDK4917, tabs expire 06/2027
+  Paid off, no lienholder
+  Auto insurance: Progressive, policy 9318420571, $142/month
+Renters insurance: Lemonade, policy LP-WA-5521904
+
+Health:
+  Insurance through work: Premera Blue Cross PPO, member ID XWA884210375, group 1047731
+  Primary care: Dr. Sarah Lindqvist, Ravenna Family Medicine, 206-555-0124
+  Dentist: Dr. Kevin Osei, 206-555-0138
+  Pharmacy: Bartell Drugs, University Village
+  Allergies: penicillin (hives)
+  Meds: none daily, loratadine during allergy season
+  Conditions: seasonal allergies, nearsighted
+  Blood type: O+
+
+Money:
+  Checking: Chase Total Checking, routing 110000000, account 000123456789
+  Paid every two weeks by direct deposit, about $3,580 take-home
+  Taxes: file single, no dependents. 2025 AGI $121,400
+  Credit score about 780 (Sept 2026). Student loans paid off in 2024. No other debt
+
+Work extras:
+  Northwind Robotics, 2200 Westlake Ave N, Suite 400, Seattle, WA 98109. Main line 206-555-0102
+  Started 08/16/2021. Employee ID NWR-01842
+  Manager: Rebecca Lund, Engineering Manager, 206-555-0103
+
+School:
+  Newport High School, Bellevue, WA, class of 2017
+  University of Washington, B.S. Computer Science, June 2021, GPA 3.7
+
+References:
+  Rebecca Lund, my manager at Northwind, 206-555-0103, rebecca.lund@northwind-robotics.example.com
+  Dr. Tom Ellery, faculty advisor for the UW rocketry team, 206-555-0179, tellery@example.edu
+
+Other:
+  No pets
+  Never been arrested or convicted. No bankruptcies

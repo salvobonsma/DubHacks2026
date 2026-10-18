@@ -26,3 +26,71 @@ Card: First Interstate Visa debit
   Hannah G McAllister, 4242 4242 4242 4242, 10/27, ZIP 59715
 
 Emergency: Dad (Doug McAllister) 406-555-0108
+
+more moving-admin stuff (oct 2026). finally dug my license out of my wallet
+
+license: MT driver's license 4199127031002, class D, no restrictions, issued 12/02/2021, expires 12/02/2029
+  (still shows the billings address, need to update it at the bozeman MVD)
+
+me:
+  female, born in billings, MT (yellowstone county). us citizen
+  single
+  5'5", 135 lb, green eyes, blonde hair
+  contacts (need them for driving)
+  organ donor: yes
+  registered to vote in yellowstone county, need to switch to gallatin
+  not a veteran
+  english only (tried spanish in college lol)
+
+parents:
+  dad: Doug McAllister, born 01/27/1968 in Great Falls, MT. 406-555-0108
+  mom: Karen McAllister (maiden name Lindgren), born 07/15/1970 in Billings, MT. 406-555-0109
+
+addresses:
+  county: gallatin now
+  landlord: Bridger Property Mgmt, Sam Whitfield, 406-555-0122. lease through aug 2027
+  mailing address = new apartment
+  old address: 2316 Rimrock Rd, Apt 8, Billings, MT 59102 (aug 2021 to aug 2026)
+  before that: parents, 715 Clark Ave, Billings, MT 59101 (grew up there, until 2018)
+  college apt in missoula 2018-2021
+  renters insurance: State Farm, policy 27-HK-0491-3
+
+car:
+  2016 Subaru Outback 2.5i, green
+  VIN 4S4BSACC5G3221904, MT plate 3-48219B, registration exp 05/2027
+  paid off
+  insurance: State Farm, policy 214-0882-E26
+
+health:
+  insurance through work: Blue Cross Blue Shield of Montana, member ID MTW540128876, group 077432
+  new doctor in bozeman: Dr. Jenna Ruiz, Bridger Family Medicine, 406-555-0176
+  pharmacy: Albertsons on N 19th Ave
+  allergies: cats (yes i know. i'm fine at work with meds), amoxicillin
+  meds: cetirizine daily, birth control
+  blood type: AB+
+
+money:
+  checking: First Interstate Bank, routing 110000000, account 000888999000
+  paid every 2 weeks
+  taxes: single, no dependents. 2025 AGI $33,100
+  student loans: about $19,000 federal, on income-driven plan
+  credit score around 700
+
+work:
+  Gallatin Valley Animal Hospital, 1421 W Main St, Bozeman, MT 59715, 406-555-0150
+  manager: Dr. Elena Price, DVM, 406-555-0150
+  started 09/15/2026, 30 hrs/week, $21.50/hr
+  before: vet tech at Yellowstone Pet Clinic, Billings, 2021 to 2026
+  certified veterinary technician (CVT), MT license 2203
+
+school:
+  Billings Senior High School, class of 2018
+  University of Montana, Missoula, B.S. Wildlife Biology, 2021, GPA 3.3
+  vet tech certification program, Montana State University Billings, 2022
+  taking pre-vet prereqs at MSU bozeman starting spring 2027 (organic chem)
+
+references:
+  Dr. Elena Price, my manager, 406-555-0150
+  Dr. Ryan Holt, my old boss at Yellowstone Pet Clinic, 406-555-0155
+
+pets: my dog Juniper (border collie mix), registered with the city
