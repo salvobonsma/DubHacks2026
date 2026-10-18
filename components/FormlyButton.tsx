@@ -87,7 +87,25 @@ export function FormlyButton({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [busy]);
 
+  /** Clicking while waiting: the popup may be lost behind other windows, so close it and start over. */
+  function reset() {
+    const id = sessionRef.current;
+    try {
+      popupRef.current?.close();
+    } catch {}
+    sessionRef.current = null;
+    popupRef.current = null;
+    setBusy(false);
+    if (id)
+      fetch(`${formlyOrigin}/api/sessions`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ sessionId: id, status: "cancelled" }),
+      }).catch(() => {});
+  }
+
   async function open() {
+    if (busy) return reset();
     setBusy(true);
     // Open synchronously so popup blockers allow it, then point it at the session.
     const w = 480, h = 760;
@@ -120,11 +138,11 @@ export function FormlyButton({
     <button
       type="button"
       onClick={open}
-      disabled={busy}
-      className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-navy px-5 py-3.5 font-display text-[15px] font-semibold tracking-[-0.01em] text-white transition hover:bg-black disabled:opacity-70"
+      title={busy ? "Close the Formly window and start over" : undefined}
+      className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-navy px-5 py-3.5 font-display text-[15px] font-semibold tracking-[-0.01em] text-white transition hover:bg-black"
     >
       <Mark light className="h-5 w-5" />
-      {busy ? "Waiting for Formly…" : "Fill with Formly"}
+      <span className={busy ? "opacity-70" : ""}>{busy ? "Waiting for Formly…" : "Fill with Formly"}</span>
     </button>
   );
 }
