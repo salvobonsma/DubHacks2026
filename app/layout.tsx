@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Sora } from "next/font/google";
 import { DemoBanner } from "@/components/DemoBanner";
 import "./globals.css";
@@ -17,6 +17,11 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: "Formly",
   description: "Fill any form with your own data, without handing it over.",
+};
+
+// Matches the demo banner at the top of every page, so Safari's tab bar blends into it.
+export const viewport: Viewport = {
+  themeColor: "#0a121e",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
