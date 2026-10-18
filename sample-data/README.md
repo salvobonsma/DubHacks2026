@@ -2,11 +2,11 @@
 
 Every person here is made up. Phone numbers use the fictional 555-01xx range, emails use the reserved `example.com`/`.net`/`.org`/`.edu` domains, SSNs come from the 987-65-432x block set aside for advertising, card numbers are Stripe test cards, and every bank account uses Stripe's test routing number `110000000` with a test account number. VINs, plates, policy and member IDs are invented.
 
-To demo someone, click **Reset demo**, then upload that person's folder with **Upload**. Each folder has `personal_info.txt` (their own notes, each written in a different style), `contacts.csv`, `google_profile.json` and `resume.docx`. Or connect **Google** and pick the person from the account switcher on the sign-in screen; Drive brings in their resume.
+To demo someone, click **Reset demo**, then upload that person's folder with **Upload**. Each folder has `personal_info.txt` (their own notes, each written in a different style), `contacts.csv`, `google_profile.json` and `resume.docx`. Or connect **Google** and pick the person from the account switcher on the sign-in screen; Drive brings in their `personal_info.txt` and resume, so Google alone gives Formly everything in the folder except `contacts.csv`.
 
 ## What every persona covers
 
-Each person has enough to fill every demo form (T-Mobile, SpaceXAI, Chase) and the forms we're likely to add next: DMV, passport, medical intake, rental, bank, tax and other job applications.
+Each person has enough to fill every demo form (T-Mobile, SpaceXAI, Chase) and the forms we're likely to add next: DMV, passport, medical intake, rental, bank, tax and other job applications. Every person also has one vehicle marked to use on forms, with its VIN, odometer, purchase details, lienholder and insurance term.
 
 - **Identity:** legal name and middle name, maiden or previous names, sex, date and place of birth, citizenship, marital status, SSN, mother's maiden name, languages, voter registration, veteran status
 - **Physical (DMV):** height, weight, eye and hair color, corrective lenses, organ donor
@@ -24,8 +24,8 @@ Each person has enough to fill every demo form (T-Mobile, SpaceXAI, Chase) and t
 | --- | --- | --- |
 | `alex-chen` | 27, software engineer, Seattle, renter | The original demo. Also has a PDF, a driver's license photo, and the deepest resume (telemetry and a rocketry team) |
 | `maria-gonzalez` | 52, ICU nurse, Houston, homeowner | Married with kids, maiden name, two cars, mortgage, RN license, bilingual |
-| `jamal-washington` | 21, CS junior and part-time barista, Atlanta | State ID and no license or car yet, on his mom's insurance, claimed as a dependent, peanut allergy |
-| `dorothy-kowalski` | 75, retired teacher, Milwaukee | Passport and state ID, expired license, no car, Medicare, widowed, notes written as full sentences |
+| `jamal-washington` | 21, CS junior and part-time barista, Atlanta | State ID and no license yet, but just bought his first car, on his mom's insurance, claimed as a dependent, peanut allergy |
+| `dorothy-kowalski` | 75, retired teacher, Milwaukee | Passport and state ID, expired license, owns a car her family drives her in, Medicare, widowed, notes written as full sentences |
 | `priya-raman` | 34, self-employed designer, Brooklyn | LLC with an EIN, Schedule C income, marketplace insurance, Amex card, domestic partner |
 | `tom-nguyen` | 45, owner-operator truck driver, Omaha | Class A CDL with endorsements, semi truck plus a pickup, USDOT number, no passport |
 | `aisha-bello` | 29, active-duty Army sergeant, Fayetteville NC | Military pay and TRICARE, Secret clearance, new NC license replacing an old MD one, home of record |

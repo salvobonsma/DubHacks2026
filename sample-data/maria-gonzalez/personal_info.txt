@@ -109,3 +109,14 @@ QUICK ANSWERS FOR FORMS
   Highest degree: Bachelor's (B.S. Nursing), UT Health Science Center at San Antonio, 1996, GPA 3.4
   Years of work experience: 29 (nursing since 1997)
   Why SpaceXAI: Our ICU piloted an AI sepsis alert in 2025 and it fired so often that nurses started ignoring it. I helped the vendor tune it with real bedside feedback. I'd want to help build AI that clinicians actually trust, like the health tools SpaceXAI is building on Grok. My sister's ranch outside Laredo also finally got internet through Starlink.
+
+CAR DETAILS FOR DMV FORMS
+  The car in my name is the Highlander. Use it on forms (the Civic is titled to Roberto)
+  2022 Toyota Highlander XLE, white, VIN 5TDGZRBH3NS587221
+  Body type: SUV. Fuel: gas
+  Odometer: 36,940 miles (Oct 2026)
+  Bought new from Westpark Toyota on 05/28/2022 for $44,850
+  Registered in Texas, plate RKM-4402
+  Use: personal
+  Lienholder: Toyota Motor Credit Corporation, loan 4410-889-21 (about $9,800 left)
+  Insurance: State Farm, policy 2201-447-53F, renews every 6 months, current term ends 12/15/2026

@@ -9,7 +9,7 @@ const SCOPES: { id: GoogleScope; label: string; hint: string }[] = [
   { id: "profile", label: "Profile", hint: "Name, birthday, phone and address" },
   { id: "contacts", label: "Contacts", hint: "People you might list as family or emergency contacts" },
   { id: "gmail", label: "Gmail", hint: "Receipts and bills" },
-  { id: "drive", label: "Drive", hint: "Documents like your resume" },
+  { id: "drive", label: "Drive", hint: "Documents like your resume and personal notes" },
 ];
 
 interface Account {

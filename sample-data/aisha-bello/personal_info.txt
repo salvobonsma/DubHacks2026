@@ -113,3 +113,14 @@ Employment: employed full-time (active duty Army)
 Highest degree: Associate's (A.A.S. Information Systems), Fayetteville Technical Community College, 2022, GPA 3.6. Bachelor's (B.S. Cybersecurity, UMGC) in progress, expected Dec 2027, GPA 3.8
 Years of work experience: 7 (since Jun 2019)
 Why SpaceXAI: Our unit started testing Starlink terminals alongside the VSAT gear in 2025. They came up in minutes where our old terminals took an hour. I'd want to work on Starlink and Starshield network operations, or the systems that move that satellite data around.
+
+VEHICLE DETAILS FOR DMV FORMS
+Vehicle to use on forms: 2023 Honda Civic Sport (only vehicle, titled to me)
+Body type: sedan. Fuel: gas. Color: blue
+VIN 2HGFE2F54PH518840
+Odometer: 31,120 miles (Oct 2026)
+Bought new from Cape Fear Honda on 03/18/2023 for $27,950
+Registered in North Carolina, plate RHX-2219
+Use: personal
+Lienholder: Navy Federal Credit Union, loan 7740021
+Insurance: USAA, policy 004418823-7101, current term ends 03/18/2027

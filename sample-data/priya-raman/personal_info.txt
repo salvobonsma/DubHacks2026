@@ -106,3 +106,13 @@
 - Highest degree: Bachelor's (BFA Graphic Design), Rhode Island School of Design, 2014, GPA 3.6
 - Years of work experience: 12 (since 2014)
 - Why SpaceXAI: I use Grok every day for client research, and its image tools still feel built by engineers, for engineers. I'd want to design how Grok Imagine works for designers, the way I redesigned that coffee label once I watched real people use it.
+
+### Car details for DMV forms
+- Vehicle to use on forms: 2021 Mini Cooper Countryman (only car, in my name)
+- Body type: SUV (compact crossover). Fuel: gas. Color: dark green
+- Odometer: 27,350 miles (Oct 2026)
+- Bought new from Hudson MINI on 2021-07-10 for $33,900
+- Registered in New York, plate KJT-8821
+- Use: personal (and the occasional client delivery)
+- Lienholder: MINI Financial Services, loan 70021-88413 (about $6,200 left)
+- Insurance: GEICO, policy 4428-91-773-05, current term ends 2027-01-10

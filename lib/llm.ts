@@ -182,6 +182,8 @@ Rules:
 - Format values for the field type: date -> YYYY-MM-DD, tel -> (555) 555-5555, number -> digits only,
   select -> exactly one of the listed options.
 - Ages and years of experience: work them out from the dates in the data, as of today.
+- If the data explicitly says there is none (no lienholder, no apartment number, no suffix), that is an answer:
+  use "None", or "N/A" if the data says N/A. For a select, pick the option that means none if there is one.
 - If the data does not contain the answer, value must be null. Never guess or invent.
 - source: the filename the value came from. confidence: 0-1.
 

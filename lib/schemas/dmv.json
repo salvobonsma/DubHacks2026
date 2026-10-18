@@ -1,0 +1,40 @@
+{
+  "business": "California DMV",
+  "logo": "/dmv/logo-ca-dmv-blue.svg",
+  "formId": "ca-dmv-reg343",
+  "title": "Application for Title or Registration (REG 343)",
+  "fields": [
+    { "id": "vin", "label": "VIN", "type": "text", "section": "Vehicle Information", "category": "personal", "required": true, "placeholder": "17 characters" },
+    { "id": "year", "label": "Year", "type": "number", "section": "Vehicle Information", "category": "basic", "required": true },
+    { "id": "make", "label": "Make", "type": "text", "section": "Vehicle Information", "category": "basic", "required": true },
+    { "id": "model", "label": "Model", "type": "text", "section": "Vehicle Information", "category": "basic", "required": true },
+    { "id": "body_type", "label": "Body type", "type": "select", "section": "Vehicle Information", "category": "basic", "required": true, "options": ["Sedan", "Hatchback", "Coupe", "SUV", "Minivan", "Pickup", "Truck tractor", "Other"] },
+    { "id": "color", "label": "Color", "type": "text", "section": "Vehicle Information", "category": "basic", "required": true },
+    { "id": "fuel", "label": "Fuel type", "type": "select", "section": "Vehicle Information", "category": "basic", "required": true, "options": ["Gas", "Diesel", "Hybrid", "Electric", "Other"] },
+    { "id": "odometer", "label": "Odometer reading (miles)", "type": "number", "section": "Vehicle Information", "category": "basic", "required": true },
+    { "id": "current_plate", "label": "Current plate number", "type": "text", "section": "Vehicle Information", "category": "personal", "required": true, "placeholder": "e.g. 1SAM123" },
+    { "id": "plate_state", "label": "State of current registration", "type": "text", "section": "Vehicle Information", "category": "basic", "required": true },
+    { "id": "purchase_date", "label": "Date acquired", "type": "date", "section": "Vehicle Information", "category": "personal", "required": true },
+    { "id": "purchase_price", "label": "Purchase price (USD)", "type": "number", "section": "Vehicle Information", "category": "personal", "required": true },
+    { "id": "vehicle_use", "label": "Vehicle use", "type": "select", "section": "Vehicle Information", "category": "basic", "required": true, "options": ["Personal", "Commercial"] },
+
+    { "id": "owner_name", "label": "Full legal name", "type": "text", "section": "Registered Owner", "category": "basic", "required": true },
+    { "id": "dl_number", "label": "Driver license or ID card number", "type": "text", "section": "Registered Owner", "category": "sensitive", "required": true },
+    { "id": "dl_state", "label": "Issuing state", "type": "text", "section": "Registered Owner", "category": "personal", "required": true },
+    { "id": "dob", "label": "Date of birth", "type": "date", "section": "Registered Owner", "category": "personal", "required": true },
+    { "id": "phone", "label": "Phone number", "type": "tel", "section": "Registered Owner", "category": "personal", "required": true },
+    { "id": "email", "label": "Email", "type": "email", "section": "Registered Owner", "category": "basic", "required": true },
+    { "id": "street", "label": "Residence address", "type": "text", "section": "Registered Owner", "category": "basic", "required": true },
+    { "id": "apt", "label": "Apt/space/unit", "type": "text", "section": "Registered Owner", "category": "basic" },
+    { "id": "city", "label": "City", "type": "text", "section": "Registered Owner", "category": "basic", "required": true },
+    { "id": "state", "label": "State", "type": "text", "section": "Registered Owner", "category": "basic", "required": true },
+    { "id": "zip", "label": "ZIP code", "type": "text", "section": "Registered Owner", "category": "basic", "required": true },
+    { "id": "county", "label": "County of residence", "type": "text", "section": "Registered Owner", "category": "basic", "required": true },
+
+    { "id": "lienholder", "label": "Legal owner or lienholder", "type": "text", "section": "Lienholder", "category": "personal", "required": true, "placeholder": "Enter None if the vehicle is paid off" },
+
+    { "id": "insurance_company", "label": "Insurance company", "type": "text", "section": "Insurance", "category": "personal", "required": true },
+    { "id": "policy_number", "label": "Policy number", "type": "text", "section": "Insurance", "category": "personal", "required": true },
+    { "id": "policy_expiration", "label": "Policy expiration date", "type": "date", "section": "Insurance", "category": "personal", "required": true }
+  ]
+}
