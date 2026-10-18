@@ -2,7 +2,7 @@
 
 Every person here is made up. Phone numbers use the fictional 555-01xx range, emails use the reserved `example.com`/`.net`/`.org` domains, SSNs come from the 987-65-432x block set aside for advertising, and card numbers are Stripe test cards.
 
-To demo someone, click **Reset demo** on `/formly`, then upload that person's folder with **Upload**. Each folder has the same three files: `personal_info.txt` (their own notes, each written in a different style), `contacts.csv` and `google_profile.json`. The **Drive** tile still syncs Alex Chen only.
+To demo someone, click **Reset demo** on `/formly`, then upload that person's folder with **Upload**. Each folder has the same three files: `personal_info.txt` (their own notes, each written in a different style), `contacts.csv` and `google_profile.json`. Or connect **Google** and pick the person from the account switcher on the sign-in screen (only Alex Chen has Drive documents).
 
 | Folder | Who | What the T-Mobile form shows |
 | --- | --- | --- |

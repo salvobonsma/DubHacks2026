@@ -98,8 +98,7 @@ export default function TMobileSignup() {
             </button>
             {missing > 0 && (
               <p className="tm-secondary mt-2 text-center text-sm">
-                Fill in {missing} more required field{missing === 1 ? "" : "s"} to submit. That&apos;s about{" "}
-                {timeLeft(missing)} of typing.
+                Fill in {missing} more required field{missing === 1 ? "" : "s"} to submit.
               </p>
             )}
           </div>
@@ -107,12 +106,6 @@ export default function TMobileSignup() {
       </div>
     </Shell>
   );
-}
-
-/** Rough manual-entry estimate: ~20 seconds per required field still empty. */
-function timeLeft(fields: number) {
-  const seconds = fields * 20;
-  return seconds < 60 ? "1 min" : `${Math.round(seconds / 60)} min`;
 }
 
 function Shell({ children }: { children: React.ReactNode }) {

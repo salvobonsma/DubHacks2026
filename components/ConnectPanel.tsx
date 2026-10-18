@@ -90,7 +90,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     setBusy(null);
   }
 
-  async function connectGoogle(scopes: GoogleScope[]) {
+  async function connectGoogle(scopes: GoogleScope[], account: string) {
     setConsent(false);
     setBusy("Syncing Google account and updating your twin…");
     setError(null);
@@ -98,7 +98,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
       const res = await fetch("/api/connectors/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ scopes }),
+        body: JSON.stringify({ scopes, account }),
       }).then((r) => r.json());
       if (res.error) setError(res.error);
       else onTwin?.(res.twin ?? null);
@@ -428,6 +428,6 @@ function UploadIcon({ className = "h-4 w-4" }: { className?: string }) {
 export function Spinner() {
   // Reduced motion swaps the spin for an opacity pulse.
   return (
-    <span className="inline-block h-4 w-4 rounded-full border-2 border-current border-t-transparent motion-safe:animate-spin motion-reduce:animate-pulse" />
+    <span className="inline-block h-4 w-4 shrink-0 rounded-full border-2 border-current border-t-transparent motion-safe:animate-spin motion-reduce:animate-pulse" />
   );
 }

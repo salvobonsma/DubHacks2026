@@ -223,8 +223,8 @@ function FactRow({
             type="button"
             aria-label={`Options for ${fact.label}`}
             onClick={() => setMenu(!menu)}
-            className={`flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-white hover:text-navy ${
-              menu ? "bg-white text-navy" : "text-muted/60 group-hover:bg-white group-hover:text-navy"
+            className={`flex h-6 w-6 items-center justify-center rounded-md transition hover:text-navy ${
+              menu ? "text-navy" : "text-muted/60 group-hover:text-navy"
             }`}
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
@@ -257,7 +257,7 @@ function FactRow({
                     </button>
                   )}
                   <button type="button" className={item} onClick={() => (setMenu(false), onAction("censor"))}>
-                    Censor permanently
+                    Never share
                   </button>
                 </>
               )}
@@ -278,9 +278,9 @@ function FactRow({
 
 function Redacted() {
   return (
-    <span title="Censored. Formly will never show or share this." className="inline-flex items-center gap-1.5 align-middle">
+    <span title="Hidden. Formly will never show or share this." className="inline-flex items-center gap-1.5 align-middle">
       <span className="inline-block h-3.5 w-24 rounded-sm bg-navy" />
-      <span className="text-xs text-muted">Censored</span>
+      <span className="text-xs text-muted">Never shared</span>
     </span>
   );
 }

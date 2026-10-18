@@ -145,7 +145,7 @@ export default function FormlyHome() {
           onClick={() => setCensoring(null)}
         >
           <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <h2 className="font-bold">Censor {censoring.label} permanently?</h2>
+            <h2 className="font-bold">Never share {censoring.label}?</h2>
             <p className="mt-2 text-sm text-muted">
               Formly will hide this value everywhere and never share it with a business, even if you approve a form that
               asks for it. This can&apos;t be undone.
@@ -164,7 +164,7 @@ export default function FormlyHome() {
                 }}
                 className="rounded-full bg-navy px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-black"
               >
-                Censor
+                Never share
               </button>
             </div>
           </div>
