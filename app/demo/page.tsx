@@ -69,7 +69,7 @@ export default function DemoPicker() {
 
           <Link
             href="/chase"
-            className="group flex flex-col rounded-2xl border border-transparent bg-[#005eb8] p-6 text-white shadow-surface transition hover:bg-[#004a91]"
+            className="group flex flex-col rounded-2xl border border-transparent bg-[#005eb8] p-6 text-white shadow-surface transition"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/chase/logo-white.svg" alt="Chase" className="h-6 w-fit" />
