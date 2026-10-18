@@ -204,13 +204,13 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
               <UploadIcon />
             </span>
             <div className="text-sm font-semibold">Drop files or click to upload</div>
-            <div className="mt-1 text-xs text-muted">PDF, images, DOCX, TXT, CSV, JSON</div>
+            <div className="mt-1 text-xs text-muted">PDF, images, DOCX, TXT, CSV, JSON, ZIP</div>
             <input
               ref={input}
               type="file"
               multiple
               hidden
-              accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json"
+              accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.docx,.txt,.md,.csv,.json,.zip"
               onChange={(e) => {
                 setUploadOpen(false);
                 if (e.target.files) upload(e.target.files);
@@ -442,7 +442,7 @@ function Modal({
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 m-0 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"} rounded-2xl bg-white p-5 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-bold">{title}</h2>

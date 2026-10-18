@@ -102,7 +102,6 @@ export default function SpaceXAIApplication() {
           </div>
           <div className="sm:w-72">
             <FormlyButton schema={schema} onFilled={applyFormly} />
-            <p className="sx-secondary mt-2 text-center text-[13px]">Fills this from your resume, short answers too</p>
           </div>
         </div>
 

@@ -91,7 +91,7 @@ export function AppleConsent({
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/40">
+    <div className="fixed inset-0 z-50 m-0 overflow-y-auto bg-black/40">
       <div className="flex min-h-full items-center justify-center p-4">
       <div
         className="w-full max-w-sm rounded-[22px] bg-[#f5f5f7] p-6 text-[#1d1d1f] shadow-2xl"
