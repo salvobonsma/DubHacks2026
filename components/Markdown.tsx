@@ -174,6 +174,7 @@ function FactRow({
         <strong className="shrink-0">{fact.label}:</strong>
         <input
           autoFocus
+          onFocus={(e) => e.target.select()}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
