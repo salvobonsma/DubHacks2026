@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ConnectorLogo } from "./ConnectorLogo";
+import { LockIcon } from "./Icons";
 
 export type IcloudScope = "account" | "contacts" | "mail" | "drive" | "wallet" | "health";
 
@@ -158,8 +159,8 @@ export function AppleConsent({
             </div>
           ))}
         </div>
-        <p className="mt-3 px-1 text-[12px] leading-snug text-[#6e6e73]">
-          Formly keeps this data in your digital twin. Businesses only get the answers you approve.
+        <p className="mt-3 flex items-center gap-1.5 px-1 text-[12px] text-[#6e6e73]">
+          <LockIcon className="h-2.5 w-2.5" stroke={1.25} /> Secure with Formly
         </p>
 
         <button
