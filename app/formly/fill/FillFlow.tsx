@@ -243,7 +243,7 @@ export function FillFlow() {
                 {twin && (
                   <div>
                     <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
-                      Sharing
+                      Permissions
                     </p>
                     <div className="space-y-1.5">
                       {MODES.map((m) => (
@@ -264,7 +264,7 @@ export function FillFlow() {
                             <span className="block text-sm font-semibold">
                               {m.label}
                               {m.id === "all" && (
-                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" />
+                                <WarningIcon className="ml-1.5 inline h-3 w-3 align-[-1px] text-amber-600" stroke={1.5} />
                               )}
                             </span>
                             <span className="block text-xs text-muted">{m.hint}</span>

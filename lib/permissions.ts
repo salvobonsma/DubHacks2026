@@ -3,7 +3,7 @@ import type { FormField } from "./types";
 export type SharingMode = "auto" | "all";
 
 export const MODES: { id: SharingMode; label: string; hint: string }[] = [
-  { id: "auto", label: "Auto", hint: "Asks before IDs and cards" },
+  { id: "auto", label: "Auto", hint: "Asks before adding sensitive info" },
   { id: "all", label: "Share everything", hint: "Never asks" },
 ];
 
