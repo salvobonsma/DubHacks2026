@@ -250,7 +250,11 @@ export function FillFlow() {
                         <label
                           key={m.id}
                           className={`flex cursor-pointer items-start gap-2.5 rounded-lg border px-3 py-2 ${
-                            mode === m.id ? "border-navy bg-bg" : "border-line"
+                            mode !== m.id
+                              ? "border-line"
+                              : m.id === "all"
+                                ? "border-amber-500 bg-amber-50"
+                                : "border-navy bg-bg"
                           }`}
                         >
                           <input
@@ -258,7 +262,7 @@ export function FillFlow() {
                             name="mode"
                             checked={mode === m.id}
                             onChange={() => changeMode(m.id)}
-                            className="mt-1 accent-navy"
+                            className={`mt-1 ${m.id === "all" ? "accent-amber-500" : "accent-navy"}`}
                           />
                           <span>
                             <span className="block text-sm font-semibold">
