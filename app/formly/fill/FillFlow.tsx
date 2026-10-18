@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
 import { FINISH_MS, ProgressStatus } from "@/components/ProgressStatus";
-import { CheckIcon, LockIcon, SyncIcon, WarningIcon } from "@/components/Icons";
+import { ArrowRightIcon, CheckIcon, LockIcon, SyncIcon, WarningIcon } from "@/components/Icons";
 import { Logo } from "@/components/Logo";
 import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
 import { askKey, groupTitle, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
@@ -375,17 +375,18 @@ export function FillFlow() {
                 {reviewTab === "missing" && (
                   <button
                     onClick={() => setStep("connect")}
-                    className="mb-2 flex w-full items-center gap-3 rounded-xl border border-dashed border-line px-3 py-2.5 text-left transition-colors hover:border-brand hover:bg-brand/5"
+                    className="group mb-2 flex w-full items-center gap-3 rounded-xl border border-line bg-white px-3 py-2.5 text-left shadow-sm transition hover:border-brand hover:shadow-md active:scale-[0.99]"
                   >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand-dark">
-                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden>
                         <path d="M12 5v14M5 12h14" />
                       </svg>
                     </span>
-                    <span>
+                    <span className="flex-1">
                       <span className="block text-sm font-semibold">Add more sources</span>
-                      <span className="block text-xs text-muted">Then fill again with the new data</span>
+                      <span className="block text-xs text-muted">Then fill again with the new data.</span>
                     </span>
+                    <ArrowRightIcon className="h-3.5 w-3.5 text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-brand-dark" stroke={1.5} />
                   </button>
                 )}
                 {rows.filter((r) => isFound(r) === (reviewTab === "filled")).length === 0 && (
