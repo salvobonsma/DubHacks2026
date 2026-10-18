@@ -372,6 +372,22 @@ export function FillFlow() {
                     </button>
                   ))}
                 </div>
+                {reviewTab === "missing" && (
+                  <button
+                    onClick={() => setStep("connect")}
+                    className="mb-2 flex w-full items-center gap-3 rounded-xl border border-dashed border-line px-3 py-2.5 text-left transition-colors hover:border-brand hover:bg-brand/5"
+                  >
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand-dark">
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" aria-hidden>
+                        <path d="M12 5v14M5 12h14" />
+                      </svg>
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold">Add more sources</span>
+                      <span className="block text-xs text-muted">Then fill again with the new data</span>
+                    </span>
+                  </button>
+                )}
                 {rows.filter((r) => isFound(r) === (reviewTab === "filled")).length === 0 && (
                   <p className="rounded-xl border border-line px-3 py-6 text-center text-sm text-muted">
                     {reviewTab === "filled" ? "Nothing was filled." : "Every field was filled."}
@@ -488,7 +504,7 @@ export function FillFlow() {
               onClick={approve}
               className="flex-1 rounded-xl bg-brand py-3 font-semibold text-navy transition-colors hover:bg-brand/90"
             >
-              Approve &amp; send {filled} fields
+              Approve &amp; send {filled} {filled === 1 ? "field" : "fields"}
             </button>
           )}
         </footer>
