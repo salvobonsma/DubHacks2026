@@ -178,7 +178,22 @@ export function FillFlow() {
     <div className="flex min-h-screen flex-col bg-white">
       <header className="flex items-center justify-between bg-navy px-5 py-4">
         <Logo light />
-        <span className="flex items-center gap-1.5 text-xs text-white/70">🔒 Secure session</span>
+        <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 ring-1 ring-white/10">
+          <svg
+            viewBox="0 0 24 24"
+            className="h-3.5 w-3.5 text-[#22C985]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+          </svg>
+          Secure session
+        </span>
       </header>
 
       <div className="flex-1 px-5 py-5">
@@ -232,7 +247,7 @@ export function FillFlow() {
                 </div>
                 {twin && (
                   <div className="rounded-xl bg-bg px-3 py-2 text-xs text-muted">
-                    Digital twin v{twin.version} · {twin.critical.length} facts known
+                    {twin.critical.length} facts known
                   </div>
                 )}
                 {error && <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
@@ -290,7 +305,9 @@ export function FillFlow() {
                         <input
                           value={r.value}
                           type={r.reveal ? "text" : "password"}
-                          placeholder={r.denied ? "Denied — type it yourself or leave blank" : "Not found — type it or leave blank"}
+                          placeholder={
+                            r.denied ? "Denied — type it yourself or leave blank" : "Not found — type it or leave blank"
+                          }
                           onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
                           className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"
                         />
