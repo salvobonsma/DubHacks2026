@@ -23,7 +23,14 @@ function ai() {
  */
 async function generate(params: GenerateContentParameters) {
   // With an Anthropic key, every request runs on Claude instead (same prompts and schemas, no free-tier caps).
-  if (claudeConfigured()) return (await claudeGenerate(params)) as never;
+  // If Claude fails (no credits, rate limit, outage), fall through to Gemini so a fill still finishes.
+  if (claudeConfigured()) {
+    try {
+      return (await claudeGenerate(params)) as never;
+    } catch (e) {
+      console.warn(`[formly] Claude failed, using Gemini: ${(e as Error).message.slice(0, 160)}`);
+    }
+  }
   const models = [...new Set([params.model, ...FALLBACKS, MODEL])];
   const config = { ...params.config, thinkingConfig: { thinkingLevel: ThinkingLevel.LOW } };
   let lastErr: unknown;

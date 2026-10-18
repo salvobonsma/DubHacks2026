@@ -10,9 +10,17 @@ const MODEL = process.env.CLAUDE_MODEL ?? "claude-opus-5-5";
 const EFFORT = (process.env.CLAUDE_EFFORT ?? "low") as "low" | "medium" | "high";
 
 let client: Anthropic | null = null;
-const anthropic = () => (client ??= new Anthropic());
+// A user-level key (sk-ant-usr-…) isn't tied to a workspace, so it also needs ANTHROPIC_WORKSPACE_ID.
+const anthropic = () =>
+  (client ??= new Anthropic(
+    process.env.ANTHROPIC_WORKSPACE_ID ? { defaultHeaders: { "anthropic-workspace-id": process.env.ANTHROPIC_WORKSPACE_ID } } : {},
+  ));
 
-export const claudeConfigured = () => !!process.env.ANTHROPIC_API_KEY;
+export const claudeConfigured = () => {
+  const key = process.env.ANTHROPIC_API_KEY ?? "";
+  // A user-level key can't be used without its workspace id; until that's set, keep using Gemini.
+  return !!key && (!key.startsWith("sk-ant-usr-") || !!process.env.ANTHROPIC_WORKSPACE_ID);
+};
 
 type GeminiSchema = {
   type?: string;
