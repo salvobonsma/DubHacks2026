@@ -36,7 +36,7 @@ There are three sharing modes per business: *Ask every time*, *Auto-share basics
 ## Connectors
 
 - **Upload** (live): PDF, images, DOCX, TXT, CSV, JSON
-- **Google** (mock): a fake consent screen that syncs `sample-data/alex-chen/google_profile.json` and `resume.docx`
+- **Google** (mock): a fake consent screen with an account switcher for every persona in `sample-data/`. It syncs their `google_profile.json`, and Drive brings in their `personal_info.txt` and `resume.docx`
 - OneDrive, Gmail, Apple Wallet: coming soon
 
 ## Deploy (Dokploy)

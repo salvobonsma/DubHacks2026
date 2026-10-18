@@ -2,7 +2,7 @@
 
 Every person here is made up. Phone numbers use the fictional 555-01xx range, emails use the reserved `example.com`/`.net`/`.org`/`.edu` domains, SSNs come from the 987-65-432x block set aside for advertising, card numbers are Stripe test cards, and every bank account uses Stripe's test routing number `110000000` with a test account number. VINs, plates, policy and member IDs are invented.
 
-To demo someone, click **Reset demo**, then upload that person's folder with **Upload**. Each folder has `personal_info.txt` (their own notes, each written in a different style), `contacts.csv`, `google_profile.json` and `resume.docx`. Or connect **Google** and pick the person from the account switcher on the sign-in screen; Drive brings in their resume.
+To demo someone, click **Reset demo**, then upload that person's folder with **Upload**. Each folder has `personal_info.txt` (their own notes, each written in a different style), `contacts.csv`, `google_profile.json` and `resume.docx`. Or connect **Google** and pick the person from the account switcher on the sign-in screen; Drive brings in their `personal_info.txt` and resume, so Google alone gives Formly everything in the folder except `contacts.csv`.
 
 ## What every persona covers
 
