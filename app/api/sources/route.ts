@@ -12,7 +12,15 @@ export async function GET(req: Request) {
     const source = listSources().find((s) => s.id === id);
     return source ? Response.json(source) : Response.json({ error: "Not found" }, { status: 404 });
   }
-  return Response.json(listSources().map(({ text, ...s }) => ({ ...s, chars: text.length })));
+  // Connectors bundle several documents into one source under "## <section>" headings, and the
+  // twin often cites a section ("Drive: Resume.docx") rather than the source name.
+  return Response.json(
+    listSources().map(({ text, ...s }) => ({
+      ...s,
+      chars: text.length,
+      sections: [...text.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim()),
+    })),
+  );
 }
 
 /** Upload connector: multipart files (zips unpacked) -> raw text -> rebuild the digital twin. */
