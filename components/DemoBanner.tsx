@@ -17,7 +17,7 @@ const PAGE_BG: [prefix: string, color: string][] = [
   ["/chase", "#ffffff"],
   ["/dmv", "#f3f7fb"],
   ["/demo", "#f3f4f6"],
-  ["/", "#0f1a2a"],
+  ["/", "#f7f8fa"],
 ];
 
 const LINKS = [
