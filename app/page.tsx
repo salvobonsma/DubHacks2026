@@ -3,7 +3,7 @@ import { Logo } from "@/components/Logo";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-navy px-4 text-center">
+    <main className="flex flex-1 flex-col items-center justify-center gap-6 bg-navy px-4 text-center">
       <Logo light className="scale-150" />
       <p className="max-w-md text-white/70">
         Stripe for forms. Fill any signup or checkout with your own data, without handing your files to the business.

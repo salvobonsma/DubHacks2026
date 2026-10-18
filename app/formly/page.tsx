@@ -36,7 +36,7 @@ export default function FormlyHome() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="flex-1">
       <header className="bg-navy">
         <div className="mx-auto flex max-w-5xl items-center px-4 py-4">
           <Link href="/">

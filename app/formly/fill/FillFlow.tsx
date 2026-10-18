@@ -175,7 +175,7 @@ export function FillFlow() {
   const filled = rows.filter((r) => r.include && r.value).length;
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex flex-1 flex-col bg-white">
       <header className="flex items-center justify-between bg-navy px-5 py-4">
         <Logo light />
         <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 ring-1 ring-white/10">

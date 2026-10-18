@@ -115,7 +115,7 @@ function timeLeft(fields: number) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex flex-1 flex-col">
       <header className="tm-header">
         <div className="mx-auto flex max-w-3xl items-center px-6 py-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}

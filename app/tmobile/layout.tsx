@@ -14,5 +14,5 @@ export const metadata: Metadata = {
 };
 
 export default function TMobileLayout({ children }: { children: React.ReactNode }) {
-  return <div className={`${inter.variable} tm-root`}>{children}</div>;
+  return <div className={`${inter.variable} tm-root flex flex-1 flex-col`}>{children}</div>;
 }
