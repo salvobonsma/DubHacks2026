@@ -115,7 +115,7 @@ export function FormlyButton({
       type="button"
       onClick={open}
       disabled={busy}
-      className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-navy px-5 py-3.5 text-[15px] font-semibold text-white transition hover:bg-black disabled:opacity-70"
+      className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-navy px-5 py-3.5 font-display text-[15px] font-semibold tracking-[-0.01em] text-white transition hover:bg-black disabled:opacity-70"
     >
       <Mark light className="h-5 w-5" />
       {busy ? "Waiting for Formly…" : "Fill with Formly"}

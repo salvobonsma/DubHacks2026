@@ -217,7 +217,7 @@ export function FillFlow() {
                           name="mode"
                           checked={mode === m.id}
                           onChange={() => changeMode(m.id)}
-                          className="mt-1 accent-[#111827]"
+                          className="mt-1 accent-navy"
                         />
                         <span>
                           <span className="block text-sm font-semibold">
@@ -274,7 +274,7 @@ export function FillFlow() {
                           type="checkbox"
                           checked={r.include}
                           onChange={(e) => update(r.fieldId, { include: e.target.checked })}
-                          className="accent-[#5bc48a]"
+                          className="accent-brand"
                         />
                         <span className="flex-1 text-xs font-medium text-muted">
                           {r.label}

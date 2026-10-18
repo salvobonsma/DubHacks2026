@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --navy: #111827;
-  --green: #5bc48a;
-  --green-dark: #3fa56f;
+  --navy: #0f1a2a;
+  --green: #0fa968;
+  --green-dark: #0b8a55;
   --bg: #f3f4f6;
   --card: #ffffff;
   --border: #e5e7eb;
@@ -21,12 +21,21 @@
   --color-muted: var(--muted);
   --color-magenta: var(--magenta);
   --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-sora);
 }
 
 /* Tailwind v4 dropped the pointer cursor on buttons; bring it back everywhere. */
 button:not(:disabled),
 [role="button"] {
   cursor: pointer;
+}
+
+/* Brand: Sora SemiBold for headlines and buttons, DM Sans for body text. */
+h1,
+h2 {
+  font-family: var(--font-sora);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 body {

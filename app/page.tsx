@@ -9,10 +9,10 @@ export default function Home() {
         Stripe for forms. Fill any signup or checkout with your own data, without handing your files to the business.
       </p>
       <div className="flex gap-3">
-        <Link href="/tmobile" className="rounded-xl bg-brand px-5 py-3 font-semibold text-navy">
+        <Link href="/tmobile" className="rounded-xl bg-brand px-5 py-3 font-display font-semibold text-white">
           Try the T-Mobile demo
         </Link>
-        <Link href="/formly" className="rounded-xl border border-white/20 px-5 py-3 font-semibold text-white">
+        <Link href="/formly" className="rounded-xl border border-white/20 px-5 py-3 font-display font-semibold text-white">
           My Formly
         </Link>
       </div>
