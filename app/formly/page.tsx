@@ -71,7 +71,16 @@ export default function FormlyHome() {
           <div className="mb-3 flex items-baseline justify-between">
             <h2 className="font-bold">Your digital twin</h2>
             {twin && (
-              <span className="text-xs text-muted">Updated {new Date(twin.updatedAt).toLocaleTimeString()}</span>
+              <span className="text-xs text-muted">
+                Updated{" "}
+                {new Date(twin.updatedAt).toLocaleString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                })}
+              </span>
             )}
           </div>
           {twin ? (
@@ -111,9 +120,7 @@ export default function FormlyHome() {
         >
           <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <h2 className="font-bold">Reset the demo?</h2>
-            <p className="mt-2 text-sm text-muted">
-              This removes every connected source, your digital twin, your edits, and saved sharing permissions.
-            </p>
+            <p className="mt-2 text-sm text-muted">This clears all the data.</p>
             <div className="mt-6 flex justify-end gap-2">
               <button
                 onClick={() => setResetting(false)}
