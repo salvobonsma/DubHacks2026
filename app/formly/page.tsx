@@ -13,15 +13,6 @@ export default function FormlyHome() {
   const [twin, setTwin] = useState<Twin | null>(null);
   const [fact, setFact] = useState<TwinFact | null>(null);
   const [censoring, setCensoring] = useState<TwinFact | null>(null);
-  const [resetting, setResetting] = useState(false);
-  const [resetBusy, setResetBusy] = useState(false);
-
-  // In-page confirm: the in-app browser silently blocks window.confirm().
-  async function resetDemo() {
-    setResetBusy(true);
-    await Promise.all([fetch("/api/sources", { method: "DELETE" }), fetch("/api/grants", { method: "DELETE" })]);
-    location.reload();
-  }
   const removed = twin?.overrides.filter((o) => o.action === "remove") ?? [];
 
   async function act(f: { label: string }, action: FactAction | "restore", value?: string) {
@@ -60,12 +51,6 @@ export default function FormlyHome() {
             <p className="mb-4 text-sm text-muted">Formly reads these to keep your digital twin up to date.</p>
             <ConnectPanel onTwin={setTwin} />
           </section>
-          <button
-            onClick={() => setResetting(true)}
-            className="w-full rounded-2xl border border-transparent bg-white px-4 py-2.5 text-sm font-medium text-muted shadow-surface transition hover:text-red-600 hover:shadow-surface-hover"
-          >
-            Reset demo
-          </button>
         </div>
         <section className="rounded-2xl border border-transparent bg-white p-5 shadow-surface">
           <div className="mb-3 flex items-baseline justify-between">
@@ -112,33 +97,6 @@ export default function FormlyHome() {
         </section>
       </main>
       {fact && <SourceViewer fact={fact} onClose={() => setFact(null)} />}
-      {resetting && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-          onClick={() => !resetBusy && setResetting(false)}
-        >
-          <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <h2 className="font-bold">Reset the demo?</h2>
-            <p className="mt-2 text-sm text-muted">This clears all the data.</p>
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                onClick={() => setResetting(false)}
-                disabled={resetBusy}
-                className="rounded-full px-4 py-2 text-sm font-medium text-muted hover:bg-bg"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={resetDemo}
-                disabled={resetBusy}
-                className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-60"
-              >
-                {resetBusy ? "Resetting…" : "Reset"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       {censoring && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"

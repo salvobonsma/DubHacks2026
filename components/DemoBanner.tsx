@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Mark } from "./Logo";
 
 /**
@@ -25,6 +25,15 @@ const LINKS = [
 /** Thin site-wide strip, like the .gov "official website" banner, marking every page as a demo. */
 export function DemoBanner() {
   const path = usePathname();
+  const [resetting, setResetting] = useState(false);
+  const [resetBusy, setResetBusy] = useState(false);
+
+  // In-page confirm: the in-app browser silently blocks window.confirm().
+  async function resetDemo() {
+    setResetBusy(true);
+    await Promise.all([fetch("/api/sources", { method: "DELETE" }), fetch("/api/grants", { method: "DELETE" })]);
+    location.reload();
+  }
 
   useEffect(() => {
     const color = PAGE_BG.find(([prefix]) => (prefix === "/" ? path === "/" : path.startsWith(prefix)))?.[1];
@@ -56,8 +65,39 @@ export function DemoBanner() {
               {l.label}
             </Link>
           ))}
+          <span className="h-3 w-px bg-white/20" aria-hidden />
+          <button onClick={() => setResetting(true)} className="text-white/60 transition hover:text-red-400">
+            Reset demo
+          </button>
         </nav>
       </div>
+      {resetting && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 text-sm text-navy"
+          onClick={() => !resetBusy && setResetting(false)}
+        >
+          <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-base font-bold">Reset the demo?</h2>
+            <p className="mt-2 text-sm text-muted">This clears all the data.</p>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setResetting(false)}
+                disabled={resetBusy}
+                className="rounded-full px-4 py-2 text-sm font-medium text-muted hover:bg-bg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={resetDemo}
+                disabled={resetBusy}
+                className="rounded-full bg-red-600 px-5 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-60"
+              >
+                {resetBusy ? "Resetting…" : "Reset"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
