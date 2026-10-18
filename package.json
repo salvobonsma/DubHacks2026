@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup": "npm install && node -e \"const f=require('fs');if(!f.existsSync('.env.local')){f.copyFileSync('.env.example','.env.local');console.log('Created .env.local - add your GEMINI_API_KEY')}\"",
+    "reset": "node -e \"require('fs').rmSync('data',{recursive:true,force:true});console.log('Local data wiped')\""
   },
   "dependencies": {
     "@google/genai": "^2.30.0",

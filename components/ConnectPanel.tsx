@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { GoogleConsent } from "./GoogleConsent";
 import type { Twin } from "@/lib/types";
 
 interface SourceRow {
@@ -12,7 +13,6 @@ interface SourceRow {
 }
 
 const COMING_SOON = [
-  { name: "Google", icon: "G", color: "#4285F4" },
   { name: "OneDrive", icon: "☁", color: "#0078D4" },
   { name: "Gmail", icon: "✉", color: "#EA4335" },
   { name: "Apple Wallet", icon: "▣", color: "#111827" },
@@ -24,6 +24,7 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
+  const [consent, setConsent] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
   const refresh = useCallback(async () => {
@@ -31,8 +32,10 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
   }, []);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    fetch("/api/sources")
+      .then((r) => r.json())
+      .then(setSources);
+  }, []);
 
   async function upload(files: FileList | File[]) {
     if (!files.length) return;
@@ -43,6 +46,21 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
     try {
       const res = await fetch("/api/sources", { method: "POST", body }).then((r) => r.json());
       if (res.errors?.length) setError(res.errors.join("; "));
+      if (res.error) setError(res.error);
+      else onTwin?.(res.twin ?? null);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+    await refresh();
+    setBusy(null);
+  }
+
+  async function connectGoogle() {
+    setConsent(false);
+    setBusy("Syncing Google account and updating your twin…");
+    setError(null);
+    try {
+      const res = await fetch("/api/connectors/google", { method: "POST" }).then((r) => r.json());
       if (res.error) setError(res.error);
       else onTwin?.(res.twin ?? null);
     } catch (e) {
@@ -91,8 +109,17 @@ export function ConnectPanel({ onTwin }: { onTwin?: (twin: Twin | null) => void 
         />
       </div>
 
+      {consent && <GoogleConsent onAllow={connectGoogle} onCancel={() => setConsent(false)} />}
       <div className="grid grid-cols-4 gap-2">
-        {COMING_SOON.map((c) => (
+        <button
+          onClick={() => setConsent(true)}
+          disabled={!!busy}
+          className="flex flex-col items-center gap-1 rounded-lg border border-line p-2 transition hover:border-[#4285F4]"
+        >
+          <span className="text-lg font-bold text-[#4285F4]">G</span>
+          <span className="text-[11px]">{sources.some((s) => s.connector === "google") ? "Synced ✓" : "Google"}</span>
+        </button>
+        {COMING_SOON.slice(0, 3).map((c) => (
           <div
             key={c.name}
             title="Coming soon"

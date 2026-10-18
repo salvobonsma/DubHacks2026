@@ -22,7 +22,9 @@ export function FormlyButton({
   const [busy, setBusy] = useState(false);
   const sessionRef = useRef<string | null>(null);
   const onFilledRef = useRef(onFilled);
-  onFilledRef.current = onFilled;
+  useEffect(() => {
+    onFilledRef.current = onFilled;
+  }, [onFilled]);
 
   useEffect(() => {
     const expected = formlyOrigin || window.location.origin;

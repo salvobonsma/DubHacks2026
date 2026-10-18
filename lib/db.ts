@@ -11,7 +11,13 @@ const g = globalThis as unknown as { __formlyDb?: Database.Database };
 function open() {
   const db = new Database(path.join(DATA_DIR, "formly.db"));
   db.pragma("journal_mode = WAL");
-  db.exec(`
+  return db;
+}
+
+export const db = g.__formlyDb ?? (g.__formlyDb = open());
+
+// Idempotent schema, re-run on every module load so new tables appear without restarting dev.
+db.exec(`
     CREATE TABLE IF NOT EXISTS sources (
       id TEXT PRIMARY KEY,
       connector TEXT NOT NULL,
@@ -27,6 +33,12 @@ function open() {
       version INTEGER NOT NULL,
       updated_at INTEGER NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS grants (
+      business TEXT NOT NULL,
+      key TEXT NOT NULL,
+      decision TEXT NOT NULL,
+      PRIMARY KEY (business, key)
+    );
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,
       business TEXT NOT NULL,
@@ -35,8 +47,4 @@ function open() {
       status TEXT NOT NULL DEFAULT 'open',
       created_at INTEGER NOT NULL
     );
-  `);
-  return db;
-}
-
-export const db = g.__formlyDb ?? (g.__formlyDb = open());
+`);

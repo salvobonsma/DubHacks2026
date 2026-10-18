@@ -2,13 +2,15 @@
 
 "Stripe for forms": a business adds a **Fill with Formly** button. The user connects their data in a secure Formly popup, and the business gets back only the answers the user approves.
 
-## Run it
+## Local development (fast; no Docker)
 
 ```bash
-cp .env.example .env.local   # then add GEMINI_API_KEY (MLH Gemini credits)
-npm install
-npm run dev
+npm run setup     # installs deps, creates .env.local; then add GEMINI_API_KEY (MLH Gemini credits)
+npm run dev       # http://localhost:3000, Turbopack hot reload
+npm run reset     # wipe local SQLite data (sources, twin, permissions)
 ```
+
+Local data is stored in `./data/formly.db`, which git ignores. You can also click **Reset demo** on `/formly` between rehearsals.
 
 - `/tmobile`: the demo merchant (a long T-Mobile signup form with the Fill with Formly button)
 - `/formly`: your connected sources and your live digital twin
@@ -21,6 +23,16 @@ Sample persona files are in `sample-data/alex-chen/`. `Alex Chen - personal info
 1. **Ingest** (`lib/extract.ts`): each upload becomes plain text. Gemini transcribes PDFs and images, and `mammoth` handles DOCX.
 2. **Digital twin** (`lib/twin.ts`, `lib/llm.ts`): every source is merged into one markdown profile, and typed "critical info" facts are extracted from it. Both are rebuilt whenever a source is added or removed.
 3. **Fill** (`/api/fill`): the business's JSON form schema, the critical info and the twin produce field values. The user reviews and approves them in the popup, and `postMessage` sends them back to the merchant page.
+
+## Permissions
+
+There are three sharing modes per business: *Ask every time*, *Auto-share basics* (the default) and *Share everything*. Like Claude Code, each request shows a prompt with **1** Allow once, **2** Always allow, and **3** Deny (keyboard shortcuts work). Sensitive fields (SSN, card, ID number) each get their own prompt. Other personal info is grouped by form section. "Always allow" is saved per business.
+
+## Connectors
+
+- **Upload** (live): PDF, images, DOCX, TXT, CSV, JSON
+- **Google** (mock): a fake consent screen that syncs `sample-data/alex-chen/google_profile.json` and `resume.docx`
+- OneDrive, Gmail, Apple Wallet: coming soon
 
 ## Deploy (Dokploy)
 

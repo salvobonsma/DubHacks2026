@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConnectPanel, Spinner } from "@/components/ConnectPanel";
 import { Logo } from "@/components/Logo";
+import { PermissionPrompt, type PromptRequest } from "@/components/PermissionPrompt";
+import { askKey, MODES, needsPrompt, type SharingMode } from "@/lib/permissions";
 import type { FilledField, FormSchema, Twin } from "@/lib/types";
 
 interface Session {
@@ -21,9 +23,10 @@ interface Row {
   source: string | null;
   include: boolean;
   reveal: boolean;
+  denied: boolean;
 }
 
-type Step = "connect" | "filling" | "review" | "sent";
+type Step = "connect" | "filling" | "permissions" | "review" | "sent";
 
 export function FillFlow() {
   const sessionId = useSearchParams().get("session");
@@ -32,12 +35,20 @@ export function FillFlow() {
   const [step, setStep] = useState<Step>("connect");
   const [rows, setRows] = useState<Row[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<SharingMode>("auto");
+  const [queue, setQueue] = useState<PromptRequest[]>([]);
+  const [promptIdx, setPromptIdx] = useState(0);
 
   useEffect(() => {
     if (!sessionId) return;
     fetch(`/api/sessions?id=${sessionId}`)
       .then((r) => r.json())
-      .then(setSession);
+      .then((s: Session) => {
+        setSession(s);
+        fetch(`/api/grants?business=${encodeURIComponent(s.business)}`)
+          .then((r) => r.json())
+          .then((g) => setMode(g.mode));
+      });
     fetch("/api/twin")
       .then((r) => r.json())
       .then((d) => setTwin(d.twin));
@@ -58,21 +69,72 @@ export function FillFlow() {
       return;
     }
     const byId = new Map<string, FilledField>((res.fields as FilledField[]).map((f) => [f.fieldId, f]));
-    setRows(
-      session.schema.fields.map((f) => {
-        const hit = byId.get(f.id);
-        return {
-          fieldId: f.id,
-          label: f.label,
-          category: f.category,
-          value: hit?.value ?? "",
-          source: hit?.source ?? null,
-          include: !!hit?.value,
-          reveal: f.category !== "sensitive",
-        };
-      }),
+    const newRows: Row[] = session.schema.fields.map((f) => {
+      const hit = byId.get(f.id);
+      return {
+        fieldId: f.id,
+        label: f.label,
+        category: f.category,
+        value: hit?.value ?? "",
+        source: hit?.source ?? null,
+        include: !!hit?.value,
+        reveal: f.category !== "sensitive",
+        denied: false,
+      };
+    });
+    setRows(newRows);
+
+    // Build the permission queue: one prompt per sensitive field / per section, skipping "always allow" grants.
+    const { always } = await fetch(`/api/grants?business=${encodeURIComponent(session.business)}`).then((r) =>
+      r.json(),
     );
-    setStep("review");
+    const groups = new Map<string, PromptRequest>();
+    for (const f of session.schema.fields) {
+      const row = newRows.find((r) => r.fieldId === f.id)!;
+      if (!row.value || !needsPrompt(f, mode) || always.includes(askKey(f))) continue;
+      const key = askKey(f);
+      const g = groups.get(key) ?? {
+        key,
+        title: f.category === "sensitive" ? f.label : f.section.toLowerCase(),
+        fields: [],
+        sources: [],
+      };
+      g.fields.push({ label: f.label, value: row.value, sensitive: f.category === "sensitive" });
+      if (row.source && !g.sources.includes(row.source)) g.sources.push(row.source);
+      groups.set(key, g);
+    }
+    const q = [...groups.values()];
+    setQueue(q);
+    setPromptIdx(0);
+    setStep(q.length ? "permissions" : "review");
+  }
+
+  async function decide(d: "once" | "always" | "deny") {
+    if (!session) return;
+    const req = queue[promptIdx];
+    if (d === "always") {
+      fetch("/api/grants", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ business: session.business, key: req.key, decision: "allow" }),
+      });
+    }
+    if (d === "deny") {
+      const ids = new Set(session.schema.fields.filter((f) => askKey(f) === req.key).map((f) => f.id));
+      setRows((rs) => rs.map((r) => (ids.has(r.fieldId) ? { ...r, value: "", include: false, denied: true } : r)));
+    }
+    if (promptIdx + 1 < queue.length) setPromptIdx(promptIdx + 1);
+    else setStep("review");
+  }
+
+  function changeMode(m: SharingMode) {
+    setMode(m);
+    if (session)
+      fetch("/api/grants", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ business: session.business, mode: m }),
+      });
   }
 
   function approve() {
@@ -119,6 +181,36 @@ export function FillFlow() {
             {step === "connect" && (
               <div className="mt-5 space-y-5">
                 <ConnectPanel onTwin={setTwin} />
+                <div>
+                  <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-muted">
+                    Sharing mode for {session.business}
+                  </p>
+                  <div className="space-y-1.5">
+                    {MODES.map((m) => (
+                      <label
+                        key={m.id}
+                        className={`flex cursor-pointer items-start gap-2.5 rounded-lg border px-3 py-2 ${
+                          mode === m.id ? "border-navy bg-bg" : "border-line"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="mode"
+                          checked={mode === m.id}
+                          onChange={() => changeMode(m.id)}
+                          className="mt-1 accent-[#111827]"
+                        />
+                        <span>
+                          <span className="block text-sm font-semibold">
+                            {m.label}
+                            {m.id === "all" && <span className="ml-1.5 text-xs text-amber-600">⚠</span>}
+                          </span>
+                          <span className="block text-xs text-muted">{m.hint}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
                 {twin && (
                   <div className="rounded-xl bg-bg px-3 py-2 text-xs text-muted">
                     Digital twin v{twin.version} · {twin.critical.length} facts known
@@ -135,6 +227,19 @@ export function FillFlow() {
                 </span>
                 <p className="font-semibold">Filling {session.schema.fields.length} fields…</p>
                 <p className="text-xs text-muted">Matching your digital twin to {session.business}&apos;s form</p>
+              </div>
+            )}
+
+            {step === "permissions" && queue[promptIdx] && (
+              <div className="mt-6">
+                <PermissionPrompt
+                  key={queue[promptIdx].key}
+                  business={session.business}
+                  request={queue[promptIdx]}
+                  index={promptIdx}
+                  total={queue.length}
+                  onDecide={decide}
+                />
               </div>
             )}
 
@@ -167,7 +272,7 @@ export function FillFlow() {
                         <input
                           value={r.value}
                           type={r.reveal ? "text" : "password"}
-                          placeholder="Not found — type it or leave blank"
+                          placeholder={r.denied ? "Denied — type it yourself or leave blank" : "Not found — type it or leave blank"}
                           onChange={(e) => update(r.fieldId, { value: e.target.value, include: !!e.target.value })}
                           className="w-full rounded-md border border-line px-2 py-1 text-sm outline-none focus:border-brand"
                         />

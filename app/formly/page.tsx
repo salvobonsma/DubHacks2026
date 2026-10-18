@@ -29,7 +29,22 @@ export default function FormlyHome() {
       </header>
       <main className="mx-auto grid max-w-5xl gap-6 px-4 py-8 md:grid-cols-[360px_1fr]">
         <section className="h-fit rounded-2xl bg-white p-5 shadow-sm">
-          <h2 className="mb-1 font-bold">Your data sources</h2>
+          <div className="mb-1 flex items-center justify-between">
+            <h2 className="font-bold">Your data sources</h2>
+            <button
+              onClick={async () => {
+                if (!confirm("Remove all sources, the twin, and saved permissions?")) return;
+                await Promise.all([
+                  fetch("/api/sources", { method: "DELETE" }),
+                  fetch("/api/grants", { method: "DELETE" }),
+                ]);
+                location.reload();
+              }}
+              className="text-xs text-muted hover:text-red-600"
+            >
+              Reset demo
+            </button>
+          </div>
           <p className="mb-4 text-sm text-muted">Formly reads these to keep your digital twin up to date.</p>
           <ConnectPanel onTwin={setTwin} />
         </section>
