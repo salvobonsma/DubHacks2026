@@ -52,7 +52,7 @@ export default function TMobileSignup() {
       <div className="tm-card">
         <h1 className="tm-h1">Create your account</h1>
         <p className="tm-secondary mt-2 text-sm">
-          {schema.title}. <span className="tm-num">{done}</span> of{" "}
+          <span className="tm-num">{done}</span> of{" "}
           <span className="tm-num">{schema.fields.length}</span> fields complete.
         </p>
 
