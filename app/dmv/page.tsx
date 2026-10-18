@@ -50,9 +50,9 @@ export default function DmvApplication() {
       <header className="dmv-bar">
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-5 py-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/dmv/logo-ca-gov.svg" alt="CA.gov" className="h-9 w-auto" />
+          <img src="/dmv/logo-ca-gov.svg" alt="CA.gov" width={149} height={84} className="h-9 w-auto shrink-0 object-contain" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/dmv/logo-ca-dmv-white.svg" alt="California DMV" className="h-9 w-auto" />
+          <img src="/dmv/logo-ca-dmv-white.svg" alt="California DMV" width={103} height={40} className="h-9 w-auto shrink-0 object-contain" />
         </div>
       </header>
 
@@ -143,7 +143,7 @@ export default function DmvApplication() {
       <footer className="dmv-footer">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 px-5 py-8 text-center text-[13px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/dmv/logo-ca-dmv-white.svg" alt="California DMV" className="h-8 w-auto opacity-90" />
+          <img src="/dmv/logo-ca-dmv-white.svg" alt="California DMV" width={103} height={40} className="h-8 w-auto object-contain opacity-90" />
           <p>
             A demo application page for Formly, styled after the California DMV&apos;s online services. Not affiliated
             with the State of California. Nothing you enter here leaves this page.

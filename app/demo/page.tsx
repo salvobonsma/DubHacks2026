@@ -34,7 +34,7 @@ export default function DemoPicker() {
             className="group flex flex-col rounded-2xl border border-transparent bg-white p-6 shadow-surface transition hover:shadow-surface-hover"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/tmobile/logo.png" alt="T-Mobile" className="h-7 w-fit" />
+            <img src="/tmobile/logo.png" alt="T-Mobile" width={720} height={145} className="h-7 w-auto self-start object-contain object-left" />
             <h2 className="mt-6 text-xl">{tmobile.title}</h2>
             <p className="mt-1 text-sm text-muted">{tmobile.fields.length} fields · ID, payment card, credit check</p>
             <p className="mt-4 flex-1 text-[15px]">
@@ -52,7 +52,7 @@ export default function DemoPicker() {
             className="group flex flex-col rounded-2xl border border-white/10 bg-[#0a0a0a] p-6 text-white shadow-surface transition hover:border-white/25"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/spacexai/logo-white.png" alt="SpaceXAI" className="h-7 w-fit" />
+            <img src="/spacexai/logo-white.png" alt="SpaceXAI" width={400} height={153} className="h-7 w-auto self-start object-contain object-left" />
             <h2 className="mt-6 text-xl">{spacexai.title}</h2>
             <p className="mt-1 text-sm text-white/60">
               {spacexai.fields.length} fields · education, experience, 2 short answers
@@ -72,7 +72,7 @@ export default function DemoPicker() {
             className="group flex flex-col rounded-2xl border border-transparent bg-[#005eb8] p-6 text-white shadow-surface transition"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/chase/logo-white.svg" alt="Chase" className="h-6 w-fit" />
+            <img src="/chase/logo-white.svg" alt="Chase" width={124} height={23} className="h-6 w-auto self-start object-contain object-left" />
             <h2 className="mt-7 text-xl">{chase.title}</h2>
             <p className="mt-1 text-sm text-white/70">{chase.fields.length} fields · SSN, address, income</p>
             <p className="mt-4 flex-1 text-[15px] text-white/90">
@@ -90,7 +90,7 @@ export default function DemoPicker() {
             className="group flex flex-col rounded-2xl border border-transparent bg-white p-6 shadow-surface transition hover:shadow-surface-hover"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/dmv/logo-ca-dmv-blue.svg" alt="California DMV" className="h-9 w-fit" />
+            <img src="/dmv/logo-ca-dmv-blue.svg" alt="California DMV" width={103} height={40} className="h-9 w-auto self-start object-contain object-left" />
             <h2 className="mt-5 text-xl">{dmv.title}</h2>
             <p className="mt-1 text-sm text-muted">{dmv.fields.length} fields · vehicle, VIN, insurance</p>
             <p className="mt-4 flex-1 text-[15px]">

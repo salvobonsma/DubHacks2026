@@ -232,7 +232,7 @@ export function FillFlow() {
             <p className="flex items-end gap-2 text-base text-muted">
               {session.schema.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={session.schema.logo} alt={session.business} className="h-6 w-auto" />
+                <img src={session.schema.logo} alt={session.business} className="h-6 w-auto shrink-0 object-contain" />
               ) : (
                 <strong className="text-navy">{session.business}</strong>
               )}

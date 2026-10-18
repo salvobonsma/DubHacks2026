@@ -114,7 +114,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <header className="tm-header">
         <div className="mx-auto flex max-w-3xl items-center px-6 py-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/tmobile/logo.png" alt="T-Mobile" className="h-7 w-auto" />
+          <img src="/tmobile/logo.png" alt="T-Mobile" width={720} height={145} className="h-7 w-auto shrink-0 object-contain" />
         </div>
       </header>
       <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">{children}</main>
